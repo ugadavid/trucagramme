@@ -253,3 +253,68 @@ Un en-tête `schema_version` est retenu pour identifier la version de la structu
 - de la version du spécimen ou prototype Trucagramme.
 
 Pour le premier prototype, `schema_version` et l’identification du sujet principal sont les seuls candidats à une obligation minimale. Ce choix reste provisoire et pourra être révisé après d’autres cas réels.
+
+
+## 17. Raffinement 0.1.1 — objets déclarés et relations minimales
+
+La recette de TG-003 conduit à simplifier encore le contrat sémantique.
+
+### Rôle du Collector
+
+Le rôle contextuel n’a pas besoin d’encoder le nom de l’application dans sa propriété.
+
+Préférer :
+
+```text
+collector.role = compagnon
+```
+
+à une propriété spécifique telle que `role_pour_mon_gpt`.
+
+La relation avec l’application principale est déjà exprimée dans `relations`.
+
+### Relations orientées
+
+Une relation possède une `source` et une `destination`.
+
+Ces deux champs expriment déjà son orientation. Un champ supplémentaire tel que `direction = entrante` est redondant et doit être évité.
+
+Exemple :
+
+```text
+collector -> appli
+```
+
+### Références valides
+
+Une relation ne doit référencer que des objets effectivement déclarés dans le modèle.
+
+Ainsi, `mon_gpt` ne doit pas apparaître comme identifiant implicite si aucun objet de ce nom n’existe. La clé `appli` désigne directement l’application principale déclarée.
+
+### Navigateur et ChatGPT
+
+Pour le spécimen actuel, le navigateur devient un véritable objet sémantique :
+
+```text
+navigateur
+  type = navigateur
+  contenu
+    nom = ChatGPT
+    type = service_web
+```
+
+La relation de niveau 1 reste minimale :
+
+```text
+appli -> navigateur
+```
+
+Le modèle n’ajoute plus `action = ouvrir` ni `via = navigateur` car ces précisions ne sont pas représentées séparément dans le Trucagramme actuel. Le navigateur lui-même porte déjà le contexte d’usage nécessaire.
+
+### Principe
+
+> **Une relation contient le minimum d’information nécessaire pour relier ses objets.**
+
+On n’ajoute un verbe, un mode ou une propriété de relation que si cette information est réellement exprimée par le protocole.
+
+Ces changements constituent le contrat expérimental **schema_version 0.1.1**.
