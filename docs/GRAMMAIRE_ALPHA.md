@@ -461,3 +461,42 @@ appli.alias
 L'objectif est qu'un asset correspondant à l'alias suffise à lui seul. Un inventaire manuel séparé des fichiers d'identité n'est pas retenu comme principe du protocole.
 
 La recherche d'asset doit rester légère, sans réintroduire de dépendance au nom humain de l'application.
+
+
+## 20. Correction TG-005b — alias utile et signal intégré à la version
+
+### Alias d'application
+
+Dans le contrat actuel, `appli.alias` sert uniquement à résoudre l'asset d'identité de l'application.
+
+Le principe permissif s'applique donc aussi ici :
+
+> **Si aucune identité graphique n'existe pour l'application, l'alias n'a pas à être présent.**
+
+Exemple avec identité :
+
+```text
+appli.nom = Mon GPT<3
+appli.alias = mon_gpt
+assets/mon_gpt.png
+```
+
+Exemple sans identité :
+
+```text
+appli.nom = Mon Aise
+```
+
+Le renderer ne tente de charger `assets/<alias>.png` que si `appli.alias` existe.
+
+Cette règle évite, en ouverture directe `file://`, de provoquer une requête vers un fichier connu comme non déclaré dans le spécimen. Aucun inventaire manuel ni champ supplémentaire n'est ajouté.
+
+Si l'alias existe, il désigne par convention une identité graphique attendue.
+
+### Signal de lecture partielle
+
+Le signal de lecture partielle reste minimal, mais son rendu doit appartenir au même langage visuel que les propriétés attachées aux cadres.
+
+Il doit être représenté comme une **petite languette / bulle attachée à la pastille de version**, comparable dans son principe à `AUTONOME` ou `SÉPARÉ DES BINAIRES`, plutôt que comme un caractère isolé posé à côté.
+
+Le contenu reste aussi sobre que possible : un pictogramme court suffit. Aucun texte explicatif visible n'est ajouté.
