@@ -1,7 +1,8 @@
 const specimen = {
-  schema_version: "0.1.1",
+  schema_version: "0.1.2",
   appli: {
     nom: "Mon GPT<3",
+    alias: "mon_gpt",
     type: "bureau",
     mode_execution: "local",
     tourne_sous: { os: "windows" },

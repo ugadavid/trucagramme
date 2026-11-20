@@ -1,8 +1,9 @@
 const specimen = {
-  schema_version: "0.1.1",
+  schema_version: "0.1.2",
 
   appli: {
     nom: "Mon Aise",
+    alias: "mon_aise",
     type: "bureau",
     mode_execution: "local",
 
