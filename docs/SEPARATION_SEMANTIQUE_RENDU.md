@@ -160,8 +160,8 @@ Le deuxième spécimen réel confirme que le modèle doit pouvoir employer un vo
 
 - `socle_technique` peut contenir des natures reconnues différentes comme `runtime`, `langage` ou `bibliotheque_graphique` tout en les rendant graphiquement comme membres d'un même groupe ; une nature inconnue reste non représentée et déclenche `⚠` ;
 - `donnees` doit pouvoir accueillir de nouvelles familles sans dépendre de leur nom historique, mais seules les propriétés internes reconnues reçoivent une interprétation graphique ;
-- `appli.alias` fournit un identifiant machine stable pour rechercher directement un asset d'identité ; aucun inventaire manuel séparé n'est requis par le protocole ;
-- un renderer qui ne représente pas toutes les informations présentes affiche uniquement un petit `⚠` à côté de la version du spécimen ;
+- `appli.alias` est un identifiant technique optionnel utilisé, dans le contrat courant, pour résoudre directement un asset d'identité ; sans identité graphique, l'alias peut être absent et aucune recherche d'asset n'est tentée ; aucun inventaire manuel séparé n'est requis ;
+- un renderer qui ne représente pas toutes les informations présentes affiche un signal minimal attaché graphiquement à la pastille de version, dans le même langage visuel que les languettes de propriété ;
 - une information non encore rendue reste valide : elle n'est ni supprimée, ni transformée, ni remplacée par une valeur inventée.
 
 Le passage à `schema_version 0.1.2` reste direct : aucune migration ni compatibilité descendante n'est requise pendant cette alpha.
