@@ -1,6 +1,6 @@
 # Direction d’architecture — séparer le sens du rendu
 
-**Statut : direction validée ; première implémentation légère autorisée à partir de TG-003.**
+**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.1`.**
 
 Trucagramme sépare deux responsabilités.
 
@@ -12,12 +12,11 @@ Une description sémantique de l’application :
 - champs structurés ;
 - propriétés ;
 - groupes ;
-- relations ;
-- flux.
+- relations.
 
 Cette couche ne connaît ni couleur CSS, ni coordonnées, ni taille de police, ni chemin d’asset.
 
-Le modèle doit rester **descriptif et permissif** : une information absente n’implique jamais son contraire et ne doit pas créer de contenu graphique vide.
+Le modèle reste **descriptif et permissif** : une information absente n’implique jamais son contraire et ne doit pas créer de contenu graphique vide.
 
 ## Ce qui le dit
 
@@ -34,12 +33,12 @@ Le rendu traduit les concepts présents en :
 
 L’objectif est qu’un changement de charte visuelle n’oblige pas à réécrire la description de l’application.
 
-## Structure provisoire du spécimen Mon GPT<3
+## Structure provisoire 0.1.1 du spécimen Mon GPT<3
 
-Cette structure est un **premier contrat de travail**, pas un format définitif.
+Cette structure est un contrat expérimental et révisable.
 
 ```text
-schema_version = 0.1
+schema_version = 0.1.1
 
 appli
   nom = Mon GPT<3
@@ -56,6 +55,7 @@ appli
     bibliotheque_graphique = tkinter / Tk
 
   donnees
+    locales = true
     separees_des_binaires = true
 
     catalogue
@@ -69,33 +69,38 @@ appli
       optionnel = true
 
 collector
+  nom = Mon GPT Collector
   type = extension
   hote = chrome
-  role_pour_mon_gpt = compagnon
+  role = compagnon
+
+navigateur
+  type = navigateur
+  contenu
+    nom = ChatGPT
+    type = service_web
 
 relations
-  collector -> mon_gpt
-    direction = entrante
-
-  mon_gpt -> chatgpt
-    action = ouvrir
-    via = navigateur
+  collector -> appli
+  appli -> navigateur
 
 specimen
   version = alpha-0.0.0.1
 ```
 
-### Règles de portée
+## Règles de portée
 
-- `appli.type` et `appli.mode_execution` sont des champs structurés, pas des propriétés génériques sans contexte.
-- `appli.tourne_sous.os` porte le système d’exploitation.
-- `appli.livraison = autonome` signifie ici que le package livré contient ce dont l’application a besoin.
-- le socle technique peut distinguer les rôles sémantiques même si le niveau 1 les affiche dans un même cadre ;
+- `appli.type` et `appli.mode_execution` sont des champs structurés ;
+- `appli.tourne_sous.os` porte le système d’exploitation ;
+- `appli.livraison = autonome` signifie ici que le package livré contient ce dont l’application a besoin ;
+- le socle technique peut distinguer les rôles sémantiques même si le niveau 1 les affiche ensemble ;
 - `donnees.separees_des_binaires` qualifie l’ensemble des données concernées ;
 - `images_personnelles.optionnel = true` ne dit rien sur le caractère obligatoire ou non des autres données ;
-- `compagnon` est provisoirement un rôle contextuel ;
-- la relation Collector → Mon GPT<3 reste volontairement sans verbe tant que le spécimen n’en donne pas un ;
-- la relation Mon GPT<3 → ChatGPT connaît l’action `ouvrir` et le contexte `navigateur`.
+- `collector.role = compagnon` est un rôle contextuel ;
+- `navigateur.contenu` décrit ce qui est affiché/utilisé dans ce contexte ;
+- une relation ne référence que des objets déclarés ;
+- `source` et `destination` suffisent à exprimer son orientation ;
+- une relation reste sans verbe tant que le protocole ne représente pas explicitement ce verbe.
 
 ## Versionnement
 
@@ -103,8 +108,10 @@ specimen
 
 Il est distinct de :
 
-- `appli.version`, si un jour la version du logiciel décrit mérite d’être renseignée ;
+- `appli.version`, si la version du logiciel décrit mérite d’être renseignée ;
 - `specimen.version`, qui versionne la fiche ou le prototype Trucagramme.
+
+Le passage de 0.1 à **0.1.1** est un changement direct du contrat expérimental. Aucune compatibilité descendante ni migration n’est requise à ce stade.
 
 ## Optionalité
 
@@ -112,9 +119,26 @@ Principe :
 
 > **Une information n’existe dans le modèle que si elle mérite d’être exprimée.**
 
-Le rendu doit donc être capable d’ignorer proprement toute section absente.
+Le rendu doit ignorer proprement toute section absente.
 
 Aucune valeur par défaut ne doit inventer du sens. En particulier, l’absence d’un booléen ou d’une propriété ne doit jamais être interprétée automatiquement comme `false`, `obligatoire`, `non autonome`, etc.
+
+## Relations minimales
+
+Principe :
+
+> **Une relation contient le minimum d’information nécessaire pour relier ses objets.**
+
+Exemple courant :
+
+```text
+collector -> appli
+appli -> navigateur
+```
+
+Aucun champ `direction` n’est nécessaire puisque source et destination portent déjà l’orientation.
+
+Aucun champ `action = ouvrir` n’est nécessaire dans le cas actuel : l’objet navigateur contenant ChatGPT suffit à exprimer ce que la vue de niveau 1 montre.
 
 ## Registre d’icônes
 
