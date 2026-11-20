@@ -463,35 +463,43 @@ L'objectif est qu'un asset correspondant à l'alias suffise à lui seul. Un inve
 La recherche d'asset doit rester légère, sans réintroduire de dépendance au nom humain de l'application.
 
 
-## 20. Correction TG-005b — alias utile et signal intégré à la version
+## 20. Correction TG-005b — identité par alias sous serveur local et signal intégré à la version
 
 ### Alias d'application
 
-Dans le contrat actuel, `appli.alias` sert uniquement à résoudre l'asset d'identité de l'application.
+`appli.alias` reste un identifiant machine stable de l'application, indépendant de l'existence actuelle d'une mascotte.
 
-Le principe permissif s'applique donc aussi ici :
-
-> **Si aucune identité graphique n'existe pour l'application, l'alias n'a pas à être présent.**
-
-Exemple avec identité :
+Exemples :
 
 ```text
 appli.nom = Mon GPT<3
 appli.alias = mon_gpt
-assets/mon_gpt.png
 ```
-
-Exemple sans identité :
 
 ```text
 appli.nom = Mon Aise
+appli.alias = mon_aise
 ```
 
-Le renderer ne tente de charger `assets/<alias>.png` que si `appli.alias` existe.
+Le renderer utilise l'alias pour rechercher une identité graphique conventionnelle, actuellement :
 
-Cette règle évite, en ouverture directe `file://`, de provoquer une requête vers un fichier connu comme non déclaré dans le spécimen. Aucun inventaire manuel ni champ supplémentaire n'est ajouté.
+```text
+assets/<alias>.png
+```
 
-Si l'alias existe, il désigne par convention une identité graphique attendue.
+La présence d'un alias n'impose pas la présence de l'asset.
+
+Pour éviter les erreurs de chargement propres à l'ouverture directe `file://`, le prototype est servi par un mini serveur HTTP local. Le renderer peut alors tester l'existence de l'asset par une requête légère, par exemple `HEAD`, et ne créer l'image que si la ressource existe.
+
+Principe :
+
+- alias présent + asset présent → identité affichée ;
+- alias présent + asset absent → aucune identité, aucune erreur visible ;
+- aucun inventaire manuel ;
+- aucun champ supplémentaire de présence ;
+- aucune dépendance au nom humain.
+
+Le mini serveur local est un moyen d'exécution du prototype, pas une nouvelle couche sémantique de Trucagramme.
 
 ### Signal de lecture partielle
 
