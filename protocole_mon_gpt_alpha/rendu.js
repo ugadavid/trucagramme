@@ -7,7 +7,7 @@ const icones = {
   json: "json.png",
   fichiers_interface: "fichiers.png",
   images_personnelles: "images.png",
-  chatgpt: "ChatGPT.png"
+  ChatGPT: "ChatGPT.png"
 };
 
 function element(tag, classe, ...contenu) {
@@ -88,17 +88,17 @@ function application(appli) {
 }
 
 function compagnon(collector) {
-  if (collector?.role_pour_mon_gpt !== "compagnon" || !collector.nom?.trim()) return null;
+  if (collector?.role !== "compagnon" || !collector.nom?.trim()) return null;
   const extension = collector.type === "extension" && collector.hote === "chrome"
     ? image("extension-chrome", "extension-mark", "Extension Chrome") : null;
   return element("article", "object companion", extension, element("h2", "", collector.nom));
 }
 
-function service(ouverture) {
-  if (!ouverture) return null;
-  const contenu = element("div", "browser-content", image("chatgpt", "openai-mark"),
-    element("h2", "", "ChatGPT"));
-  if (ouverture.via !== "navigateur") return element("article", "object service", contenu);
+function navigateur(objet) {
+  const nom = objet?.contenu?.nom;
+  if (objet?.type !== "navigateur" || typeof nom !== "string" || !nom.trim()) return null;
+  const logo = nom === "ChatGPT" ? image(nom, "openai-mark") : null;
+  const contenu = element("div", "browser-content", logo, element("h2", "", nom));
   const barre = element("div", "browser-bar", element("i"), element("i"), element("i"), element("b"));
   barre.setAttribute("aria-hidden", "true");
   return element("article", "object browser", barre, contenu);
@@ -115,9 +115,9 @@ function rendreSpecimen(modele) {
   const page = document.querySelector(".page");
   page.replaceChildren();
   document.title = "Schéma technique";
-  if (modele?.schema_version !== "0.1" || typeof modele.appli?.nom !== "string" || !modele.appli.nom.trim()) {
-    const message = modele?.schema_version !== "0.1"
-      ? "Version du modèle absente ou inconnue (schema_version attendue : 0.1)."
+  if (modele?.schema_version !== "0.1.1" || typeof modele.appli?.nom !== "string" || !modele.appli.nom.trim()) {
+    const message = modele?.schema_version !== "0.1.1"
+      ? "Version du modèle absente ou inconnue (schema_version attendue : 0.1.1)."
       : "Le nom du sujet principal (appli.nom) manque.";
     page.append(element("p", "", message));
     return;
@@ -130,12 +130,13 @@ function rendreSpecimen(modele) {
 
   const relations = Array.isArray(modele.relations) ? modele.relations : [];
   const voisin = compagnon(modele.collector);
-  const entree = voisin && relations.some(r => r?.source === "collector" && r.destination === "mon_gpt");
-  const ouverture = relations.find(r => r?.source === "mon_gpt" && r.destination === "chatgpt" && r.action === "ouvrir");
+  const fenetre = navigateur(modele.navigateur);
+  const entree = voisin && relations.some(r => r?.source === "collector" && r.destination === "appli");
+  const sortie = fenetre && relations.some(r => r?.source === "appli" && r.destination === "navigateur");
   const diagramme = element("section", "diagram", voisin,
     entree ? fleche("connector-in", modele.collector.nom + " vers " + nom) : null,
     application(modele.appli),
-    ouverture ? fleche("connector-out", nom + " peut ouvrir ChatGPT") : null, service(ouverture));
+    sortie ? fleche("connector-out", nom + " vers le navigateur") : null, fenetre);
   diagramme.setAttribute("aria-label", "Schéma technique de " + nom);
   page.append(titre, diagramme);
   ajouterCommandes(page, diagramme);

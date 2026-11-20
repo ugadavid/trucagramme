@@ -1,5 +1,5 @@
 const specimen = {
-  schema_version: "0.1",
+  schema_version: "0.1.1",
   appli: {
     nom: "Mon GPT<3",
     type: "bureau",
@@ -19,11 +19,15 @@ const specimen = {
     nom: "Mon GPT Collector",
     type: "extension",
     hote: "chrome",
-    role_pour_mon_gpt: "compagnon"
+    role: "compagnon"
+  },
+  navigateur: {
+    type: "navigateur",
+    contenu: { nom: "ChatGPT", type: "service_web" }
   },
   relations: [
-    { source: "collector", destination: "mon_gpt", direction: "entrante" },
-    { source: "mon_gpt", destination: "chatgpt", action: "ouvrir", via: "navigateur" }
+    { source: "collector", destination: "appli" },
+    { source: "appli", destination: "navigateur" }
   ],
   specimen: { version: "alpha-0.0.0.1" }
 };
