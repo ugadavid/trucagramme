@@ -197,3 +197,59 @@ Le prototype exécutable correspondant est :
 - moteur de rendu ou éditeur.
 
 Ces décisions devront émerger de plusieurs cas réels.
+
+
+## 15. Décisions après TG-002 — structure sémantique provisoire
+
+La recette humaine de TG-002 retient une structure sémantique **plus précise que la vue de niveau 1**.
+
+Exemples provisoires pour Mon GPT<3 :
+
+- `appli.type = bureau`
+- `appli.mode_execution = local`
+- `appli.tourne_sous.os = windows`
+- `appli.livraison = autonome` : dans ce cas précis, le package livré contient ce dont l’application a besoin ;
+- `appli.socle_technique.langage = python`
+- `appli.socle_technique.bibliotheque_graphique = tkinter / Tk`
+
+La vue de niveau 1 peut **aplatir** plusieurs informations structurées dans une représentation plus simple sans les perdre dans le modèle.
+
+Exemple : Python et Tkinter/Tk peuvent rester affichés côte à côte dans le même cadre « socle technique », même si le modèle distingue leur rôle.
+
+Pour les données :
+
+- le rôle et le format peuvent être distingués, par exemple `catalogue.role = catalogue` et `catalogue.format = json` ;
+- un élément qui n’a pas encore de rôle plus précis peut rester décrit par ce que l’on sait réellement, sans compléter artificiellement le modèle ;
+- `optionnel = true` sur les images personnelles ne rend pas implicitement obligatoires les autres données.
+
+Le rôle `compagnon` est considéré provisoirement comme **contextuel** : Mon GPT Collector reste une extension Chrome qui joue le rôle de compagnon pour Mon GPT<3.
+
+Le navigateur reste, dans le cas actuel, un **contexte d’usage** pour la relation d’ouverture vers ChatGPT.
+
+## 16. Principe fondamental — modèle descriptif et permissif
+
+Trucagramme n’est pas un modèle relationnel strict ni un formulaire à remplir.
+
+Il se rapproche davantage d’un **contrat permissif entre un schéma et une représentation** :
+
+> **La présence d’une information signifie quelque chose ; son absence ne signifie rien.**
+
+Conséquences :
+
+- absence de `optionnel` ≠ obligatoire ;
+- absence de `os` ≠ multiplateforme ;
+- absence de `livraison` ≠ non autonome ;
+- absence de `compagnon` ≠ application isolée ;
+- absence d’une propriété ne crée jamais automatiquement sa négation ou son contraire ;
+- une section absente ne doit pas produire de case vide, de `N/A` ou de bloc fantôme dans le rendu.
+
+Le moins possible doit être obligatoire. Un objet, un groupe ou une propriété n’existe que s’il apporte réellement une information.
+
+Le modèle peut donc savoir **davantage que la vue**, tandis que la vue sélectionne et simplifie sans déformer.
+
+Un en-tête `schema_version` est retenu pour identifier la version de la structure sémantique. Il doit rester distinct :
+
+- de la version éventuelle de l’application décrite ;
+- de la version du spécimen ou prototype Trucagramme.
+
+Pour le premier prototype, `schema_version` et l’identification du sujet principal sont les seuls candidats à une obligation minimale. Ce choix reste provisoire et pourra être révisé après d’autres cas réels.
