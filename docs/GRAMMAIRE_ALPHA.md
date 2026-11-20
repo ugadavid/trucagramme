@@ -318,3 +318,96 @@ Le modèle n’ajoute plus `action = ouvrir` ni `via = navigateur` car ces préc
 On n’ajoute un verbe, un mode ou une propriété de relation que si cette information est réellement exprimée par le protocole.
 
 Ces changements constituent le contrat expérimental **schema_version 0.1.1**.
+
+
+## 18. Deuxième spécimen réel — Mon Aise et contrat 0.1.2
+
+Après TG-004, le prototype a été branché directement sur un deuxième spécimen réel, **Mon Aise**, sans modifier le renderer.
+
+Le test a confirmé le comportement permissif attendu : le renderer a affiché ce qu'il savait déjà représenter et a ignoré le reste sans erreur ni invention.
+
+### Résultat observé avec le renderer 0.1.1 inchangé
+
+Ont été représentés correctement :
+
+- le nom Mon Aise ;
+- `local` ;
+- `bureau` ;
+- Windows ;
+- `AUTONOME` ;
+- le groupe de données ;
+- Catalogue JSON ;
+- Images personnelles + `optionnel` ;
+- `SÉPARÉ DES BINAIRES`.
+
+N'ont pas encore été représentés :
+
+- `socle_technique.runtime = electron` ;
+- `socle_technique.langage = javascript / typescript` ;
+- `socle_technique.bibliotheque_graphique = react` ;
+- `donnees.configurations_csv` ;
+- `donnees.sauvegardes`.
+
+Ce test confirme qu'un modèle peut contenir plus de sens que le renderer courant sans devenir invalide.
+
+### Membres ouverts des groupes
+
+Les champs d'un groupe sémantique ne doivent pas être déformés pour satisfaire le renderer.
+
+Par exemple, Electron reste :
+
+```text
+socle_technique.runtime = electron
+```
+
+et n'a pas à être artificiellement rangé dans `langage` ou `bibliotheque_graphique`.
+
+Graphiquement, plusieurs natures sémantiques peuvent partager la même représentation de membre d'un groupe.
+
+Le renderer doit donc progressivement savoir parcourir les membres présents de `socle_technique` et de `donnees` au lieu de dépendre uniquement de clés propres à Mon GPT<3.
+
+### Alias d'application
+
+Une application peut fournir un identifiant machine simple et stable :
+
+```text
+appli.nom = Mon GPT<3
+appli.alias = mon_gpt
+```
+
+ou :
+
+```text
+appli.nom = Mon Aise
+appli.alias = mon_aise
+```
+
+`nom` reste le libellé humain.
+
+`alias` sert aux usages techniques légers du renderer, notamment la recherche d'un asset d'identité sous la forme :
+
+```text
+assets/<alias>.<extension>
+```
+
+L'alias doit rester simple, sans espace ni accent, avec des caractères de type `a-z`, `0-9` et `_`.
+
+La présence d'un alias n'impose pas la présence d'un asset. Si aucun fichier correspondant n'existe, aucune image n'est affichée et aucune image de remplacement n'est inventée.
+
+L'alias n'est pas destiné à remplacer les clés d'objets dans `relations` : `appli` reste la référence de l'objet principal dans le modèle.
+
+### Lecture partielle
+
+Lorsqu'un spécimen est valide mais que le renderer ne sait pas encore représenter toutes les informations qu'il contient, le rendu doit le signaler discrètement.
+
+La représentation retenue est simplement :
+
+```text
+alpha-0.0.0.1 ⚠
+```
+
+Le symbole `⚠` signifie : **lecture / représentation partielle par le renderer courant**.
+
+Ce n'est pas une erreur de schéma et aucun texte explicatif visible ne doit alourdir la vue.
+
+Ces évolutions ouvrent le contrat expérimental **schema_version 0.1.2**.
