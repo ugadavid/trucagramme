@@ -49,13 +49,26 @@ function texte(valeur) {
   return typeof valeur === "string" && valeur.trim().length > 0;
 }
 
-function chargerIdentite(appli, entete) {
+async function chargerIdentite(appli, entete) {
   if (!texte(appli.alias) || !/^[a-z0-9_]+$/.test(appli.alias)) return;
   const alias = prendre(appli, "alias");
+  const fichier = alias + ".png";
+  if (location.protocol !== "file:") {
+    // Un HEAD sur un PNG absent journalise un 404 dans Edge.
+    // http.server expose les fichiers présents sous forme de liens.
+    try {
+      const reponse = await fetch("../assets/");
+      if (!reponse.ok) return;
+      const dossier = new DOMParser().parseFromString(await reponse.text(), "text/html");
+      if (!dossier.querySelector(`a[href="${fichier}"]`)) return;
+    } catch {
+      return;
+    }
+  }
   const img = element("img", "robot");
   img.alt = "";
   img.addEventListener("load", () => entete.prepend(img), { once: true });
-  img.src = "../assets/" + alias + ".png";
+  img.src = "../assets/" + fichier;
 }
 
 const rolesTechniques = new Set(["runtime", "langage", "bibliotheque_graphique"]);
@@ -211,7 +224,7 @@ function rendreSpecimen(modele) {
     const signal = element("span", "lecture-partielle", "⚠");
     signal.setAttribute("role", "img");
     signal.setAttribute("aria-label", "Lecture partielle");
-    titre.append(signal);
+    (titre.querySelector(".version") ?? titre).append(signal);
   }
   page.append(titre, diagramme);
   ajouterCommandes(page, diagramme);
