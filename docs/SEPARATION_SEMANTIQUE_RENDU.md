@@ -1,6 +1,6 @@
 # Direction d’architecture — séparer le sens du rendu
 
-**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.1`.**
+**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.2`.**
 
 Trucagramme sépare deux responsabilités.
 
@@ -153,6 +153,18 @@ json             -> assets/json.png
 ```
 
 Le modèle sémantique ne connaît pas les chemins de fichiers.
+
+## Évolutions 0.1.2 issues du spécimen Mon Aise
+
+Le deuxième spécimen réel confirme que le modèle doit pouvoir employer un vocabulaire plus riche que le renderer sans déformer le sens.
+
+- `socle_technique` peut contenir des natures différentes comme `runtime`, `langage` ou `bibliotheque_graphique` tout en les rendant graphiquement comme membres d'un même groupe ;
+- `donnees` doit pouvoir accueillir de nouvelles familles sans dépendre de leur nom historique ;
+- `appli.alias` fournit un identifiant machine stable pour des usages techniques légers comme la recherche d'un asset d'identité ;
+- un renderer qui ne représente pas toutes les informations présentes affiche uniquement un petit `⚠` à côté de la version du spécimen ;
+- une information non encore rendue reste valide : elle n'est ni supprimée, ni transformée, ni remplacée par une valeur inventée.
+
+Le passage à `schema_version 0.1.2` reste direct : aucune migration ni compatibilité descendante n'est requise pendant cette alpha.
 
 ## Limite actuelle
 
