@@ -3,91 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Mon GPT&lt;3 — schéma technique</title>
+  <title>Schéma technique</title>
   <link rel="stylesheet" href="styles.css" />
+  <script defer src="specimen.js"></script>
+  <script defer src="rendu.js"></script>
+  <script defer src="app.js"></script>
 </head>
 <body>
-  <main class="page">
-    <header class="page-title">
-      <h1>Mon GPT&lt;3 — schéma technique</h1>
-      <div class="version">alpha-0.0.0.1</div>
-    </header>
-
-    <section class="diagram" aria-label="Schéma technique de Mon GPT">
-      <article class="object companion" data-kind="application">
-        <img class="extension-mark" src="../assets/ExtensionChrome.png" alt="Extension Chrome" />
-        <h2>Mon GPT<br>Collector</h2>
-      </article>
-
-      <div class="connector connector-in" aria-hidden="true"><span>→</span></div>
-
-      <article class="object application" data-kind="application">
-        <div class="property property-main">AUTONOME</div>
-
-        <header class="app-header">
-          <img class="robot" src="../assets/mon-gtp.png" alt="" />
-          <div class="app-heading">
-            <h2>Mon GPT&lt;3</h2>
-            <div class="chips">
-              <span class="chip chip-local">● local</span>
-              <span class="chip chip-desktop">▣ bureau</span>
-            </div>
-          </div>
-          <img class="windows-mark" src="../assets/windows.png" alt="Windows" />
-        </header>
-
-        <div class="app-body">
-          <section class="group tech-group" data-kind="technology" aria-label="Socle technique">
-            <div class="tech-item python" title="Python">
-              <img class="python-mark" src="../assets/python.png" alt="Python" />
-            </div>
-            <div class="tech-item tk" title="Tkinter / Tk">
-              <img class="tk-mark" src="../assets/Tk.png" alt="" />
-              <strong>Tkinter / Tk</strong>
-            </div>
-          </section>
-
-          <section class="group data-group" data-kind="data" aria-label="Données locales">
-            <div class="property property-data">SÉPARÉ DES BINAIRES</div>
-
-            <div class="data-item">
-              <img class="data-icon" src="../assets/json.png" alt="" />
-              <strong>Catalogue JSON</strong>
-            </div>
-            <div class="data-item">
-              <img class="data-icon" src="../assets/fichiers.png" alt="" />
-              <strong>Fichiers d’interface</strong>
-            </div>
-            <div class="data-item">
-              <img class="data-icon" src="../assets/images.png" alt="" />
-              <strong>Images personnelles</strong>
-              <span class="mini-property">optionnel</span>
-            </div>
-          </section>
-        </div>
-      </article>
-
-      <div class="connector connector-out" aria-hidden="true"><span>→</span></div>
-
-      <article class="object browser" data-kind="external">
-        <div class="browser-bar" aria-hidden="true"><i></i><i></i><i></i><b></b></div>
-        <div class="browser-content">
-          <img class="openai-mark" src="../assets/ChatGPT.png" alt="" />
-          <h2>ChatGPT</h2>
-        </div>
-      </article>
-    </section>
-
-    <nav class="visual-key" aria-label="Clés visuelles interactives">
-      <button type="button" data-highlight="technology" title="Mettre en évidence le socle technique">⚙</button>
-      <button type="button" data-highlight="data" title="Mettre en évidence les données">▤</button>
-      <span class="divider"></span>
-      <button type="button" data-highlight="flow" title="Mettre en évidence les flux">→</button>
-      <button type="button" class="reset" data-highlight="all" title="Réinitialiser">×</button>
-    </nav>
-
-    <p class="hint">Clique les trois symboles du bas pour isoler une règle de la grammaire visuelle.</p>
-  </main>
-  <script src="app.js"></script>
+  <main class="page"></main>
 </body>
 </html>
