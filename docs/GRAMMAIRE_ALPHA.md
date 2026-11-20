@@ -411,3 +411,53 @@ Le symbole `⚠` signifie : **lecture / représentation partielle par le rendere
 Ce n'est pas une erreur de schéma et aucun texte explicatif visible ne doit alourdir la vue.
 
 Ces évolutions ouvrent le contrat expérimental **schema_version 0.1.2**.
+
+
+## 19. Correction TG-005a — ouverture ≠ affichage aveugle
+
+Le test manuel suivant a révélé une dérive dans TG-005 :
+
+```js
+socle_technique: {
+  runtime: "electron",
+  langage: "javascript / typescript",
+  bibliotheque_graphique: "react",
+  canexistepas: "ondevraitavoirlapastilledavertissement"
+}
+```
+
+Le renderer TG-005 affichait `canexistepas` comme une quatrième technologie. Ce comportement est incorrect.
+
+### Principe corrigé
+
+> **Un schéma ouvert n'autorise pas le renderer à donner un sens graphique à n'importe quelle clé.**
+
+Le vocabulaire sémantique reste significatif.
+
+Pour le socle technique, les natures actuellement reconnues sont notamment :
+
+- `runtime` ;
+- `langage` ;
+- `bibliotheque_graphique`.
+
+Une clé inconnue :
+
+- reste valide dans le modèle permissif ;
+- n'est pas représentée graphiquement ;
+- déclenche le signal discret `⚠`.
+
+Même principe pour les propriétés internes des familles de données : seules les propriétés que le renderer sait interpréter sémantiquement doivent être consommées et représentées.
+
+L'ouverture du modèle signifie que de nouveaux éléments peuvent exister sans rendre le spécimen invalide. Elle ne signifie pas que le renderer doit tout afficher coûte que coûte.
+
+### Identité visuelle
+
+L'identité visuelle d'une application reste pilotée par :
+
+```text
+appli.alias
+```
+
+L'objectif est qu'un asset correspondant à l'alias suffise à lui seul. Un inventaire manuel séparé des fichiers d'identité n'est pas retenu comme principe du protocole.
+
+La recherche d'asset doit rester légère, sans réintroduire de dépendance au nom humain de l'application.
