@@ -31,8 +31,6 @@ function groupe(classe, nom, membres) {
   return section;
 }
 
-const extensionsIdentite = ["png", "svg", "webp", "jpg", "jpeg"];
-
 // Le rendu travaille sur une copie. Une valeur consommée disparaît de cette
 // copie ; les informations restantes déterminent le signal de lecture partielle.
 function prendre(objet, cle) {
@@ -51,18 +49,16 @@ function texte(valeur) {
   return typeof valeur === "string" && valeur.trim().length > 0;
 }
 
-function identite(appli) {
-  if (!texte(appli.alias) || !/^[a-z0-9_]+$/.test(appli.alias)) return null;
+function chargerIdentite(appli, entete) {
+  if (!texte(appli.alias) || !/^[a-z0-9_]+$/.test(appli.alias)) return;
   const alias = prendre(appli, "alias");
-  const fichier = extensionsIdentite.map(ext => alias + "." + ext).find(nom => fichiersIdentite.has(nom));
-  if (!fichier) return null;
   const img = element("img", "robot");
   img.alt = "";
-  img.addEventListener("error", () => img.remove(), { once: true });
-  img.src = "../assets/" + fichier;
-  return img;
+  img.addEventListener("load", () => entete.prepend(img), { once: true });
+  img.src = "../assets/" + alias + ".png";
 }
 
+const rolesTechniques = new Set(["runtime", "langage", "bibliotheque_graphique"]);
 const nomsTechnos = new Map([
   ["electron", "Electron"], ["javascript / typescript", "JavaScript / TypeScript"],
   ["react", "React"], ["python", "Python"], ["tkinter / Tk", "Tkinter / Tk"]
@@ -71,7 +67,7 @@ const nomsTechnos = new Map([
 function socle(tech) {
   const membres = [];
   for (const [role, valeur] of Object.entries(tech ?? {})) {
-    if (!texte(valeur)) continue;
+    if (!rolesTechniques.has(role) || !texte(valeur)) continue;
     const nom = nomsTechnos.get(valeur) ?? valeur;
     const python = valeur === "python";
     const tk = valeur === "tkinter / Tk";
@@ -97,6 +93,7 @@ function donnees(data) {
     const type = texte(famille.type) ? prendre(famille, "type") : "";
     const role = texte(famille.role) ? prendre(famille, "role") : "";
     const format = texte(famille.format) ? prendre(famille, "format") : "";
+    if (!type && !role && !format && famille.optionnel !== true) continue;
     const nom = nomsDonnees.get(type) ?? nomsDonnees.get(cle) ??
       (cle.charAt(0).toUpperCase() + cle.slice(1)).replaceAll("_", " ");
     const libelle = format ? nom + " " + (format === "webp" ? "WebP" : format.toUpperCase()) : nom;
@@ -127,10 +124,10 @@ function application(appli) {
 
   if (appli.mode_execution === "local") prendre(appli, "mode_execution");
   if (appli.type === "bureau") prendre(appli, "type");
-  const mascotte = identite(appli);
   const windows = appli.tourne_sous?.os === "windows" ? image("windows", "windows-mark", "Windows") : null;
   if (windows) prendre(appli.tourne_sous, "os");
-  const entete = element("header", "app-header", mascotte, titre, windows);
+  const entete = element("header", "app-header", titre, windows);
+  chargerIdentite(appli, entete);
   const bloc = element("article", "object application", entete);
   if (appli.livraison === "autonome") {
     prendre(appli, "livraison");
