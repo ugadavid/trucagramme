@@ -160,7 +160,7 @@ Le deuxième spécimen réel confirme que le modèle doit pouvoir employer un vo
 
 - `socle_technique` peut contenir des natures reconnues différentes comme `runtime`, `langage` ou `bibliotheque_graphique` tout en les rendant graphiquement comme membres d'un même groupe ; une nature inconnue reste non représentée et déclenche `⚠` ;
 - `donnees` doit pouvoir accueillir de nouvelles familles sans dépendre de leur nom historique, mais seules les propriétés internes reconnues reçoivent une interprétation graphique ;
-- `appli.alias` est un identifiant technique optionnel utilisé, dans le contrat courant, pour résoudre directement un asset d'identité ; sans identité graphique, l'alias peut être absent et aucune recherche d'asset n'est tentée ; aucun inventaire manuel séparé n'est requis ;
+- `appli.alias` est un identifiant machine stable de l'application, utilisé pour résoudre un asset d'identité conventionnel ; sa présence n'impose pas l'existence de l'asset ; le prototype est servi par un mini serveur HTTP local afin de tester proprement la ressource sans inventaire manuel ;
 - un renderer qui ne représente pas toutes les informations présentes affiche un signal minimal attaché graphiquement à la pastille de version, dans le même langage visuel que les languettes de propriété ;
 - une information non encore rendue reste valide : elle n'est ni supprimée, ni transformée, ni remplacée par une valeur inventée.
 
