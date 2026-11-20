@@ -51,26 +51,31 @@ Ce n'est pas une exception JavaScript, mais nous voulons une recette propre et s
 
 En ouverture directe `file://`, le navigateur ne peut pas vérifier silencieusement l'existence d'un fichier local sans tenter de le charger.
 
-La correction retenue reste donc fidèle au principe permissif :
+La correction retenue est donc volontairement simple : **servir le prototype par un mini serveur HTTP local**.
 
-> **Si une information ne sert pas dans le spécimen courant, elle n'a pas besoin d'exister.**
+Nous gardons les alias sémantiques :
 
-Dans le contrat actuel, `appli.alias` sert uniquement à résoudre l'identité graphique de l'application.
+- Mon GPT<3 : `alias: "mon_gpt"` ;
+- Mon Aise : `alias: "mon_aise"`.
 
-Donc :
+Le renderer peut alors tester proprement l'existence de :
 
-- Mon GPT<3 possède une identité graphique : garder `alias: "mon_gpt"` ;
-- Mon Aise n'a pas encore d'identité graphique publiée : supprimer `alias: "mon_aise"` du spécimen courant ;
-- sans alias, le renderer ne tente aucune requête d'identité ;
-- le jour où `assets/mon_aise.png` existera, l'alias pourra être ajouté.
+```text
+/assets/<alias>.png
+```
 
-Ne pas ajouter :
+par une requête légère, par exemple `HEAD`.
 
-- inventaire manuel ;
-- manifest ;
-- nouveau champ de présence ;
-- serveur local ;
-- détection complexe du système de fichiers.
+Résultat attendu :
+
+- réponse 200 → créer et afficher l'image ;
+- réponse 404 → ne rien afficher ;
+- aucune erreur de console ;
+- aucun inventaire manuel ;
+- aucun manifest ;
+- aucun champ `has_image` ou équivalent.
+
+Le mini serveur n'est pas une nouvelle couche applicative : c'est simplement la façon propre d'exécuter ce prototype HTML local.
 
 ### 2. Signal de lecture partielle trop brut
 
@@ -115,15 +120,19 @@ Examiner :
 
 ### A. Mon Aise
 
-Supprimer l'alias du spécimen Mon Aise tant qu'aucun asset d'identité n'existe.
+Conserver :
 
-Le reste du spécimen reste inchangé.
+```js
+alias: "mon_aise"
+```
+
+Servir le prototype par HTTP local puis tester l'existence de `assets/mon_aise.png` avant de créer l'image.
 
 Résultat attendu :
 
-- aucune mascotte ;
-- aucune requête `mon_aise.png` ;
-- aucune erreur réseau dans la console ;
+- aucune mascotte tant que l'asset n'existe pas ;
+- un éventuel `HEAD` 404 est traité normalement par le code ;
+- aucune erreur console ;
 - aucun `⚠` pour cette seule absence ;
 - rendu autrement identique à TG-005a.
 
@@ -175,11 +184,18 @@ Contraintes :
 
 ### 1. Mon Aise publié
 
-Ouvrir directement `index.html` en `file://`.
+Lancer un mini serveur HTTP local depuis la racine du dépôt ou un emplacement approprié, par exemple :
+
+```powershell
+py -3 -m http.server 8000
+```
+
+Puis ouvrir le prototype par HTTP.
 
 Vérifier :
 
-- aucune requête vers `assets/mon_aise.png` ;
+- `alias: "mon_aise"` reste présent ;
+- la vérification de `assets/mon_aise.png` n'affiche aucune erreur console lorsque l'asset manque ;
 - console sans erreur ;
 - trois technologies ;
 - quatre familles de données ;
@@ -228,7 +244,7 @@ Ne pas :
 - passer en 0.1.3 ;
 - réintroduire un inventaire d'identités ;
 - ajouter un champ `has_image`, `identity_exists` ou équivalent ;
-- créer un serveur ;
+- créer un serveur applicatif ou une infrastructure dédiée ; le mini serveur HTTP statique de recette est explicitement autorisé ;
 - ajouter une dépendance ;
 - modifier la sémantique des groupes ;
 - refondre la version ou le titre au-delà de ce qui est nécessaire au signal ;
@@ -236,7 +252,7 @@ Ne pas :
 
 ## Livrables
 
-- spécimen Mon Aise sans alias tant qu'il n'a pas d'identité graphique ;
+- spécimen Mon Aise conservant `alias: "mon_aise"` ;
 - renderer / styles adaptés si nécessaire ;
 - signal partiel intégré visuellement à la pastille de version ;
 - `reports/TG-005b/rapport.md`.
@@ -244,7 +260,7 @@ Ne pas :
 Le rapport doit préciser :
 
 1. pourquoi la requête absente apparaissait sous `file://` ;
-2. pourquoi l'alias Mon Aise a été retiré dans le contrat courant ;
+2. comment le mini serveur HTTP permet de tester l'asset tout en conservant `alias: "mon_aise"` ;
 3. confirmation qu'aucun inventaire ou champ supplémentaire n'a été ajouté ;
 4. choix graphique retenu pour le signal partiel ;
 5. résultat de la recette console propre.
