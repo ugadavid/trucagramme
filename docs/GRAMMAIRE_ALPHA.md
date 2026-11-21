@@ -940,3 +940,48 @@ La copie de restauration garde une silhouette normale de dossier ; la languette 
 ### Fichiers produits
 
 Les feuilles JSON / HTML restent volontairement simples. Leur forme de fichier et leur libellé court suffisent ; aucun logo de format supplémentaire n'est nécessaire.
+
+
+## TG-010 — Légende contextuelle du lecteur et économie de texte (schéma inchangé)
+
+Ce raffinement appartient au lecteur et ne modifie pas le contrat sémantique : `schema_version 0.1.7` reste courant.
+
+### Une identité graphique peut remplacer son nom visible
+
+Lorsqu'une identité graphique est suffisamment reconnaissable et qu'aucune ambiguïté utile ne subsiste, le renderer peut éviter de répéter le nom humain à côté.
+
+Le nom reste présent dans le modèle et dans l'accessibilité.
+
+Exemple actuel : le contexte Chrome peut être identifié visuellement par son petit marqueur aux couleurs Chrome sans afficher simultanément le mot « Chrome ».
+
+Principe :
+
+> **Un signe qui dit déjà clairement quelque chose n'a pas besoin d'être immédiatement répété en texte.**
+
+### Légende du lecteur
+
+La légende appartient au **lecteur Trucagramme**, pas au spécimen décrit.
+
+Elle explique la grammaire graphique utilisée pour représenter le projet courant ; elle n'explique pas le projet lui-même.
+
+La légende est **contextuelle** : elle ne montre que les familles de signes réellement présentes dans le diagramme courant.
+
+Elle peut inclure selon le cas :
+
+- application principale ;
+- socle technique ;
+- données internes ;
+- contexte ;
+- dossier / espace de données ;
+- archive ;
+- fichier ;
+- application compagnon ;
+- navigateur / surface externe ;
+- relation / flux ;
+- propriété.
+
+La légende doit utiliser de petites représentations des signes eux-mêmes et un libellé court, plutôt qu'une documentation textuelle.
+
+Elle est accessible depuis le menu `trucagramme™` et s'affiche dans un panneau superposé sans provoquer de reflow du diagramme.
+
+La légende n'ajoute aucun champ aux `specimen.js` et ne doit pas être maintenue projet par projet.
