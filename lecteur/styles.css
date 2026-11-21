@@ -307,9 +307,9 @@ body{min-height:100vh;background:
 .miniature.flux::before{content:"→"}
 .miniature.propriete{width:24px;height:10px;border:1px solid var(--app);border-radius:999px;background:#eef7ff}
 
-.groupe-outils{display:flex;flex-wrap:wrap;gap:7px;border:2px solid #a83268;background:#fff2f7}
-.outil-pilote{padding:4px 10px;border:1px solid #c57597;border-radius:7px;background:#fffafd;color:#69213f;font-weight:600}
-.miniature.outils{border-color:#a83268;background:repeating-linear-gradient(90deg,#fff2f7 0 4px,#e4b6cc 4px 6px)}
+.groupe-outils{display:flex;flex-wrap:wrap;gap:7px;border:2px solid #008a96;background:#e2f7f8}
+.outil-pilote{padding:4px 10px;border:1px solid #55aeb5;border-radius:7px;background:#f6ffff;color:#104e57;font-weight:600}
+.miniature.outils{border-color:#008a96;background:repeating-linear-gradient(90deg,#e2f7f8 0 4px,#8ccfd3 4px 6px)}
 .construction{display:grid;gap:16px;align-items:center}
 .cartouche-debug{min-width:0;padding:12px;border:1px dashed #9599a2;border-radius:8px;background:#f7f7f8;color:#525762;font:400 .8rem/1.35 ui-monospace,monospace}
 .cartouche-debug ul{display:grid;gap:7px;margin:0;padding:0;list-style:none}
@@ -323,15 +323,16 @@ body{min-height:100vh;background:
   .construction:has(.application:only-child) .cartouche-debug:nth-of-type(2){grid-column:3}
 }
 
-.fenetre-editeur,.miniature.editeur{
-  border:2px solid #50647c;border-radius:8px;
-  background:linear-gradient(#dce5ef 0 14%,transparent 14%),linear-gradient(to right,#eef2f7 0 14%,#fafcfe 14%);
-}
-.fenetre-editeur{position:relative;display:grid;place-items:center;width:min(100%,174px);min-height:110px;margin-inline:auto;padding:22px 14px 12px 22px;color:#293b54;text-align:center;overflow-wrap:anywhere}
-.fenetre-editeur::before,.miniature.editeur::before{content:"";position:absolute;left:20%;top:24%;width:24%;height:2px;background:#bac7d5;box-shadow:5px 6px #d9e1ea}
-.logo-editeur{display:block;width:56px;height:56px;object-fit:contain}
-.miniature.editeur{border-radius:3px}
-.miniature.editeur::before{top:36%;height:1px;box-shadow:2px 3px #bac7d5}
+.fenetre-editeur,.miniature.editeur{border:2px solid #50647c;border-radius:8px;background:#f8fafc}
+.fenetre-editeur{width:min(100%,220px);min-height:82px;margin-inline:auto;overflow:hidden;color:#293b54;overflow-wrap:anywhere}
+.barre-editeur{display:flex;align-items:center;justify-content:flex-end;min-height:28px;padding:4px 9px;border-bottom:1px solid #b7c5d2;background:#e3eaf1;font-size:.82rem}
+.logo-editeur{display:block;width:19px;height:19px;object-fit:contain}
+.projets-editeur{margin:0;padding:9px 12px;list-style:none;text-align:left}
+.projets-editeur li{display:flex;align-items:center;gap:10px;padding:7px 2px;font-size:.94rem;font-weight:600}
+.projets-editeur li + li{border-top:1px solid #dce4ec}
+.projets-editeur li::before{content:"";flex:none;width:7px;height:10px;border:1px solid #8297aa;border-radius:1px;background:white}
+.miniature.editeur{border-radius:3px;border-top-width:5px}
+.miniature.editeur::before{content:"";position:absolute;left:3px;top:2px;width:65%;height:1px;background:#9aaebf;box-shadow:0 4px #9aaebf}
 @media(min-width:1101px){
   /* La colonne libre accueille le premier cartouche ; le second suit le voisin réel. */
   .construction:has(.colonne.droite):not(:has(.colonne.gauche)){

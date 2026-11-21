@@ -1,5 +1,5 @@
 export default {
-  schema_version: "0.1.9",
+  schema_version: "0.1.10",
   systeme: {
     titre: "trucagramme™",
     description: "Lire l’architecture d’une application d’un coup d’œil.",

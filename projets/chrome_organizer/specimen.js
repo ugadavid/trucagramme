@@ -1,5 +1,5 @@
 export default {
-  schema_version: "0.1.9",
+  schema_version: "0.1.10",
 
   projet: {
     presentation: [

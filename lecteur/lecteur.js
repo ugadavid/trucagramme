@@ -12,7 +12,7 @@ const presentation = document.querySelector("#texte-presentation");
 const legende = document.querySelector("#signes-legende");
 let commandeActive = null;
 const fermer = document.querySelector("#fermer");
-const versionSchema = "0.1.9";
+const versionSchema = "0.1.10";
 function ouvrirMenu(ouvert) {
   menu.hidden = !ouvert;
   declencheur.setAttribute("aria-expanded", String(ouvert));

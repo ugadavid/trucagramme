@@ -266,7 +266,17 @@ function rendreEditeur(id, objet) {
   const nom = prendre(objet, "nom");
   prendre(objet, "type");
   const identite = id === "vscode" ? image("vscode", "logo-editeur") : element("strong", "", nom);
-  const carte = element("article", "object fenetre-editeur", identite);
+  const barre = element("header", "barre-editeur", identite);
+  const carte = element("article", "object fenetre-editeur", barre);
+  const projets = [];
+  if (Array.isArray(objet.contenu)) {
+    for (const info of objet.contenu) {
+      if (info?.type !== "projet_info" || !texte(info.nom)) continue;
+      projets.push(element("li", "", prendre(info, "nom")));
+      prendre(info, "type");
+    }
+  }
+  if (projets.length) carte.append(element("ul", "projets-editeur", ...projets));
   carte.setAttribute("aria-label", nom);
   return carte;
 }
