@@ -200,7 +200,6 @@ function rendreDonneeExterne(objet) {
   carte.append(corps);
   if (type === "dossier_donnees") {
     corps.classList.add("forme-dossier");
-    if (objet.statut === "experimental") corps.classList.add("dossier-experimental");
     corps.append(element("h2", "", nom));
   } else if (type === "archives_locales") {
     corps.classList.add("forme-archive");
@@ -219,9 +218,12 @@ function rendreDonneeExterne(objet) {
   }
   if (objet.statut === "experimental") {
     prendre(objet, "statut");
-    corps.append(element("span", "propriete-externe", "EXPÉRIMENTAL"));
+    corps.append(element("span", "propriete-externe statut-externe", "EXPÉRIMENTAL"));
   }
-  if (texte(objet.format)) pastilles.push(prendre(objet, "format"));
+  if (texte(objet.format)) {
+    const format = prendre(objet, "format");
+    if (type !== "archives_locales" || format !== "dossier") pastilles.push(format);
+  }
   if (Array.isArray(objet.formats) && objet.formats.length && objet.formats.every(texte)) {
     const formats = prendre(objet, "formats").map(format => format.toUpperCase());
     if (type === "fichiers") {
@@ -260,7 +262,7 @@ function unitesExternes(modele) {
     if (!membres.length) continue;
     contexte.contient = restants;
     prendre(contexte, "type");
-    contextes.set(id, { nom: prendre(contexte, "nom"), membres });
+    contextes.set(id, { idContexte: id, nom: prendre(contexte, "nom"), membres });
   }
 
   const unites = [];
@@ -276,7 +278,7 @@ function ajouterDonneesExternes(diagramme, modele, relations, nomAppli) {
   if (!unites.length) return;
   diagramme.classList.add("avec-donnees-externes");
   const colonnes = [element("div", "colonne gauche"), element("div", "colonne droite")];
-  unites.forEach(({ nom, membres }, index) => {
+  unites.forEach(({ idContexte, nom, membres }, index) => {
     const liens = relations.filter(r => r && (
       (r.source === "appli" && membres.includes(r.destination)) ||
       (r.destination === "appli" && membres.includes(r.source))
@@ -288,6 +290,7 @@ function ajouterDonneesExternes(diagramme, modele, relations, nomAppli) {
     unite.style.setProperty("--ordre", index + 1);
     if (nom) {
       unite.classList.add("avec-contexte");
+      if (idContexte === "chrome") unite.classList.add("contexte-chrome");
       unite.setAttribute("role", "group");
       unite.setAttribute("aria-label", nom);
     }
