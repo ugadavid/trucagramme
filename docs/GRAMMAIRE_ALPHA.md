@@ -985,3 +985,66 @@ La légende doit utiliser de petites représentations des signes eux-mêmes et u
 Elle est accessible depuis le menu `trucagramme™` et s'affiche dans un panneau superposé sans provoquer de reflow du diagramme.
 
 La légende n'ajoute aucun champ aux `specimen.js` et ne doit pas être maintenue projet par projet.
+
+
+## TG-011 — Le signal de lecture partielle inventorie le sens non rendu (schéma inchangé)
+
+Ce raffinement appartient au lecteur / renderer et ne modifie pas le contrat sémantique : `schema_version 0.1.7` reste courant.
+
+Le signal `⚠` ne signifie pas seulement qu'une partie du modèle n'est pas représentée. Il peut donner un **inventaire compact** de ce que le renderer voit mais ne sait pas encore dessiner.
+
+Principe :
+
+> **Je ne sais pas encore le dessiner, mais je sais qu'il existe.**
+
+### Ce que l'inventaire peut montrer
+
+Pour un objet de premier niveau non rendu dont le type est connu dans le modèle mais inconnu du renderer :
+
+```text
+shell_windows · service_systeme
+vscode · outil_externe
+serveur_local · service_local
+```
+
+Le libellé utilise la **clé technique** de l'objet et son `type`, sans inventer d'explication.
+
+Pour une propriété inconnue dans un objet par ailleurs rendu :
+
+```text
+sauvegardes.canexistepas
+```
+
+La valeur inconnue n'est pas affichée.
+
+Pour des relations restant non consommées :
+
+```text
+relations · 18 non représentées
+```
+
+Le lecteur ne détaille pas chaque relation une par une dans cette vue compacte.
+
+### Ce que l'inventaire ne doit pas devenir
+
+Il ne doit pas :
+
+- afficher un dump JSON ;
+- exposer des valeurs longues ou sensibles ;
+- interpréter les clés inconnues ;
+- inventer des libellés humains ;
+- devenir un debugger ou une documentation technique.
+
+### Interaction
+
+Le signal reste minuscule et attaché à la version.
+
+Son détail doit être accessible :
+
+- au survol sur poste de bureau ;
+- au focus clavier ;
+- au clic / toucher pour les appareils sans survol.
+
+La bulle détaillée reste temporaire, compacte et attachée au signal. Elle ne provoque aucun reflow du diagramme.
+
+Si rien ne reste à représenter, le signal et sa bulle restent absents.
