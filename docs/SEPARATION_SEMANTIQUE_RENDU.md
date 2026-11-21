@@ -1,6 +1,6 @@
 # Direction d’architecture — séparer le sens du rendu
 
-**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.12`.**
+**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.13`.**
 
 Trucagramme sépare deux responsabilités.
 
@@ -300,3 +300,16 @@ Comme pour `outils_pilotes`, le groupe exprime déjà l'usage de ces objets par 
 `shell_windows` et le contexte structurel `windows` sont retirés du spécimen Mon Bureau de niveau 1. Le premier est un mécanisme intermédiaire ; le second dupliquait l'information de plateforme déjà portée par `appli.tourne_sous.os`.
 
 Le renderer consomme les objets correctement référencés dans `services_systeme`. Une référence inconnue ou un objet de type incompatible laisse du sens résiduel et déclenche la lecture partielle.
+
+
+## TG-016 — objets externes de lancement (0.1.13)
+
+`raccourci_windows` et `explorateur` deviennent deux types externes reconnus.
+
+Ils sont déclarés comme objets de premier niveau et n'appartiennent à aucun groupe interne de l'application.
+
+Le renderer les consomme lorsqu'ils sont reliés explicitement à l'application. Leur représentation ne doit pas recréer le mécanisme technique `shell_windows`, retiré de la vue 1 en TG-015.
+
+Une clé inconnue ou une propriété non consommée continue d'alimenter la lecture partielle ; DEBUG reste non consommant.
+
+La présence d'un type externe ne crée jamais implicitement une relation : seules les entrées de `relations` définissent le sens du flux.
