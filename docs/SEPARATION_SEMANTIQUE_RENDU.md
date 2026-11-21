@@ -1,6 +1,6 @@
 # Direction d’architecture — séparer le sens du rendu
 
-**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.10`.**
+**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.11`.**
 
 Trucagramme sépare deux responsabilités.
 
@@ -278,3 +278,14 @@ Le renderer consomme le conteneur et ses éléments lorsqu'il sait les représen
 Le logo d'une implémentation concrète, tel VS Code, est une identité secondaire du conteneur et ne doit pas remplacer son contenu.
 
 Le navigateur existant n'est pas migré dans ce correctif ; une éventuelle généralisation de la syntaxe de contenu sera décidée sur davantage de cas réels.
+
+
+## TG-014 — serveur et détail d'implémentation (0.1.11)
+
+Le type `serveur` devient une nature reconnue.
+
+`moteur`, `protocole` et `hote` sont des propriétés intrinsèques du serveur. Elles n'impliquent pas de nouveaux objets ni de nouvelles relations.
+
+La relation `python -> serveur_local` est retirée de Mon Bureau : elle décrit un détail d'implémentation trop fin pour la vue 1. Le renderer ne doit donc pas recréer cette relation à partir de `moteur = python`.
+
+Les seules relations du serveur dans cette vue restent celles explicitement déclarées entre l'application et le serveur.
