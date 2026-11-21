@@ -6,7 +6,9 @@ Le projet est né le 20 novembre 2026 à partir d’un premier cas réel : **Mon
 
 ## État actuel
 
-Le [lecteur Trucagramme](https://ugadavid.github.io/trucagramme/) présente deux spécimens réels en `schema_version: "0.1.3"`. Mon Aise s’ouvre par défaut. Le menu **trucagramme™** permet de rejoindre [Mon GPT<3](https://ugadavid.github.io/trucagramme/?projet=mon_gpt) et de consulter la présentation du projet courant.
+La racine ouvre l’[accueil Trucagramme](https://ugadavid.github.io/trucagramme/). Le menu **trucagramme™** donne accès aux fiches [Mon Aise](https://ugadavid.github.io/trucagramme/?projet=mon_aise) et [Mon GPT<3](https://ugadavid.github.io/trucagramme/?projet=mon_gpt) et à leur présentation.
+
+Le contrat courant est `0.1.4`. Les spécimens système `projets/accueil/specimen.js` et `projets/404/specimen.js` fournissent le contenu de l’accueil et de la vue « Projet introuvable ». L’index `projets/index.json` reste réservé aux projets du menu.
 
 Pour ouvrir le lecteur en local, lancer depuis la racine du dépôt :
 

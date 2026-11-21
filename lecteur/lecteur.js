@@ -6,6 +6,7 @@ const declencheur = document.querySelector("#declencheur");
 const commande = document.querySelector("#commande-presentation");
 const panneau = document.querySelector("#presentation");
 const fermer = document.querySelector("#fermer");
+const versionSchema = "0.1.4";
 function ouvrirMenu(ouvert) {
   menu.hidden = !ouvert;
   declencheur.setAttribute("aria-expanded", String(ouvert));
@@ -53,9 +54,9 @@ function rendreSpecimen(source) {
   commande.hidden = true;
   commande.setAttribute("aria-expanded", "false");
   document.title = "Trucagramme";
-  if (source?.schema_version !== "0.1.3" || !texte(source.appli?.nom)) {
-    page.append(element("p", "", source?.schema_version !== "0.1.3"
-      ? "Version du modèle absente ou inconnue (schema_version attendue : 0.1.3)."
+  if (source?.schema_version !== versionSchema || !texte(source.appli?.nom)) {
+    page.append(element("p", "", source?.schema_version !== versionSchema
+      ? `Version du modèle absente ou inconnue (schema_version attendue : ${versionSchema}).`
       : "Le nom du sujet principal (appli.nom) manque."));
     return;
   }
@@ -85,12 +86,43 @@ function rendreSpecimen(source) {
   ajouterCommandes(page, diagramme);
 }
 
+function ornement(classe, ...contenu) {
+  const signe = element("span", classe, ...contenu);
+  signe.setAttribute("aria-hidden", "true");
+  return signe;
+}
+
+function rendreAccueil({ systeme }) {
+  const groupes = element("div", "exemple-groupes");
+  for (const nom of systeme.groupes) {
+    groupes.append(element("div", "exemple-groupe", ornement("glyphe"), nom));
+  }
+  const cadre = element("div", "exemple-central",
+    element("header", "exemple-entete", element("h1", "", systeme.titre),
+      element("p", "", systeme.description)), groupes);
+  const composition = element("div", "exemple",
+    ornement("satellite source", ornement("feuillets")), ornement("liaison", "→"),
+    cadre, ornement("liaison", "→"), ornement("satellite surface", ornement("fenetre")));
+  document.title = "Trucagramme";
+  document.querySelector(".page").replaceChildren(element("section", "vue-systeme accueil",
+    composition, element("p", "invitation", systeme.invitation)));
+}
+
+function rendreProjetIntrouvable({ systeme }, alias) {
+  const recherche = element("div", "recherche",
+    element("div", "requete", element("span", "etiquette", systeme.demande), element("code", "", alias)),
+    ornement("liaison", "→"), ornement("destination-absente", "?"));
+  document.title = systeme.titre + " · Trucagramme";
+  document.querySelector(".page").replaceChildren(element("section", "vue-systeme introuvable",
+    element("h1", "", systeme.titre), recherche, element("p", "message", systeme.message),
+    element("p", "invitation", systeme.invitation)));
+}
+
 async function chargerProjets() {
   const index = await fetch("projets/index.json");
   if (!index.ok) throw new Error("Index des projets indisponible");
   const alias = await index.json();
   const demande = new URLSearchParams(location.search).get("projet");
-  const courant = alias.includes(demande) ? demande : alias[0];
   const projets = await Promise.all(alias.map(async id => {
     if (!/^[a-z0-9_]+$/.test(id)) throw new Error("Alias invalide");
     const { default: specimen } = await import(`../projets/${id}/specimen.js`);
@@ -99,10 +131,18 @@ async function chargerProjets() {
   for (const [i, projet] of projets.entries()) {
     const lien = element("a", "", projet.appli.nom);
     lien.href = "?projet=" + alias[i];
-    if (alias[i] === courant) lien.setAttribute("aria-current", "page");
+    if (alias[i] === demande) lien.setAttribute("aria-current", "page");
     menu.insertBefore(lien, commande);
   }
-  rendreSpecimen(projets[alias.indexOf(courant)]);
+  if (!demande) {
+    const { default: accueil } = await import("../projets/accueil/specimen.js");
+    rendreAccueil(accueil);
+  } else if (alias.includes(demande)) {
+    rendreSpecimen(projets[alias.indexOf(demande)]);
+  } else {
+    const { default: introuvable } = await import("../projets/404/specimen.js");
+    rendreProjetIntrouvable(introuvable, demande);
+  }
 }
 
 chargerProjets().catch(() => {
