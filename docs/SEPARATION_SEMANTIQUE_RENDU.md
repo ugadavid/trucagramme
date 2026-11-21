@@ -1,6 +1,6 @@
 # Direction d’architecture — séparer le sens du rendu
 
-**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.2`.**
+**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.3`.**
 
 Trucagramme sépare deux responsabilités.
 
@@ -169,3 +169,16 @@ Le passage à `schema_version 0.1.2` reste direct : aucune migration ni compatib
 ## Limite actuelle
 
 Cette structure n’a été éprouvée que sur Mon GPT<3. Elle doit rester petite, révisable et sans migration lourde tant que d’autres applications n’ont pas été utilisées pour la mettre à l’épreuve.
+
+
+## Lecteur et métadonnées de projet — 0.1.3
+
+Le lecteur Trucagramme est distinct du renderer du diagramme.
+
+Le spécimen peut fournir des métadonnées de projet très légères, consommées par le lecteur avant ou à côté du rendu technique, notamment une courte présentation fonctionnelle.
+
+Ces métadonnées ne deviennent pas automatiquement des objets graphiques du niveau 1 et ne doivent pas déclencher le signal de lecture partielle lorsqu'elles sont reconnues par le lecteur.
+
+Le lecteur peut également connaître plusieurs spécimens pour permettre la navigation entre projets. Cette navigation relève de l'interface du lecteur, pas des relations sémantiques du diagramme.
+
+L'interface doit rester presque absente lorsqu'elle n'est pas utilisée et ne doit jamais provoquer de reflow du Trucagramme courant.
