@@ -580,3 +580,80 @@ Le lecteur ajoute temporairement :
 La présentation ne devient pas un nouvel objet du diagramme et ne doit pas être reliée par une flèche.
 
 Ces évolutions ouvrent le contrat expérimental **schema_version 0.1.3** pour les métadonnées de projet consommées par le lecteur.
+
+
+## 22. Vues système du lecteur — accueil et projet introuvable (0.1.4)
+
+Le lecteur distingue désormais trois états explicites :
+
+- aucune valeur `?projet` → **accueil Trucagramme** ;
+- alias connu → rendu du projet ;
+- alias demandé mais inconnu → **projet introuvable**.
+
+Le lecteur ne doit plus remplacer silencieusement ces deux premiers cas par le premier projet de `projets/index.json`.
+
+### Spécimens système
+
+Les vues d'accueil et de projet introuvable disposent elles aussi d'une source de données séparée du rendu :
+
+```text
+projets/accueil/specimen.js
+projets/404/specimen.js
+```
+
+Ces spécimens sont des **spécimens système du lecteur**.
+
+Ils ne sont pas des projets utilisateur et ne doivent donc pas apparaître dans :
+
+```text
+projets/index.json
+```
+
+Leur contenu décrit ce que la vue système doit raconter ; leur rendu exceptionnel appartient au lecteur.
+
+### Rendus spéciaux
+
+Le lecteur possède des fonctions distinctes :
+
+```text
+rendreAccueil()
+rendreProjetIntrouvable()
+rendreSpecimen()
+```
+
+Les deux premières peuvent utiliser librement la grammaire visuelle Trucagramme — cadres, groupes, couleurs, flèches, languettes — sans prétendre représenter une architecture applicative réelle.
+
+Il ne faut donc pas créer un faux `appli` uniquement pour réutiliser `rendreDiagramme()`.
+
+### Accueil
+
+La page d'accueil doit immédiatement évoquer Trucagramme.
+
+Elle peut proposer une composition illustrative construite avec les formes du langage et une animation d'entrée légère : apparition progressive de blocs, groupes et flèches.
+
+Cette animation :
+
+- reste courte ;
+- ne doit pas devenir une démonstration spectaculaire ;
+- respecte `prefers-reduced-motion` ;
+- n'ajoute aucune dépendance.
+
+Le menu `trucagramme™` reste disponible pour ouvrir les vrais projets.
+
+### Projet introuvable
+
+Pour une URL comme :
+
+```text
+?projet=mbolo
+```
+
+le lecteur affiche clairement et poliment que le projet demandé n'existe pas.
+
+La page doit conserver une forte identité Trucagramme et utiliser ses formes graphiques plutôt qu'un message d'erreur HTML générique.
+
+L'alias demandé peut être affiché dans la composition.
+
+Le menu reste disponible pour rejoindre un projet valide.
+
+Ces évolutions ouvrent le contrat expérimental **schema_version 0.1.4**.
