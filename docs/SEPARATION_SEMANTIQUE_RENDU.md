@@ -1,6 +1,6 @@
 # Direction d’architecture — séparer le sens du rendu
 
-**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.11`.**
+**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.12`.**
 
 Trucagramme sépare deux responsabilités.
 
@@ -289,3 +289,14 @@ Le type `serveur` devient une nature reconnue.
 La relation `python -> serveur_local` est retirée de Mon Bureau : elle décrit un détail d'implémentation trop fin pour la vue 1. Le renderer ne doit donc pas recréer cette relation à partir de `moteur = python`.
 
 Les seules relations du serveur dans cette vue restent celles explicitement déclarées entre l'application et le serveur.
+
+
+## TG-015 — services système internes et retrait des mécanismes intermédiaires (0.1.12)
+
+`appli.services_systeme` référence des objets de premier niveau `type = service_systeme` et guide leur regroupement à l'intérieur de l'application.
+
+Comme pour `outils_pilotes`, le groupe exprime déjà l'usage de ces objets par l'application. Les relations `appli <-> service_systeme` qui ne font que répéter cette inclusion sont retirées du spécimen de niveau 1.
+
+`shell_windows` et le contexte structurel `windows` sont retirés du spécimen Mon Bureau de niveau 1. Le premier est un mécanisme intermédiaire ; le second dupliquait l'information de plateforme déjà portée par `appli.tourne_sous.os`.
+
+Le renderer consomme les objets correctement référencés dans `services_systeme`. Une référence inconnue ou un objet de type incompatible laisse du sens résiduel et déclenche la lecture partielle.
