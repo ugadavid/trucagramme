@@ -1,5 +1,5 @@
 export default {
-  schema_version: "0.1.8",
+  schema_version: "0.1.9",
   projet: {
     presentation: [
       "Gestionnaire local de fils ChatGPT.",

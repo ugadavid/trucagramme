@@ -12,7 +12,7 @@ const presentation = document.querySelector("#texte-presentation");
 const legende = document.querySelector("#signes-legende");
 let commandeActive = null;
 const fermer = document.querySelector("#fermer");
-const versionSchema = "0.1.8";
+const versionSchema = "0.1.9";
 function ouvrirMenu(ouvert) {
   menu.hidden = !ouvert;
   declencheur.setAttribute("aria-expanded", String(ouvert));
@@ -80,6 +80,7 @@ const familles = [
   [".forme-archive", "archive", "Archive"],
   [".feuille-format", "fichier", "Fichier"],
   [".companion", "compagnon", "Application compagnon"],
+  [".fenetre-editeur", "editeur", "Éditeur"],
   [".browser", "navigateur", "Navigateur / surface externe"],
   [".connector", "flux", "Relation / flux"],
   [".property, .mini-property, .propriete-externe, .qualifications span, .chip", "propriete", "Propriété"]
@@ -138,8 +139,9 @@ function entourerDebug(diagramme, objets) {
     if (!colonne.length) continue;
     const cartes = colonne.map(({ cle, type }) =>
       element("li", "", element("strong", "", cle), element("span", "", type)));
-    cadre.append(element("aside", "cartouche-debug", element("h2", "", "DEBUG · non représenté"),
-      element("ul", "", ...cartes)));
+    const cartouche = element("aside", "cartouche-debug", element("ul", "", ...cartes));
+    cartouche.setAttribute("aria-label", "Éléments DEBUG non représentés");
+    cadre.append(cartouche);
   }
   return cadre;
 }

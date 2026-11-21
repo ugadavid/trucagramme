@@ -1,5 +1,5 @@
 export default {
-  schema_version: "0.1.8",
+  schema_version: "0.1.9",
 
   projet: {
     presentation: [
@@ -66,7 +66,7 @@ export default {
 
   vscode: {
     nom: "Visual Studio Code",
-    type: "application_externe"
+    type: "editeur"
   },
 
   git: {

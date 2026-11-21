@@ -1,4 +1,5 @@
 const icones = {
+  vscode: "vscode.png",
   windows: "windows.png",
   python: "python.png",
   "tkinter / Tk": "Tk.png",
@@ -150,9 +151,7 @@ function outilsPilotes(modele) {
     tuiles.push(element("span", "outil-pilote", prendre(outil, "nom")));
   }
   modele.appli.outils_pilotes = restantes;
-  const section = groupe("groupe-outils", "Outils pilotés", tuiles);
-  if (section) section.prepend(element("h3", "", "Outils pilotés"));
-  return section;
+  return groupe("groupe-outils", "Outils pilotés", tuiles);
 }
 
 function application(appli, outils) {
@@ -263,9 +262,18 @@ function rendreDonneeExterne(objet) {
   return carte;
 }
 
+function rendreEditeur(id, objet) {
+  const nom = prendre(objet, "nom");
+  prendre(objet, "type");
+  const identite = id === "vscode" ? image("vscode", "logo-editeur") : element("strong", "", nom);
+  const carte = element("article", "object fenetre-editeur", identite);
+  carte.setAttribute("aria-label", nom);
+  return carte;
+}
+
 function unitesExternes(modele) {
   const objets = new Map(Object.entries(modele).filter(([, objet]) =>
-    typesDonneesExternes.has(objet?.type) && texte(objet.nom)));
+    (typesDonneesExternes.has(objet?.type) || objet?.type === "editeur") && texte(objet.nom)));
   const inclus = new Set();
   const contextes = new Map();
   for (const [id, contexte] of Object.entries(modele)) {
@@ -294,10 +302,10 @@ function unitesExternes(modele) {
   return unites;
 }
 
-function ajouterDonneesExternes(diagramme, modele, relations, nomAppli) {
+function ajouterObjetsExternes(diagramme, modele, relations, nomAppli) {
   const unites = unitesExternes(modele);
   if (!unites.length) return;
-  diagramme.classList.add("avec-donnees-externes");
+  diagramme.classList.add("avec-objets-externes");
   const colonnes = [element("div", "colonne gauche"), element("div", "colonne droite")];
   unites.forEach(({ idContexte, nom, membres }, index) => {
     const liens = relations.filter(r => r && (
@@ -327,7 +335,7 @@ function ajouterDonneesExternes(diagramme, modele, relations, nomAppli) {
       }
       const ligne = element("div", "ligne-externe");
       if (flux.childElementCount) ligne.append(element("span", "origine-mobile", nomAppli), flux);
-      const carte = rendreDonneeExterne(objet);
+      const carte = objet.type === "editeur" ? rendreEditeur(id, objet) : rendreDonneeExterne(objet);
       if (nom && id === membres[0]) carte.prepend(element("span", "nom-contexte", idContexte === "chrome" ? null : nom));
       ligne.append(carte);
       unite.append(ligne);
@@ -357,7 +365,7 @@ function rendreDiagramme(modele) {
     application(modele.appli, outilsPilotes(modele)),
     sortie ? fleche("connector-out", nom + " vers le navigateur") : null, fenetre);
   diagramme.setAttribute("aria-label", "Schéma technique de " + nom);
-  ajouterDonneesExternes(diagramme, modele, relations, nom);
+  ajouterObjetsExternes(diagramme, modele, relations, nom);
   return diagramme;
 }
 
