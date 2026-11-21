@@ -1212,3 +1212,43 @@ Le cartouche DEBUG est un outil de construction. Une fois sa convention visuelle
 La nature DEBUG reste évidente par son traitement graphique et n'appartient toujours pas à la grammaire stabilisée.
 
 Ces évolutions ouvrent le contrat expérimental **schema_version 0.1.9**.
+
+
+## Correctif de recette TG-013 — contenu d’un éditeur (0.1.10)
+
+La première passe de TG-013 a correctement introduit `type = editeur`, mais un éditeur vide identifié seulement par un grand logo ressemble trop à un bouton de lancement.
+
+Un éditeur de niveau 1 peut contenir des **éléments d'information** qui racontent ce qu'il permet d'ouvrir ou de manipuler.
+
+Pour Visual Studio Code :
+
+```js
+vscode: {
+  nom: "Visual Studio Code",
+  type: "editeur",
+  contenu: [
+    { nom: "Mon GPT<3", type: "projet_info" },
+    { nom: "Trucagramme", type: "projet_info" }
+  ]
+}
+```
+
+### projet_info
+
+`projet_info` est une information interne au conteneur graphique. Ce n'est pas un nouveau projet Trucagramme autonome et il ne reçoit pas de relation propre par défaut.
+
+Il sert ici à montrer que l'éditeur peut ouvrir plusieurs projets.
+
+### Représentation d'un éditeur
+
+La forme générale de l'éditeur doit ressembler à une surface contenant ces éléments, et non à un bouton portant son logo.
+
+L'identité propre de l'éditeur reste discrète : pour VS Code, le logo est petit et placé comme marque d'identité, par exemple dans un coin du conteneur.
+
+Principe :
+
+> **Le conteneur raconte la nature ; son contenu raconte ce qu'il accueille ; le logo identifie l'instance concrète.**
+
+Cette règle est cohérente avec l'idée déjà présente du navigateur contenant un service, sans imposer encore une refonte de tous les conteneurs existants vers une syntaxe commune.
+
+Le contrat expérimental devient **schema_version 0.1.10**.
