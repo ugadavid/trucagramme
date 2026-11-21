@@ -879,3 +879,64 @@ Dans l'ordre actuel des quatre unités :
 Les cinq relations conservent leurs directions propres, indépendamment de ces positions.
 
 Ces corrections ouvrent le contrat expérimental **schema_version 0.1.7**.
+
+
+## TG-009c — La couleur classe, la forme explique (raffinement visuel, schéma inchangé)
+
+Ce raffinement ne modifie pas le contrat sémantique : `schema_version 0.1.7` reste courant.
+
+### Couleur de famille
+
+Le vert reste associé à la famille des données, mais il ne doit pas transformer tous les objets de cette famille en masses visuelles identiques.
+
+Principe :
+
+> **La couleur classe ; la forme explique.**
+
+Le vert peut donc devenir principalement un accent :
+
+- contour ;
+- détail ;
+- petite surface ;
+- qualification ;
+- repère de famille.
+
+Les grandes surfaces peuvent rester plus neutres afin que dossier, archive et fichier se distinguent d'abord par leur silhouette.
+
+### Identité d'un contexte connu
+
+Un contexte peut disposer d'une identité visuelle immédiatement reconnaissable sans modifier sa sémantique.
+
+Pour le contexte Chrome, le renderer peut utiliser un petit marqueur inspiré de l'identité Chrome — rouge, jaune, vert et centre bleu — de préférence construit en CSS afin de ne pas introduire un asset externe inutile.
+
+Le marqueur reste discret et secondaire au nom du contexte.
+
+### Le modèle peut savoir plus que la vue
+
+Une information sémantique reconnue n'a pas besoin d'être affichée si sa représentation n'apporte pas de sens utile au niveau 1.
+
+Exemple :
+
+```text
+sauvegardes.format = dossier
+```
+
+peut rester dans le modèle tout en étant consommé sans afficher la pastille « dossier », lorsque la forme d'archive et les autres qualifications suffisent.
+
+### Une propriété ne doit pas être exprimée deux fois sans raison
+
+Le statut :
+
+```text
+statut = experimental
+```
+
+est explicitement rendu par la languette `EXPÉRIMENTAL`.
+
+Le contour pointillé ne doit donc pas signifier lui aussi « expérimental » si cela crée une ambiguïté avec d'autres notions possibles comme futur, absent, virtuel ou optionnel.
+
+La copie de restauration garde une silhouette normale de dossier ; la languette porte seule le statut expérimental.
+
+### Fichiers produits
+
+Les feuilles JSON / HTML restent volontairement simples. Leur forme de fichier et leur libellé court suffisent ; aucun logo de format supplémentaire n'est nécessaire.
