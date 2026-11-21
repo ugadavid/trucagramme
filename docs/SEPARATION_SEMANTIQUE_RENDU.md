@@ -219,3 +219,21 @@ Le passage à `schema_version 0.1.5` conserve les décisions précédentes et aj
 Sur un objet de données externe, le champ facultatif `contexte: { nom: "Chrome" }` exprime l’environnement auquel appartient cet objet. Le renderer consomme le nom du contexte et inscrit le dossier dans un cadre étiqueté. Les autres propriétés éventuelles du contexte restent soumises à la lecture partielle.
 
 Le type, le rôle, les formats, le statut et l’intégrité déterminent la représentation. Les noms humains identifient les objets et restent disponibles aux technologies d’assistance. Le nombre et le sens des flèches proviennent exclusivement des relations déclarées, indépendamment du nombre de formes imbriquées ou de formats affichés.
+
+
+## TG-009b — séparation objet / relation / contexte / placement (0.1.7)
+
+Le contrat distingue désormais quatre responsabilités :
+
+- **objet** : sa nature intrinsèque et ses propriétés ;
+- **contexte** : l'environnement structurel qui contient un ou plusieurs objets ;
+- **relation** : la source et la destination, donc le sens de l'échange ;
+- **renderer** : la position graphique choisie pour équilibrer la vue.
+
+Un objet externe ne porte plus `role = source` ou `role = destination` pour guider le rendu. Ces notions sont déjà exprimées par les relations.
+
+Un contexte devient un objet structurel déclaré, de `type = contexte`, avec une liste `contient` de références à des objets déclarés. Cette inclusion ne crée aucune relation.
+
+Le placement ne dérive plus du sens des flux, sauf dans le cas particulier d'une seule unité externe. De 2 à 6 unités, le renderer alterne gauche/droite selon l'ordre de déclaration, indépendamment des directions. À partir de 7 unités, la stratégie devra aussi employer haut/bas, mais son algorithme n'est pas anticipé avant un cas réel.
+
+Le renderer conserve les relations telles quelles : deux relations opposées entre les mêmes objets restent deux flèches distinctes, quel que soit le côté où l'objet est placé.
