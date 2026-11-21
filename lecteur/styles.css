@@ -129,7 +129,11 @@ body{min-height:100vh;background:
   border:2px solid #8962ba;border-radius:999px;background:#faf6ff;color:#482570;
   font-size:.95rem;font-weight:700;line-height:1;box-shadow:0 2px 5px rgba(64,39,97,.18)
 }
-.version > .lecture-partielle{position:absolute;right:-.85rem;bottom:-.35rem}
+.ancre-lecture{position:relative;display:inline-flex;vertical-align:middle;z-index:4}
+.lecture-partielle{cursor:pointer;padding:0 4px}
+.detail-lecture{position:absolute;top:100%;width:max-content;max-width:min(24rem,calc(100vw - 24px));max-height:min(21rem,55dvh);overflow:auto;overscroll-behavior:contain;padding:10px 14px;background:#fdfbff;border:1px solid #c4afd9;border-radius:12px;box-shadow:0 5px 18px #34274926;text-align:left;color:var(--ink);font:400 .84rem/1.45 system-ui,sans-serif}
+.detail-lecture ul{margin:5px 0 0;padding:0;list-style:none;overflow-wrap:anywhere}
+.version > .ancre-lecture{position:absolute;right:-.85rem;bottom:-.35rem}
 .tech-group:has(> :nth-child(3)){grid-template-columns:repeat(auto-fit,minmax(min(100%,135px),1fr))}
 .tech-item strong{text-align:center}
 

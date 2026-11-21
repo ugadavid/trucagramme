@@ -1,4 +1,5 @@
-import { element, prendre, rendreDiagramme, resteDuSens, texte } from "./rendu.js";
+import { element, prendre, rendreDiagramme, texte } from "./rendu.js";
+import { ajouterLecturePartielle } from "./lecture-partielle.js";
 import { ajouterCommandes } from "./interactions.js";
 
 const menu = document.querySelector("#menu-lecteur");
@@ -122,12 +123,7 @@ function rendreSpecimen(source) {
   const diagramme = rendreDiagramme(modele);
   remplirLegende(diagramme);
   commandeLegende.hidden = false;
-  if (resteDuSens(modele)) {
-    const signal = element("span", "lecture-partielle", "⚠");
-    signal.setAttribute("role", "img");
-    signal.setAttribute("aria-label", "Lecture partielle");
-    (titre.querySelector(".version") ?? titre).append(signal);
-  }
+  ajouterLecturePartielle(titre, modele);
   page.append(titre, diagramme);
   ajouterCommandes(page, diagramme);
 }
