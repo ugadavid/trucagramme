@@ -38,17 +38,17 @@ export default {
     lecture_seule: true
   },
 
+  exports: {
+    nom: "Exports",
+    type: "fichiers",
+    formats: ["json", "html"]
+  },
+
   sauvegardes: {
     nom: "Sauvegardes",
     type: "archives_locales",
     format: "dossier",
     integrite: "sha256"
-  },
-
-  exports: {
-    nom: "Exports",
-    type: "fichiers",
-    formats: ["json", "html"]
   },
 
   restauration: {
