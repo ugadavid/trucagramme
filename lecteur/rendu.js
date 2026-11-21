@@ -136,25 +136,26 @@ function donnees(data) {
   return section;
 }
 
-function outilsPilotes(modele) {
-  const refs = modele.appli.outils_pilotes;
-  if (!Array.isArray(refs)) return null;
+function tuilesReferencees(modele, champ, type, classe) {
+  const refs = modele.appli[champ];
   const tuiles = [];
+  if (!Array.isArray(refs)) return tuiles;
   const restantes = [];
   for (const cle of refs) {
-    const outil = typeof cle === "string" && Object.hasOwn(modele, cle) ? modele[cle] : null;
-    if (outil?.type !== "outil_pilote" || !texte(outil.nom)) {
+    const objet = typeof cle === "string" && Object.hasOwn(modele, cle) ? modele[cle] : null;
+    if (objet?.type !== type || !texte(objet.nom)) {
       restantes.push(cle);
       continue;
     }
-    prendre(outil, "type");
-    tuiles.push(element("span", "outil-pilote", prendre(outil, "nom")));
+    prendre(objet, "type");
+    tuiles.push(element("span", classe, prendre(objet, "nom")));
   }
-  modele.appli.outils_pilotes = restantes;
-  return groupe("groupe-outils", "Outils pilotés", tuiles);
+  modele.appli[champ] = restantes;
+  return tuiles;
 }
 
-function application(appli, outils) {
+function application(modele) {
+  const appli = modele.appli;
   const titre = element("div", "app-heading", element("h2", "", prendre(appli, "nom")));
   const puces = [];
   if (appli.mode_execution === "local") puces.push(element("span", "chip chip-local", "● local"));
@@ -172,7 +173,12 @@ function application(appli, outils) {
     prendre(appli, "livraison");
     bloc.prepend(element("div", "property property-main", "AUTONOME"));
   }
-  const groupes = [socle(appli.socle_technique), outils, donnees(appli.donnees)].filter(Boolean);
+  const groupes = [
+    socle(appli.socle_technique),
+    groupe("groupe-outils", "Outils pilotés", tuilesReferencees(modele, "outils_pilotes", "outil_pilote", "outil-pilote")),
+    groupe("groupe-services", "Services système", tuilesReferencees(modele, "services_systeme", "service_systeme", "service-systeme")),
+    donnees(appli.donnees)
+  ].filter(Boolean);
   if (groupes.length) bloc.append(element("div", "app-body", ...groupes));
   return bloc;
 }
@@ -395,7 +401,7 @@ function rendreDiagramme(modele) {
   }
   const diagramme = element("section", "diagram", voisin,
     entree ? fleche("connector-in", nomCollector + " vers " + nom) : null,
-    application(modele.appli, outilsPilotes(modele)),
+    application(modele),
     sortie ? fleche("connector-out", nom + " vers le navigateur") : null, fenetre);
   diagramme.setAttribute("aria-label", "Schéma technique de " + nom);
   ajouterObjetsExternes(diagramme, modele, relations, nom);

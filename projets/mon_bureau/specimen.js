@@ -1,12 +1,12 @@
 export default {
-  schema_version: "0.1.11",
+  schema_version: "0.1.12",
 
   projet: {
     presentation: [
       "Cockpit Windows pour lancer et administrer des projets, applications, dossiers et outils techniques.",
       "Il s’appuie sur une configuration JSON locale pour organiser les lanceurs et les catégories.",
-      "Il invoque plusieurs outils installés comme VS Code, Git, curl, Python, PowerShell et tree.",
-      "Il peut aussi démarrer, surveiller et arrêter des serveurs locaux et certains processus Windows."
+      "Depuis son interface, il pilote les outils installés et mobilise les services système Windows.",
+      "Il ouvre les projets dans un éditeur et permet de démarrer, surveiller ou arrêter des serveurs locaux."
     ]
   },
 
@@ -28,6 +28,8 @@ export default {
 
     outils_pilotes: ["git", "curl", "python", "powershell", "tree"],
 
+    services_systeme: ["processus_windows", "tcp_windows"],
+
     donnees: {
       locales: true,
       separees_des_binaires: true,
@@ -37,21 +39,6 @@ export default {
         format: "json"
       }
     }
-  },
-
-  windows: {
-    nom: "Windows",
-    type: "contexte",
-    contient: [
-      "shell_windows",
-      "processus_windows",
-      "tcp_windows"
-    ]
-  },
-
-  shell_windows: {
-    nom: "Shell Windows",
-    type: "service_systeme"
   },
 
   processus_windows: {
@@ -107,14 +94,6 @@ export default {
   },
 
   relations: [
-    { source: "appli", destination: "shell_windows" },
-
-    { source: "appli", destination: "processus_windows" },
-    { source: "processus_windows", destination: "appli" },
-
-    { source: "appli", destination: "tcp_windows" },
-    { source: "tcp_windows", destination: "appli" },
-
     { source: "appli", destination: "vscode" },
 
     { source: "appli", destination: "serveur_local" },

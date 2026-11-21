@@ -310,6 +310,9 @@ body{min-height:100vh;background:
 .groupe-outils{display:flex;flex-wrap:wrap;gap:7px;border:2px solid #008a96;background:#e2f7f8}
 .outil-pilote{padding:4px 10px;border:1px solid #55aeb5;border-radius:7px;background:#f6ffff;color:#104e57;font-weight:600}
 .miniature.outils{border-color:#008a96;background:repeating-linear-gradient(90deg,#e2f7f8 0 4px,#8ccfd3 4px 6px)}
+.groupe-services{display:flex;flex-wrap:wrap;gap:7px;border:2px solid #a23a70;background:#fff2f7}
+.service-systeme{padding:4px 10px;border:1px solid #ca87a7;border-radius:7px;background:#fffbfd;color:#682443;font-weight:600}
+.miniature.services{border-color:#a23a70;background:repeating-linear-gradient(90deg,#fff2f7 0 4px,#e4b8ce 4px 6px)}
 .construction{display:grid;gap:16px;align-items:center}
 .cartouche-debug{min-width:0;padding:12px;border:1px dashed #9599a2;border-radius:8px;background:#f7f7f8;color:#525762;font:400 .8rem/1.35 ui-monospace,monospace}
 .cartouche-debug ul{display:grid;gap:7px;margin:0;padding:0;list-style:none}
