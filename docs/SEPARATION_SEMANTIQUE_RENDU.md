@@ -1,6 +1,6 @@
 # Direction d’architecture — séparer le sens du rendu
 
-**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.8`.**
+**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.9`.**
 
 Trucagramme sépare deux responsabilités.
 
@@ -252,3 +252,16 @@ Les outils pilotés restent déclarés comme objets de premier niveau afin de po
 Le renderer consomme la déclaration de ce groupe et les objets qu'il sait représenter comme outils pilotés. Les relations répétitives entre l'application et ces outils peuvent être retirées du spécimen lorsque l'inclusion suffit à exprimer leur usage.
 
 La couche DEBUG est construite depuis le reste non rendu après le rendu normal. Elle ne supprime, ne modifie et ne consomme rien dans ce reste. La lecture partielle `⚠` doit donc rester strictement identique avec `debug=true` et `debug=false`, à modèle sémantique égal.
+
+
+## TG-013 — nature intrinsèque et placement externe (0.1.9)
+
+Le renderer ne doit pas encoder l'extériorité dans le type d'un objet.
+
+Ainsi, Visual Studio Code passe de `application_externe` à `editeur`. Sa position hors du bloc principal et la relation `appli -> vscode` suffisent à exprimer son statut de participant externe.
+
+Le type `editeur` devient une famille graphique reconnue, comme `navigateur`.
+
+Le groupe interne des outils pilotés conserve sa sémantique et son accessibilité même si son titre visible est supprimé. La légende reste le lieu où le nom de cette famille est explicitement expliqué.
+
+La couche DEBUG reste non consommatrice ; retirer son titre visible n'affecte ni son contenu ni l'inventaire `⚠`.
