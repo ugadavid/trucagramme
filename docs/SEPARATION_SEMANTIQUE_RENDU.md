@@ -1,6 +1,6 @@
 # Direction d’architecture — séparer le sens du rendu
 
-**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.4`.**
+**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.5`.**
 
 Trucagramme sépare deux responsabilités.
 
@@ -202,3 +202,14 @@ Le lecteur choisit explicitement entre :
 Les vues système peuvent employer la grammaire graphique Trucagramme comme langage visuel sans créer de faux objet applicatif ni passer par le renderer technique d'un projet.
 
 La racine sans paramètre devient donc un véritable accueil du lecteur. Un alias inconnu devient un véritable état « projet introuvable » au lieu de retomber silencieusement sur le premier projet.
+
+
+## Chrome Organizer — objets de données externes et relations opposées (0.1.5)
+
+Le troisième spécimen réel distingue les données internes d'une application des objets de données externes qu'elle lit ou produit.
+
+Le renderer doit pouvoir représenter des objets externes de types tels que `dossier_donnees`, `archives_locales` ou `fichiers`, avec des propriétés courtes reconnues comme `lecture_seule`, `format`, `formats`, `integrite` et `statut`.
+
+Deux relations opposées entre les mêmes objets restent deux faits sémantiques distincts. Le renderer peut les rapprocher graphiquement mais ne doit pas les remplacer par un nouveau champ ou une relation synthétique « bidirectionnelle ».
+
+Le passage à `schema_version 0.1.5` conserve les décisions précédentes et ajoute ce vocabulaire au niveau 1.
