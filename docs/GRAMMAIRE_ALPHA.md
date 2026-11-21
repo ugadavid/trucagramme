@@ -1048,3 +1048,115 @@ Son détail doit être accessible :
 La bulle détaillée reste temporaire, compacte et attachée au signal. Elle ne provoque aucun reflow du diagramme.
 
 Si rien ne reste à représenter, le signal et sa bulle restent absents.
+
+
+## TG-012 — Outils pilotés internes et couche de construction DEBUG (0.1.8)
+
+Mon Bureau introduit une distinction importante entre **processus externe** et **objet externe dans la vue de niveau 1**.
+
+Un exécutable peut être techniquement séparé de l'application tout en étant **intériorisé dans son expérience** : l'application le lance sans fenêtre propre, récupère ses sorties et présente le résultat dans sa propre interface.
+
+### Outils pilotés
+
+Git, curl, PowerShell, tree et Python sont des exemples d'**outils pilotés** par Mon Bureau.
+
+Ils restent de vrais objets sémantiques afin de pouvoir être référencés par d'autres relations, mais leur appartenance au fonctionnement interne de l'application est exprimée par un groupe de références :
+
+```js
+appli: {
+  ...
+  outils_pilotes: [
+    "git",
+    "curl",
+    "python",
+    "powershell",
+    "tree"
+  ]
+}
+```
+
+Chaque objet référencé conserve sa propre déclaration de premier niveau :
+
+```js
+git: {
+  nom: "Git",
+  type: "outil_pilote"
+}
+```
+
+Le renderer place ces objets dans un troisième groupe interne de l'application, au même niveau visuel que **Socle technique** et **Données**.
+
+L'inclusion dans `outils_pilotes` raconte déjà l'usage de l'outil par l'application. Les relations répétitives `appli -> outil` et `outil -> appli` n'ont donc plus à être conservées lorsqu'elles n'apportent aucune information supplémentaire de niveau 1.
+
+Une relation entre un outil piloté et un autre objet reste en revanche pertinente. Exemple :
+
+```text
+python -> serveur_local
+```
+
+### Application externe visible
+
+Une application réellement ouverte dans sa propre fenêtre reste extérieure au bloc principal.
+
+Visual Studio Code est le premier cas :
+
+```js
+vscode: {
+  nom: "Visual Studio Code",
+  type: "application_externe"
+}
+```
+
+Cette distinction empêche de représenter Git/curl/Python comme s'ils ouvraient chacun une application indépendante.
+
+### Autonomie
+
+`AUTONOME` doit rester réservé aux cas où la distribution décrite ne dépend pas, pour les fonctions représentées au niveau 1, d'outils installés séparément.
+
+Mon Bureau embarque son runtime .NET mais certaines fonctions reposent sur Git, curl, Python, VS Code ou d'autres outils du poste. Sa propriété `livraison = autonome` est donc retirée de son spécimen.
+
+L'absence de `livraison` ne signifie pas automatiquement « non autonome » ; elle signifie seulement que cette propriété n'est pas affirmée.
+
+### Couche DEBUG du spécimen
+
+Un spécimen peut activer une couche d'aide à la construction :
+
+```js
+specimen: {
+  version: "alpha-0.0.0.1",
+  debug: true
+}
+```
+
+`debug` appartient aux métadonnées du spécimen / lecteur. Il ne décrit pas l'application.
+
+Quand `debug = true`, le renderer peut afficher autour du diagramme un **cartouche de construction clairement identifié DEBUG**, contenant des représentations fantômes des objets qu'il ne sait pas encore dessiner.
+
+Ces formes de debug :
+
+- affichent au minimum la clé technique et le `type` ;
+- restent visuellement distinctes de la grammaire stabilisée ;
+- peuvent utiliser une disposition provisoire utile à la conception ;
+- ne sont jamais considérées comme une représentation comprise.
+
+Principe fondamental :
+
+> **Afficher en DEBUG ne consomme aucun sens.**
+
+Le même reste du modèle continue donc d'alimenter intégralement `⚠`.
+
+Quand `debug = false` ou absent, aucun cartouche DEBUG n'est affiché.
+
+### Relation entre DEBUG et lecture partielle
+
+Les deux mécanismes sont indépendants :
+
+```text
+reste du modèle
+   ├──> ⚠ inventaire compact
+   └──> couche DEBUG graphique (si activée)
+```
+
+La couche DEBUG ne modifie ni le contenu, ni le compteur, ni la présence de la bulle de lecture partielle.
+
+Ces évolutions ouvrent le contrat expérimental **schema_version 0.1.8**.
