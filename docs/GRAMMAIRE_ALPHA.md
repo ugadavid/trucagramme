@@ -1498,3 +1498,42 @@ Ainsi :
 L'ouverture du navigateur par Mon Bureau est une autre surface externe réelle. Son statut exact en vue 1 n'est pas tranché dans TG-016 afin de ne pas élargir artificiellement la mission. Il devra être réévalué sur un cas concret ultérieur.
 
 Ces évolutions ouvrent le contrat expérimental **schema_version 0.1.13**.
+
+
+## TRAME — alternatives d’implémentation et modules produit (0.1.14)
+
+TRAME introduit un cas qui ne peut pas être raconté correctement par un unique groupe « Socle technique ».
+
+Le même produit est actuellement réalisé par trois hosts alternatifs : Qt, Electron et Avalonia. Ils ne coexistent pas comme dépendances obligatoires d’une même exécution. La vue 1 doit pourtant conserver cette information technique.
+
+Le modèle peut donc déclarer :
+
+```js
+appli: {
+  implementations: ["trame_qt", "trame_electron", "trame_avalonia"]
+}
+```
+
+Chaque objet référencé possède `type = implementation` et son propre `socle_technique`.
+
+Principe :
+
+> **Un groupe alternatif montre plusieurs réalisations possibles d’un même rôle sans prétendre qu’elles coexistent.**
+
+Le renderer exprime ici la cardinalité « 1 parmi 3 ». Aucune flèche n’est créée entre les alternatives.
+
+TRAME introduit aussi deux familles internes de niveau 1 :
+
+- `composant_interne` pour un élément structurant commun au produit, ici Super ;
+- `module_produit` pour les modules fonctionnels réunis dans `appli.modules_produit`.
+
+Les propriétés communes `autonomes` et `packages` qualifient le groupe Modules produit et ne sont pas répétées sur chaque membre. Une propriété telle que `activable` reste attachée au seul module pour lequel elle est pertinente en vue 1.
+
+Les données de TRAME distinguent enfin deux espaces de persistance :
+
+- `projet_durable` ;
+- `recovery_local`.
+
+Cette séparation raconte notamment que le Recovery n’est pas la sauvegarde durable du Projet, sans détailler les mécanismes internes.
+
+Le contrat expérimental devient **schema_version 0.1.14**. Les spécimens précédents sont directement portés à cette version sans migration.

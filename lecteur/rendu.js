@@ -80,9 +80,10 @@ async function chargerIdentite(appli, entete) {
 
 const rolesTechniques = new Set(["runtime", "langage", "bibliotheque_graphique"]);
 const nomsTechnos = new Map([
-  [".net 10", ".NET 10"], ["c#", "C#"], ["windows forms", "Windows Forms"],
+  [".net 10", ".NET 10"], [".net", ".NET"], ["c#", "C#"], ["windows forms", "Windows Forms"],
   ["electron", "Electron"], ["javascript / typescript", "JavaScript / TypeScript"],
-  ["react", "React"], ["python", "Python"], ["tkinter / Tk", "Tkinter / Tk"]
+  ["technologies web", "Technologies Web"], ["react", "React"], ["python", "Python"],
+  ["tkinter / Tk", "Tkinter / Tk"], ["pyside6 / qt", "PySide6 / Qt"], ["avalonia", "Avalonia"]
 ]);
 
 function socle(tech) {
@@ -108,10 +109,24 @@ const nomsDonnees = new Map([
 
 function donnees(data) {
   const lignes = [];
+  let persistanceStructuree = false;
   for (const [cle, famille] of Object.entries(data ?? {})) {
     if (cle === "locales" || cle === "separees_des_binaires") continue;
     if (!famille || typeof famille !== "object" || Array.isArray(famille)) continue;
     const type = texte(famille.type) ? prendre(famille, "type") : "";
+
+    if (type === "projet_durable" || type === "recovery_local") {
+      persistanceStructuree = true;
+      const nom = type === "projet_durable" ? "Projet durable" : "Recovery local";
+      const details = Array.isArray(famille.contenu) && famille.contenu.every(texte)
+        ? prendre(famille, "contenu") : [];
+      lignes.push(element("div", "data-cluster " + type,
+        element("strong", "", nom),
+        details.length ? element("div", "data-cluster-items",
+          ...details.map(item => element("span", "", item))) : null));
+      continue;
+    }
+
     const role = texte(famille.role) ? prendre(famille, "role") : "";
     const format = texte(famille.format) ? prendre(famille, "format") : "";
     if (!type && !role && !format && famille.optionnel !== true) continue;
@@ -129,6 +144,9 @@ function donnees(data) {
   const local = lignes.length && data.locales === true;
   if (local) prendre(data, "locales");
   const section = groupe("data-group", local ? "Données locales" : "Données", lignes);
+  if (section && persistanceStructuree) {
+    section.prepend(element("div", "group-title", element("strong", "", "Données")));
+  }
   if (section && data.separees_des_binaires === true) {
     prendre(data, "separees_des_binaires");
     section.prepend(element("div", "property property-data", "SÉPARÉ DES BINAIRES"));
@@ -154,16 +172,111 @@ function tuilesReferencees(modele, champ, type, classe) {
   return tuiles;
 }
 
+function implementations(modele) {
+  const refs = modele.appli.implementations;
+  if (!Array.isArray(refs)) return null;
+  const cartes = [];
+  const restantes = [];
+  for (const cle of refs) {
+    const objet = typeof cle === "string" && Object.hasOwn(modele, cle) ? modele[cle] : null;
+    if (objet?.type !== "implementation" || !texte(objet.nom) || !objet.socle_technique) {
+      restantes.push(cle);
+      continue;
+    }
+    prendre(objet, "type");
+    cartes.push(element("article", "implementation-card",
+      element("header", "implementation-heading", element("strong", "", prendre(objet, "nom"))),
+      socle(objet.socle_technique)));
+  }
+  modele.appli.implementations = restantes;
+  if (!cartes.length) return null;
+  const section = element("section", "group implementation-group",
+    element("div", "group-title",
+      element("strong", "", "Implémentations"),
+      element("span", "mini-property alternative-property", "1 parmi " + cartes.length)),
+    element("div", "implementation-grid", ...cartes));
+  section.setAttribute("aria-label", "Implémentations alternatives, une parmi " + cartes.length);
+  return section;
+}
+
+function composantsInternes(modele) {
+  const refs = modele.appli.composants_internes;
+  if (!Array.isArray(refs)) return null;
+  const cartes = [];
+  const restantes = [];
+  for (const cle of refs) {
+    const objet = typeof cle === "string" && Object.hasOwn(modele, cle) ? modele[cle] : null;
+    if (objet?.type !== "composant_interne" || !texte(objet.nom)) {
+      restantes.push(cle);
+      continue;
+    }
+    prendre(objet, "type");
+    const role = texte(objet.role) ? prendre(objet, "role") : "";
+    cartes.push(element("div", "component-card",
+      element("strong", "", prendre(objet, "nom")),
+      role ? element("span", "", role.replaceAll("_", " ")) : null));
+  }
+  modele.appli.composants_internes = restantes;
+  if (!cartes.length) return null;
+  const section = element("section", "group component-group",
+    element("div", "group-title", element("strong", "", "Composant interne")),
+    ...cartes);
+  section.setAttribute("aria-label", "Composants internes");
+  return section;
+}
+
+function modulesProduit(modele) {
+  const groupeModules = modele.appli.modules_produit;
+  if (!groupeModules || typeof groupeModules !== "object" || Array.isArray(groupeModules)) return null;
+  const refs = groupeModules.membres;
+  if (!Array.isArray(refs)) return null;
+  const cartes = [];
+  const restantes = [];
+  for (const cle of refs) {
+    const objet = typeof cle === "string" && Object.hasOwn(modele, cle) ? modele[cle] : null;
+    if (objet?.type !== "module_produit" || !texte(objet.nom)) {
+      restantes.push(cle);
+      continue;
+    }
+    prendre(objet, "type");
+    const activable = objet.activable === true;
+    if (activable) prendre(objet, "activable");
+    cartes.push(element("div", "module-card",
+      element("strong", "", prendre(objet, "nom")),
+      activable ? element("span", "mini-property", "activable") : null));
+  }
+  groupeModules.membres = restantes;
+  if (!cartes.length) return null;
+  const qualifications = [];
+  if (groupeModules.autonomes === true) {
+    prendre(groupeModules, "autonomes");
+    qualifications.push(element("span", "mini-property", "autonomes"));
+  }
+  if (groupeModules.packages === true) {
+    prendre(groupeModules, "packages");
+    qualifications.push(element("span", "mini-property", "packagés"));
+  }
+  const section = element("section", "group module-group",
+    element("div", "group-title",
+      element("strong", "", "Modules produit"),
+      qualifications.length ? element("div", "group-properties", ...qualifications) : null),
+    element("div", "module-grid", ...cartes));
+  section.setAttribute("aria-label", "Modules produit");
+  return section;
+}
+
 function application(modele) {
   const appli = modele.appli;
   const titre = element("div", "app-heading", element("h2", "", prendre(appli, "nom")));
   const puces = [];
   if (appli.mode_execution === "local") puces.push(element("span", "chip chip-local", "● local"));
   if (appli.type === "bureau") puces.push(element("span", "chip chip-desktop", "▣ bureau"));
+  if (appli.statut === "experimental") puces.push(element("span", "chip chip-experimental", "△ expérimental"));
   if (puces.length) titre.append(element("div", "chips", ...puces));
 
   if (appli.mode_execution === "local") prendre(appli, "mode_execution");
   if (appli.type === "bureau") prendre(appli, "type");
+  if (appli.statut === "experimental") prendre(appli, "statut");
   const windows = appli.tourne_sous?.os === "windows" ? image("windows", "windows-mark", "Windows") : null;
   if (windows) prendre(appli.tourne_sous, "os");
   const entete = element("header", "app-header", titre, windows);
@@ -173,12 +286,17 @@ function application(modele) {
     prendre(appli, "livraison");
     bloc.prepend(element("div", "property property-main", "AUTONOME"));
   }
+  const variantes = implementations(modele);
   const groupes = [
+    variantes,
     socle(appli.socle_technique),
+    composantsInternes(modele),
+    modulesProduit(modele),
     groupe("groupe-outils", "Outils pilotés", tuilesReferencees(modele, "outils_pilotes", "outil_pilote", "outil-pilote")),
     groupe("groupe-services", "Services système", tuilesReferencees(modele, "services_systeme", "service_systeme", "service-systeme")),
     donnees(appli.donnees)
   ].filter(Boolean);
+  if (variantes) bloc.classList.add("application-variantes");
   if (groupes.length) bloc.append(element("div", "app-body", ...groupes));
   return bloc;
 }

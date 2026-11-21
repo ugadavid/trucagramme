@@ -12,7 +12,7 @@ const presentation = document.querySelector("#texte-presentation");
 const legende = document.querySelector("#signes-legende");
 let commandeActive = null;
 const fermer = document.querySelector("#fermer");
-const versionSchema = "0.1.13";
+const versionSchema = "0.1.14";
 function ouvrirMenu(ouvert) {
   menu.hidden = !ouvert;
   declencheur.setAttribute("aria-expanded", String(ouvert));
@@ -73,6 +73,9 @@ document.addEventListener("keydown", event => {
 const familles = [
   [".application", "appli", "Application principale"],
   [".tech-group", "technique", "Socle technique"],
+  [".implementation-group", "alternative", "Implémentations alternatives"],
+  [".component-group", "composant", "Composant interne"],
+  [".module-group", "module", "Module produit"],
   [".groupe-outils", "outils", "Outils pilotés"],
   [".groupe-services", "services", "Services système"],
   [".data-group", "donnees", "Données"],

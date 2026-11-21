@@ -313,3 +313,18 @@ Le renderer les consomme lorsqu'ils sont reliés explicitement à l'application.
 Une clé inconnue ou une propriété non consommée continue d'alimenter la lecture partielle ; DEBUG reste non consommant.
 
 La présence d'un type externe ne crée jamais implicitement une relation : seules les entrées de `relations` définissent le sens du flux.
+
+
+## TRAME — groupe alternatif et composants internes (0.1.14)
+
+Le cas TRAME étend le modèle sans remettre en cause la séparation sens / rendu.
+
+Un produit peut référencer plusieurs `implementation` alternatives. Chaque implémentation possède son propre `socle_technique`. Le fait qu’une seule soit utilisée à la fois appartient au groupe alternatif ; la position horizontale des cartes appartient au renderer.
+
+Les composants internes et modules produit restent des objets déclarés. Leur inclusion dans les groupes de l’application exprime leur appartenance au produit sans créer de relations artificielles.
+
+Les qualifications communes d’un groupe de modules appartiennent au groupe. Les propriétés particulières restent sur le membre concerné.
+
+Les types `projet_durable` et `recovery_local` décrivent des espaces de persistance distincts. Leur représentation côte à côte ne crée pas de flux implicite.
+
+Le contrat courant devient **0.1.14**.

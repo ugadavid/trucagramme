@@ -6,13 +6,15 @@ Le projet est né le 20 novembre 2026 à partir d’un premier cas réel : **Mon
 
 ## État actuel
 
-La racine ouvre l’[accueil Trucagramme](https://ugadavid.github.io/trucagramme/). Le menu **trucagramme™** donne accès aux fiches [Mon Aise](https://ugadavid.github.io/trucagramme/?projet=mon_aise), [Mon GPT<3](https://ugadavid.github.io/trucagramme/?projet=mon_gpt), [Chrome Organizer](https://ugadavid.github.io/trucagramme/?projet=chrome_organizer) et [Mon Bureau](https://ugadavid.github.io/trucagramme/?projet=mon_bureau), ainsi qu’à leur présentation. Sur chaque fiche, **Légende** montre une miniature et un libellé pour chaque famille de signes présente dans le diagramme.
+La racine ouvre l’[accueil Trucagramme](https://ugadavid.github.io/trucagramme/). Le menu **trucagramme™** donne accès aux fiches [Mon Aise](https://ugadavid.github.io/trucagramme/?projet=mon_aise), [Mon GPT<3](https://ugadavid.github.io/trucagramme/?projet=mon_gpt), [Chrome Organizer](https://ugadavid.github.io/trucagramme/?projet=chrome_organizer), [Mon Bureau](https://ugadavid.github.io/trucagramme/?projet=mon_bureau) et [TRAME](https://ugadavid.github.io/trucagramme/?projet=trame), ainsi qu’à leur présentation. Sur chaque fiche, **Légende** montre une miniature et un libellé pour chaque famille de signes présente dans le diagramme.
 
 Sur une fiche partiellement représentée, le signal **⚠** attaché à la version ouvre un inventaire au survol, au focus ou au clic.
 
 Dans Mon Bureau, les groupes Outils pilotés et Services système réunissent les capacités utilisées depuis son interface. Processus et Ports TCP figurent dans ce second groupe. Une flèche relie Mon Bureau à la fenêtre de Visual Studio Code, qui contient les projets Mon GPT<3 et Trucagramme. Deux autres flèches sortantes représentent le lancement par raccourci Windows (.lnk) et l’ouverture de dossiers dans l’Explorateur. Deux flèches relient l’application à son serveur HTTP sur 127.0.0.1. Python en qualifie le moteur. La fiche est entièrement représentée en vue 1, y compris lorsque `specimen.debug` est activé.
 
-Le contrat courant est `0.1.13`. Les spécimens système `projets/accueil/specimen.js` et `projets/404/specimen.js` fournissent le contenu de l’accueil et de la vue « Projet introuvable ». L’index `projets/index.json` reste réservé aux projets du menu.
+Le contrat courant est `0.1.14`. Les spécimens système `projets/accueil/specimen.js` et `projets/404/specimen.js` fournissent le contenu de l’accueil et de la vue « Projet introuvable ». L’index `projets/index.json` reste réservé aux projets du menu.
+
+Dans TRAME, un groupe d’**implémentations alternatives** montre simultanément Qt, Electron et Avalonia sans prétendre qu’elles constituent ensemble un même socle : une seule réalisation est choisie à la fois, et chacune conserve son propre groupe Socle technique. Super apparaît comme composant interne commun. Personnages, Lieux et Correcteur sont regroupés comme modules produit ; les qualifications communes « autonomes » et « packagés » appartiennent au groupe, tandis que seul le Correcteur porte « activable » en vue 1. Les données distinguent Projet durable et Recovery local.
 
 Dans Chrome Organizer, Chrome déclare le dossier User Data dans sa liste `contient`. Le lecteur alterne les unités externes entre gauche et droite dans leur ordre de déclaration (de deux à six unités). Les relations orientent les flèches, y compris les deux flèches opposées des sauvegardes à gauche. Les formes de dossier, d’archive et de fichier traduisent la nature des données externes.
 
