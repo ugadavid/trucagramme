@@ -189,6 +189,70 @@ function fleche(classe, description) {
   return flux;
 }
 
+const typesDonneesExternes = new Set(["dossier_donnees", "archives_locales", "fichiers"]);
+
+function rendreDonneeExterne(objet) {
+  const nom = prendre(objet, "nom");
+  prendre(objet, "type");
+  const carte = element("article", "object donnee-externe", element("h2", "", nom));
+  const pastilles = [];
+  if (objet.lecture_seule === true) {
+    prendre(objet, "lecture_seule");
+    carte.append(element("span", "propriete-externe", "LECTURE SEULE"));
+  }
+  if (objet.statut === "experimental") {
+    prendre(objet, "statut");
+    carte.append(element("span", "propriete-externe", "EXPÉRIMENTAL"));
+  }
+  if (texte(objet.format)) pastilles.push(prendre(objet, "format"));
+  if (Array.isArray(objet.formats) && objet.formats.length && objet.formats.every(texte)) {
+    pastilles.push(prendre(objet, "formats").map(format => format.toUpperCase()).join(" · "));
+  }
+  if (objet.integrite === "sha256") {
+    prendre(objet, "integrite");
+    pastilles.push("SHA-256");
+  }
+  if (pastilles.length) carte.append(element("div", "qualifications",
+    ...pastilles.map(libelle => element("span", "", libelle))));
+  return carte;
+}
+
+function ajouterDonneesExternes(diagramme, modele, relations, nomAppli) {
+  const sources = element("div", "objets-sources");
+  const destinations = element("div", "objets-destinations");
+  for (const [id, objet] of Object.entries(modele)) {
+    if (!typesDonneesExternes.has(objet?.type) || !texte(objet.nom)) continue;
+    const nom = objet.nom;
+    const source = objet.role === "source";
+    if (source || objet.role === "destination") prendre(objet, "role");
+    const carte = rendreDonneeExterne(objet);
+    const flux = element("div", "flux-externes");
+    for (const relation of relations) {
+      const versAppli = relation?.source === id && relation.destination === "appli";
+      const depuisAppli = relation?.source === "appli" && relation.destination === id;
+      if (!versAppli && !depuisAppli) continue;
+      const description = versAppli ? nom + " vers " + nomAppli : nomAppli + " vers " + nom;
+      const sens = source === versAppli ? "aller" : "retour";
+      flux.append(fleche("flux-externe " + sens, description));
+      prendre(relation, "source");
+      prendre(relation, "destination");
+    }
+    const ligne = element("div", "ligne-externe");
+    if (source) ligne.append(carte);
+    if (flux.childElementCount) {
+      if (!source) ligne.append(element("span", "origine-mobile", nomAppli));
+      ligne.append(flux);
+    }
+    if (!source) ligne.append(carte);
+    (source ? sources : destinations).append(ligne);
+  }
+  if (sources.childElementCount || destinations.childElementCount) {
+    diagramme.classList.add("avec-donnees-externes");
+    if (sources.childElementCount) diagramme.prepend(sources);
+    if (destinations.childElementCount) diagramme.append(destinations);
+  }
+}
+
 function rendreDiagramme(modele) {
   const nom = modele.appli.nom;
   const relations = Array.isArray(modele.relations) ? modele.relations : [];
@@ -209,6 +273,7 @@ function rendreDiagramme(modele) {
     application(modele.appli),
     sortie ? fleche("connector-out", nom + " vers le navigateur") : null, fenetre);
   diagramme.setAttribute("aria-label", "Schéma technique de " + nom);
+  ajouterDonneesExternes(diagramme, modele, relations, nom);
   return diagramme;
 }
 

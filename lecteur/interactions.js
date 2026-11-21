@@ -12,7 +12,7 @@ export function ajouterCommandes(page, diagramme) {
     nav.append(commande);
   }
   if (diagramme.querySelector(".tech-group")) bouton("technology", "⚙", "Mettre en évidence le socle technique");
-  if (diagramme.querySelector(".data-group")) bouton("data", "▤", "Mettre en évidence les données");
+  if (diagramme.querySelector(".data-group, .donnee-externe")) bouton("data", "▤", "Mettre en évidence les données");
   if (diagramme.querySelector(".connector")) {
     if (nav.childElementCount) nav.append(element("span", "divider"));
     bouton("flow", "→", "Mettre en évidence les flux");
