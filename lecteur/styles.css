@@ -247,7 +247,7 @@ body{min-height:100vh;background:
 .flux-externes{display:flex;flex-direction:column;align-items:center;justify-content:center}
 .flux-externe{translate:none;height:23px;width:100%;font:700 2.8rem/1 Arial,sans-serif;color:var(--app)}
 .origine-mobile{display:none}
-.diagram.is-filtering :is(.donnee-externe,.fenetre-editeur){opacity:.22;filter:saturate(.45)}
+.diagram.is-filtering :is(.donnee-externe,.fenetre-editeur,.objet-serveur){opacity:.22;filter:saturate(.45)}
 .diagram.highlight-data .donnee-externe{opacity:1;filter:none}
 @media(min-width:1101px){
   .diagram.avec-objets-externes{grid-template-columns:minmax(0,295px) minmax(480px,640px) minmax(0,295px)}
@@ -334,16 +334,31 @@ body{min-height:100vh;background:
 .miniature.editeur{border-radius:3px;border-top-width:5px}
 .miniature.editeur::before{content:"";position:absolute;left:3px;top:2px;width:65%;height:1px;background:#9aaebf;box-shadow:0 4px #9aaebf}
 @media(min-width:1101px){
-  /* La colonne libre accueille le premier cartouche ; le second suit le voisin réel. */
-  .construction:has(.colonne.droite):not(:has(.colonne.gauche)){
-    grid-template-columns:minmax(0,230px) minmax(480px,640px) minmax(0,285px);
+  .construction:has(.colonne.droite){
+    grid-template-columns:minmax(0,285px) minmax(480px,640px) minmax(0,285px);
     grid-template-rows:1fr 1fr;justify-content:center;column-gap:12px
   }
-  .construction > .diagram:has(.colonne.droite):not(:has(.colonne.gauche)){
+  .construction > .diagram:has(.colonne.droite){
     grid-area:1/1/3/-1;grid-template-columns:subgrid;grid-template-rows:subgrid
   }
-  .construction .diagram:has(.colonne.droite):not(:has(.colonne.gauche)) .application{grid-row:1/3}
-  .construction .diagram:has(.colonne.droite):not(:has(.colonne.gauche)) .droite{align-self:end}
-  .construction:has(.droite):not(:has(.gauche)) .cartouche-debug:first-of-type{grid-area:1/1/3/2}
-  .construction:has(.droite):not(:has(.gauche)) .cartouche-debug:nth-of-type(2){grid-area:2/3;align-self:start;margin-left:56px}
+  .construction .diagram:has(.colonne.droite) .application{grid-row:1/3}
+  .construction .diagram:has(.colonne.droite) .colonne{align-self:end}
+  .construction:has(.droite) .cartouche-debug:first-of-type{grid-area:2/1;align-self:start;margin-right:56px}
+  .construction:has(.droite):not(:has(.gauche)) .cartouche-debug:first-of-type{grid-row:1/3;align-self:center;margin-right:0}
+  .construction:has(.droite) .cartouche-debug:nth-of-type(2){grid-area:2/3;align-self:start;margin-left:56px}
 }
+
+.objet-serveur{display:grid;justify-items:center;gap:9px;margin-inline:auto;width:min(100%,205px);box-shadow:none;color:#4e4036}
+.rack-serveur,.miniature.serveur{
+  display:grid;gap:.12em;padding:.17em .23em;width:3.8em;height:1.85em;
+  border:1px solid #51463d;border-radius:.2em;background:#65594e;font-size:28px
+}
+.rack-serveur::before,.rack-serveur::after,.miniature.serveur::before,.miniature.serveur::after{
+  content:"";border-radius:.08em;
+  background:radial-gradient(circle at 87% 50%,#85662d .07em,transparent .09em),
+    repeating-linear-gradient(90deg,#887f72 0 .06em,transparent .06em .14em) left .22em center / 35% 32% no-repeat,#f2efe7
+}
+.miniature.serveur{font-size:7px}
+.proprietes-serveur{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 8px;font-size:.9rem;font-weight:650;overflow-wrap:anywhere}
+.proprietes-serveur span{max-width:100%}
+.proprietes-serveur .hote-serveur{flex-basis:100%;text-align:center;color:#5c5248;font:500 .88rem/1.3 ui-monospace,monospace}

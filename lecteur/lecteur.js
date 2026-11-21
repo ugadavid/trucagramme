@@ -12,7 +12,7 @@ const presentation = document.querySelector("#texte-presentation");
 const legende = document.querySelector("#signes-legende");
 let commandeActive = null;
 const fermer = document.querySelector("#fermer");
-const versionSchema = "0.1.10";
+const versionSchema = "0.1.11";
 function ouvrirMenu(ouvert) {
   menu.hidden = !ouvert;
   declencheur.setAttribute("aria-expanded", String(ouvert));
@@ -80,10 +80,11 @@ const familles = [
   [".forme-archive", "archive", "Archive"],
   [".feuille-format", "fichier", "Fichier"],
   [".companion", "compagnon", "Application compagnon"],
+  [".objet-serveur", "serveur", "Serveur"],
   [".fenetre-editeur", "editeur", "Éditeur"],
   [".browser", "navigateur", "Navigateur / surface externe"],
   [".connector", "flux", "Relation / flux"],
-  [".property, .mini-property, .propriete-externe, .qualifications span, .chip", "propriete", "Propriété"]
+  [".property, .mini-property, .propriete-externe, .qualifications span, .proprietes-serveur span, .chip", "propriete", "Propriété"]
 ];
 
 function remplirLegende(diagramme) {

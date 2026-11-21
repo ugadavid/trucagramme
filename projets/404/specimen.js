@@ -1,5 +1,5 @@
 export default {
-  schema_version: "0.1.10",
+  schema_version: "0.1.11",
   systeme: {
     titre: "Projet introuvable",
     demande: "Projet demandé",

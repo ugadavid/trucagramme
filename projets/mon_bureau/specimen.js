@@ -1,5 +1,5 @@
 export default {
-  schema_version: "0.1.10",
+  schema_version: "0.1.11",
 
   projet: {
     presentation: [
@@ -100,7 +100,8 @@ export default {
 
   serveur_local: {
     nom: "Serveur local",
-    type: "service_local",
+    type: "serveur",
+    moteur: "python",
     protocole: "http",
     hote: "127.0.0.1"
   },
@@ -116,7 +117,6 @@ export default {
 
     { source: "appli", destination: "vscode" },
 
-    { source: "python", destination: "serveur_local" },
     { source: "appli", destination: "serveur_local" },
     { source: "serveur_local", destination: "appli" }
   ],

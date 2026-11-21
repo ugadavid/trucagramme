@@ -281,9 +281,32 @@ function rendreEditeur(id, objet) {
   return carte;
 }
 
+function rendreServeur(objet) {
+  const rack = element("span", "rack-serveur");
+  rack.setAttribute("aria-hidden", "true");
+  const carte = element("article", "object objet-serveur", rack);
+  carte.setAttribute("aria-label", prendre(objet, "nom"));
+  prendre(objet, "type");
+  const proprietes = [];
+  if (texte(objet.moteur)) {
+    const moteur = prendre(objet, "moteur");
+    proprietes.push(element("span", "", nomsTechnos.get(moteur) ?? moteur));
+  }
+  if (texte(objet.protocole)) proprietes.push(element("span", "", prendre(objet, "protocole").toUpperCase()));
+  if (texte(objet.hote)) proprietes.push(element("span", "hote-serveur", prendre(objet, "hote")));
+  if (proprietes.length) carte.append(element("div", "proprietes-serveur", ...proprietes));
+  return carte;
+}
+
+function rendreObjetExterne(id, objet) {
+  if (objet.type === "editeur") return rendreEditeur(id, objet);
+  if (objet.type === "serveur") return rendreServeur(objet);
+  return rendreDonneeExterne(objet);
+}
+
 function unitesExternes(modele) {
   const objets = new Map(Object.entries(modele).filter(([, objet]) =>
-    (typesDonneesExternes.has(objet?.type) || objet?.type === "editeur") && texte(objet.nom)));
+    (typesDonneesExternes.has(objet?.type) || objet?.type === "editeur" || objet?.type === "serveur") && texte(objet.nom)));
   const inclus = new Set();
   const contextes = new Map();
   for (const [id, contexte] of Object.entries(modele)) {
@@ -345,7 +368,7 @@ function ajouterObjetsExternes(diagramme, modele, relations, nomAppli) {
       }
       const ligne = element("div", "ligne-externe");
       if (flux.childElementCount) ligne.append(element("span", "origine-mobile", nomAppli), flux);
-      const carte = objet.type === "editeur" ? rendreEditeur(id, objet) : rendreDonneeExterne(objet);
+      const carte = rendreObjetExterne(id, objet);
       if (nom && id === membres[0]) carte.prepend(element("span", "nom-contexte", idContexte === "chrome" ? null : nom));
       ligne.append(carte);
       unite.append(ligne);
