@@ -657,3 +657,110 @@ L'alias demandé peut être affiché dans la composition.
 Le menu reste disponible pour rejoindre un projet valide.
 
 Ces évolutions ouvrent le contrat expérimental **schema_version 0.1.4**.
+
+
+## 23. Troisième spécimen réel — Chrome Organizer et objets de données externes (0.1.5)
+
+Chrome Organizer introduit un cas de niveau 1 différent de Mon GPT<3 et Mon Aise.
+
+L'application ne travaille pas principalement avec un groupe de données internes. Elle lit et produit plusieurs **objets de données externes** :
+
+- le dossier Chrome `User Data`, utilisé comme source ;
+- des sauvegardes locales ;
+- des exports JSON / HTML ;
+- une copie de restauration fonctionnelle expérimentale.
+
+Le spécimen correspondant conserve le principe : les objets existent explicitement et les relations disent seulement comment ils sont reliés.
+
+### Objet externe de données
+
+Un objet externe peut porter des informations telles que :
+
+```text
+nom
+type
+role
+format / formats
+lecture_seule
+integrite
+statut
+```
+
+Ces propriétés restent sémantiques. Le renderer ne doit représenter que celles dont le sens graphique est défini.
+
+### Source en lecture seule
+
+Le dossier Chrome `User Data` est représenté comme une source externe de données :
+
+```text
+type = dossier_donnees
+role = source
+lecture_seule = true
+```
+
+La propriété `lecture_seule` peut être rendue comme une courte languette ou pastille attachée à l'objet.
+
+### Sauvegardes : deux relations opposées
+
+Une sauvegarde peut être créée par l'application puis relue par elle.
+
+Le modèle conserve deux relations élémentaires :
+
+```text
+appli -> sauvegardes
+sauvegardes -> appli
+```
+
+Aucun champ `direction = bidirectionnelle` n'est ajouté.
+
+Le renderer peut rapprocher visuellement ces deux relations, mais il doit préserver le fait qu'il s'agit de **deux relations distinctes**.
+
+Sur bureau, la représentation préférée est deux flèches parallèles, l'une dans chaque sens, par exemple :
+
+```text
+        ---->
+Appli          Sauvegardes
+        <----
+```
+
+Ne pas fusionner automatiquement ces deux faits en un symbole unique `↔`.
+
+### Formats multiples
+
+Un objet peut déclarer plusieurs formats :
+
+```text
+formats = [json, html]
+```
+
+Le renderer peut afficher cette liste de manière compacte sans inventer une relation entre ces formats.
+
+### Intégrité et statut
+
+Les sauvegardes peuvent porter :
+
+```text
+integrite = sha256
+```
+
+La copie de restauration peut porter :
+
+```text
+statut = experimental
+```
+
+Ces informations qualifient leur objet ; elles ne deviennent pas des objets autonomes.
+
+### Mise en page de niveau 1
+
+La disposition doit préserver l'application principale comme centre visuel.
+
+Une composition plausible est :
+
+- source Chrome User Data à gauche ;
+- application principale au centre ;
+- sauvegardes, exports et copie de restauration à droite, éventuellement empilés.
+
+La disposition exacte reste du ressort du renderer et doit rester lisible sur bureau et mobile.
+
+Ces évolutions ouvrent le contrat expérimental **schema_version 0.1.5**.
