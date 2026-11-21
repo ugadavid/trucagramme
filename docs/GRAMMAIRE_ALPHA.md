@@ -764,3 +764,9 @@ Une composition plausible est :
 La disposition exacte reste du ressort du renderer et doit rester lisible sur bureau et mobile.
 
 Ces évolutions ouvrent le contrat expérimental **schema_version 0.1.5**.
+
+## TG-009a — Forme des données externes (0.1.6)
+
+Le vert identifie la famille des données. À l’intérieur de cette famille, le type choisit la silhouette : un dossier pour un espace de données, une boîte à couvercle pour une archive locale, une feuille par format pour les fichiers produits. Le rôle destination donne un contour discontinu au dossier préparé. La languette de statut et les qualifications restent attachées à l’objet qu’elles décrivent.
+
+Un cadre léger portant le nom du contexte peut entourer la forme. Ainsi « Chrome » situe le dossier User Data. L’unique flèche entrante part du dossier. L’archive garde ses deux relations opposées et le groupe de feuilles reçoit une seule relation.

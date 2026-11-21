@@ -213,3 +213,9 @@ Le renderer doit pouvoir représenter des objets externes de types tels que `dos
 Deux relations opposées entre les mêmes objets restent deux faits sémantiques distincts. Le renderer peut les rapprocher graphiquement mais ne doit pas les remplacer par un nouveau champ ou une relation synthétique « bidirectionnelle ».
 
 Le passage à `schema_version 0.1.5` conserve les décisions précédentes et ajoute ce vocabulaire au niveau 1.
+
+## Contexte externe en 0.1.6
+
+Sur un objet de données externe, le champ facultatif `contexte: { nom: "Chrome" }` exprime l’environnement auquel appartient cet objet. Le renderer consomme le nom du contexte et inscrit le dossier dans un cadre étiqueté. Les autres propriétés éventuelles du contexte restent soumises à la lecture partielle.
+
+Le type, le rôle, les formats, le statut et l’intégrité déterminent la représentation. Les noms humains identifient les objets et restent disponibles aux technologies d’assistance. Le nombre et le sens des flèches proviennent exclusivement des relations déclarées, indépendamment du nombre de formes imbriquées ou de formats affichés.

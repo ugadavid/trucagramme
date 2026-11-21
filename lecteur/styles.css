@@ -212,9 +212,23 @@ body{min-height:100vh;background:
 }
 
 /* Les objets de données sont des voisins du cadre applicatif. */
-.donnee-externe{min-width:0;padding:20px 16px;text-align:center;border:2px solid var(--data);border-radius:22px;background:linear-gradient(145deg,#fbfffc,var(--data-bg));box-shadow:0 6px 18px #24713b18}
-.donnee-externe h2{margin:0;font-size:clamp(1.16rem,1.6vw,1.5rem);line-height:1.15}
-.propriete-externe{position:absolute;top:-12px;right:12px;padding:3px 9px;border:1.5px solid var(--data);border-radius:999px;background:#effff1;color:#173d20;font-size:.73rem;font-weight:800;letter-spacing:.025em}
+.donnee-externe{min-width:0;text-align:center;box-shadow:none;--trait:#38825b;--papier:#f3fff5;color:#16432e}
+.donnee-externe h2{margin:0;font-size:clamp(1.05rem,1.5vw,1.35rem);line-height:1.18}
+.forme-externe{position:relative;margin-inline:auto;max-width:100%}
+.avec-contexte{border:1px solid #b4c6bc;border-radius:18px;background:#f8fbf9;padding:32px 14px 16px}
+.nom-contexte{position:absolute;top:-.72em;left:15px;padding:0 8px;background:white;font-size:.92rem;font-weight:650;color:#435b50}
+.forme-dossier{width:190px;margin-top:12px;padding:23px 9px 19px;border:2px solid var(--trait);border-radius:0 10px 10px 10px;background:linear-gradient(#e6f8e9,#ceeeda);box-shadow:0 4px 9px #24713b14}
+.forme-dossier::before{content:"";position:absolute;bottom:100%;left:-2px;width:37%;height:12px;border:2px solid var(--trait);border-bottom:0;border-radius:8px 13px 0 0;background:#ceeeda}
+.dossier-cible,.dossier-cible::before{border-style:dashed;background:#f7fcf8;box-shadow:none}
+.propriete-externe{position:relative;display:inline-block;padding:3px 8px;margin:7px 0 -8px;border:1px solid var(--trait);border-radius:999px;background:white;color:#214932;font-size:.68rem;font-weight:800;letter-spacing:.035em}
+.dossier-cible .propriete-externe{position:absolute;bottom:-4px;right:6px}
+.forme-archive{width:158px;padding:22px 4px 10px;margin-top:9px;border:2px solid var(--trait);border-radius:4px 4px 12px 12px;background:linear-gradient(110deg,#e6f8eb,#bce1c7);box-shadow:0 4px 8px #17402a18}
+.forme-archive::before{content:"";position:absolute;left:-6px;right:-6px;top:-5px;height:14px;border:2px solid var(--trait);border-radius:5px;background:#d4eddb;box-shadow:0 3px 0 #638d7140}
+.poignee-archive{display:block;width:38px;height:9px;margin:auto;border:2px solid var(--trait);border-radius:2px 2px 7px 7px;background:#619576}
+.forme-fichiers{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.feuille-format{position:relative;display:grid;align-content:end;min-width:62px;min-height:77px;padding:8px;border:2px solid var(--trait);border-radius:3px 0 4px 4px;background:linear-gradient(45deg,transparent 49%,var(--trait) 50% 55%,white 56%) top right / 16px 16px no-repeat,var(--papier);clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%);font-size:.89rem;font-weight:750}
+.feuille-format::before{content:"";position:absolute;right:0;top:0;width:14px;height:14px;border:solid var(--trait);border-width:0 0 2px 2px;background:#d0e9d7}
+.feuille-format::after{content:"";position:absolute;left:8px;top:23px;width:23px;height:2px;background:#a6cbb1;box-shadow:0 6px #a6cbb1}
 .qualifications{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin-top:9px}
 .qualifications span{border-radius:999px;padding:3px 9px;background:#dbf6e4;color:#205632;font-weight:650;font-size:.9rem}
 .objets-sources,.objets-destinations{display:grid;gap:22px;min-width:0}

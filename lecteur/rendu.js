@@ -193,26 +193,55 @@ const typesDonneesExternes = new Set(["dossier_donnees", "archives_locales", "fi
 
 function rendreDonneeExterne(objet) {
   const nom = prendre(objet, "nom");
-  prendre(objet, "type");
-  const carte = element("article", "object donnee-externe", element("h2", "", nom));
+  const type = prendre(objet, "type");
+  const carte = element("article", "object donnee-externe");
+  carte.setAttribute("aria-label", nom);
+  const corps = element("div", "forme-externe");
+  carte.append(corps);
+  if (texte(objet.contexte?.nom)) {
+    const contexte = prendre(objet.contexte, "nom");
+    carte.classList.add("avec-contexte");
+    carte.prepend(element("span", "nom-contexte", contexte));
+    carte.setAttribute("aria-label", contexte + " — " + nom);
+  }
+  if (type === "dossier_donnees") {
+    corps.classList.add("forme-dossier");
+    if (objet.role === "destination") corps.classList.add("dossier-cible");
+    corps.append(element("h2", "", nom));
+  } else if (type === "archives_locales") {
+    corps.classList.add("forme-archive");
+    const poignee = element("span", "poignee-archive");
+    poignee.setAttribute("aria-hidden", "true");
+    corps.append(poignee);
+    corps.title = nom;
+  } else {
+    corps.classList.add("forme-fichiers");
+    corps.title = nom;
+  }
   const pastilles = [];
   if (objet.lecture_seule === true) {
     prendre(objet, "lecture_seule");
-    carte.append(element("span", "propriete-externe", "LECTURE SEULE"));
+    corps.append(element("span", "propriete-externe", "LECTURE SEULE"));
   }
   if (objet.statut === "experimental") {
     prendre(objet, "statut");
-    carte.append(element("span", "propriete-externe", "EXPÉRIMENTAL"));
+    corps.append(element("span", "propriete-externe", "EXPÉRIMENTAL"));
   }
   if (texte(objet.format)) pastilles.push(prendre(objet, "format"));
   if (Array.isArray(objet.formats) && objet.formats.length && objet.formats.every(texte)) {
-    pastilles.push(prendre(objet, "formats").map(format => format.toUpperCase()).join(" · "));
+    const formats = prendre(objet, "formats").map(format => format.toUpperCase());
+    if (type === "fichiers") {
+      corps.append(...formats.map(format => element("span", "feuille-format", format)));
+    } else {
+      pastilles.push(formats.join(" · "));
+    }
   }
+  if (type === "fichiers" && !corps.childElementCount) corps.append(element("span", "feuille-format", nom));
   if (objet.integrite === "sha256") {
     prendre(objet, "integrite");
     pastilles.push("SHA-256");
   }
-  if (pastilles.length) carte.append(element("div", "qualifications",
+  if (pastilles.length) corps.append(element("div", "qualifications",
     ...pastilles.map(libelle => element("span", "", libelle))));
   return carte;
 }
@@ -224,8 +253,8 @@ function ajouterDonneesExternes(diagramme, modele, relations, nomAppli) {
     if (!typesDonneesExternes.has(objet?.type) || !texte(objet.nom)) continue;
     const nom = objet.nom;
     const source = objet.role === "source";
-    if (source || objet.role === "destination") prendre(objet, "role");
     const carte = rendreDonneeExterne(objet);
+    if (source || objet.role === "destination") prendre(objet, "role");
     const flux = element("div", "flux-externes");
     for (const relation of relations) {
       const versAppli = relation?.source === id && relation.destination === "appli";

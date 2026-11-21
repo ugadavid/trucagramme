@@ -8,7 +8,9 @@ Le projet est né le 20 novembre 2026 à partir d’un premier cas réel : **Mon
 
 La racine ouvre l’[accueil Trucagramme](https://ugadavid.github.io/trucagramme/). Le menu **trucagramme™** donne accès aux fiches [Mon Aise](https://ugadavid.github.io/trucagramme/?projet=mon_aise), [Mon GPT<3](https://ugadavid.github.io/trucagramme/?projet=mon_gpt) et [Chrome Organizer](https://ugadavid.github.io/trucagramme/?projet=chrome_organizer), ainsi qu’à leur présentation.
 
-Le contrat courant est `0.1.5`. Les spécimens système `projets/accueil/specimen.js` et `projets/404/specimen.js` fournissent le contenu de l’accueil et de la vue « Projet introuvable ». L’index `projets/index.json` reste réservé aux projets du menu.
+Le contrat courant est `0.1.6`. Les spécimens système `projets/accueil/specimen.js` et `projets/404/specimen.js` fournissent le contenu de l’accueil et de la vue « Projet introuvable ». L’index `projets/index.json` reste réservé aux projets du menu.
+
+Dans Chrome Organizer, le dossier User Data apparaît dans son contexte Chrome. Les formes de dossier, d’archive et de fichier traduisent la nature des données externes.
 
 Pour ouvrir le lecteur en local, lancer depuis la racine du dépôt :
 

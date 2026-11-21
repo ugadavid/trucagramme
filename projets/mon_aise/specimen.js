@@ -1,5 +1,5 @@
 export default {
-  schema_version: "0.1.5",
+  schema_version: "0.1.6",
   projet: {
     presentation: [
       "Un catalogue personnel pour conserver et retrouver des objets, des sites et des curiosités.",
