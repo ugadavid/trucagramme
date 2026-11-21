@@ -1160,3 +1160,55 @@ reste du modèle
 La couche DEBUG ne modifie ni le contenu, ni le compteur, ni la présence de la bulle de lecture partielle.
 
 Ces évolutions ouvrent le contrat expérimental **schema_version 0.1.8**.
+
+
+## TG-013 — Types intrinsèques lisibles et première représentation d’un éditeur (0.1.9)
+
+Mon Bureau confirme qu'un objet externe ne doit pas porter dans son `type` l'information « externe ». Cette information est déjà visible par sa position hors de l'application et par ses relations.
+
+Visual Studio Code devient donc :
+
+```js
+vscode: {
+  nom: "Visual Studio Code",
+  type: "editeur"
+}
+```
+
+Le type raconte **ce qu'est l'objet**. Le rendu raconte **où il se trouve par rapport à l'application**.
+
+Principe :
+
+> **La nature appartient à l'objet ; l'extériorité appartient à la composition.**
+
+Cette règle généralise ce qui existe déjà avec `type = navigateur`.
+
+### Éditeur
+
+`editeur` devient une nouvelle nature reconnue au niveau 1.
+
+Sa représentation peut prendre la forme d'une petite fenêtre / surface d'édition reconnaissable, enrichie par l'identité propre de l'éditeur lorsqu'un asset est disponible.
+
+Pour VS Code, l'asset canonique est :
+
+```text
+assets/communs/vscode.png
+```
+
+Le nom humain reste dans le modèle et l'accessibilité. Si le logo suffit visuellement, il n'a pas besoin d'être répété en grand dans le diagramme.
+
+### Économie de texte dans les groupes internes
+
+Un groupe interne peut être identifié par sa couleur, sa forme et la légende sans afficher son nom comme titre visible.
+
+Le groupe `Outils pilotés` conserve son identité accessible et son entrée dans la légende, mais son titre visible peut disparaître.
+
+La couleur du groupe doit être distincte des familles déjà utilisées. En particulier, elle ne doit pas rappeler l'orange / brun du compagnon Mon GPT Collector.
+
+### DEBUG
+
+Le cartouche DEBUG est un outil de construction. Une fois sa convention visuelle comprise (gris, pointillé, typographie technique), le texte « DEBUG · non représenté » n'est plus nécessaire dans chaque cartouche.
+
+La nature DEBUG reste évidente par son traitement graphique et n'appartient toujours pas à la grammaire stabilisée.
+
+Ces évolutions ouvrent le contrat expérimental **schema_version 0.1.9**.
