@@ -1,5 +1,13 @@
 const specimen = {
-  schema_version: "0.1.2",
+  schema_version: "0.1.3",
+  projet: {
+    presentation: [
+      "Gestionnaire local de fils ChatGPT.",
+      "Il permet d’organiser, de rechercher et de retrouver ses conversations.",
+      "Les conversations peuvent être importées depuis Mon GPT Collector.",
+      "Les données restent sur le poste."
+    ]
+  },
   appli: {
     nom: "Mon GPT<3",
     alias: "mon_gpt",

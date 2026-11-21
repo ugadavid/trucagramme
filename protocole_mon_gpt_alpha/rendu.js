@@ -183,25 +183,8 @@ function fleche(classe, description) {
   return flux;
 }
 
-function rendreSpecimen(modele) {
-  const page = document.querySelector(".page");
-  page.replaceChildren();
-  document.title = "Schéma technique";
-  if (modele?.schema_version !== "0.1.2" || typeof modele.appli?.nom !== "string" || !modele.appli.nom.trim()) {
-    const message = modele?.schema_version !== "0.1.2"
-      ? "Version du modèle absente ou inconnue (schema_version attendue : 0.1.2)."
-      : "Le nom du sujet principal (appli.nom) manque.";
-    page.append(element("p", "", message));
-    return;
-  }
-
-  modele = structuredClone(modele);
-  prendre(modele, "schema_version");
+function rendreDiagramme(modele) {
   const nom = modele.appli.nom;
-  document.title = nom + " — schéma technique";
-  const titre = element("header", "page-title", element("h1", "", document.title));
-  if (texte(modele.specimen?.version)) titre.append(element("div", "version", prendre(modele.specimen, "version")));
-
   const relations = Array.isArray(modele.relations) ? modele.relations : [];
   const nomCollector = modele.collector?.nom;
   const voisin = compagnon(modele.collector);
@@ -220,12 +203,5 @@ function rendreSpecimen(modele) {
     application(modele.appli),
     sortie ? fleche("connector-out", nom + " vers le navigateur") : null, fenetre);
   diagramme.setAttribute("aria-label", "Schéma technique de " + nom);
-  if (resteDuSens(modele)) {
-    const signal = element("span", "lecture-partielle", "⚠");
-    signal.setAttribute("role", "img");
-    signal.setAttribute("aria-label", "Lecture partielle");
-    (titre.querySelector(".version") ?? titre).append(signal);
-  }
-  page.append(titre, diagramme);
-  ajouterCommandes(page, diagramme);
+  return diagramme;
 }

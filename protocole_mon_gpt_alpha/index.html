@@ -3,14 +3,25 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Schéma technique</title>
+  <title>Trucagramme</title>
   <link rel="icon" href="data:," />
   <link rel="stylesheet" href="styles.css" />
-  <script defer src="specimen-mon-aise.js"></script>
   <script defer src="rendu.js"></script>
   <script defer src="app.js"></script>
+  <script defer src="lecteur.js"></script>
 </head>
 <body>
+  <div class="lecteur">
+    <button id="declencheur" aria-expanded="false" aria-controls="menu-lecteur">trucagramme™</button>
+    <nav id="menu-lecteur" aria-label="Lecteur Trucagramme" hidden>
+      <button id="commande-presentation" aria-expanded="false" aria-controls="presentation" hidden>Présentation</button>
+    </nav>
+  </div>
+  <aside id="presentation" aria-labelledby="nom-presentation" hidden>
+    <button id="fermer" aria-label="Fermer la présentation">×</button>
+    <h2 id="nom-presentation"></h2>
+    <div id="texte-presentation"></div>
+  </aside>
   <main class="page"></main>
 </body>
 </html>

@@ -1,5 +1,13 @@
 const specimen = {
-  schema_version: "0.1.2",
+  schema_version: "0.1.3",
+  projet: {
+    presentation: [
+      "Un catalogue personnel pour conserver et retrouver des objets, des sites et des curiosités.",
+      "Chaque fiche peut réunir noms, surnoms, lien, commentaire, catégories et dates.",
+      "La recherche permet de retrouver rapidement une fiche.",
+      "Le cabinet conserve les données sur le poste et permet de les importer, de les exporter et de les sauvegarder."
+    ]
+  },
 
   appli: {
     nom: "Mon Aise",

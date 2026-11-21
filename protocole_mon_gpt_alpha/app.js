@@ -28,5 +28,3 @@ function ajouterCommandes(page, diagramme) {
     : "Clique un symbole pour mettre en évidence les éléments correspondants.";
   page.append(nav, element("p", "hint", aide));
 }
-
-rendreSpecimen(typeof specimen === "undefined" ? null : specimen);
