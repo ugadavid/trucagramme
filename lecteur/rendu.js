@@ -215,7 +215,6 @@ function fleche(classe, description) {
   return flux;
 }
 
-const typesDonneesExternes = new Set(["dossier_donnees", "archives_locales", "fichiers"]);
 
 function rendreDonneeExterne(objet) {
   const nom = prendre(objet, "nom");
@@ -268,7 +267,7 @@ function rendreDonneeExterne(objet) {
   return carte;
 }
 
-function rendreEditeur(id, objet) {
+function rendreEditeur(objet, id) {
   const nom = prendre(objet, "nom");
   prendre(objet, "type");
   const identite = id === "vscode" ? image("vscode", "logo-editeur") : element("strong", "", nom);
@@ -304,15 +303,28 @@ function rendreServeur(objet) {
   return carte;
 }
 
-function rendreObjetExterne(id, objet) {
-  if (objet.type === "editeur") return rendreEditeur(id, objet);
-  if (objet.type === "serveur") return rendreServeur(objet);
-  return rendreDonneeExterne(objet);
+function rendreLanceur(objet) {
+  const type = prendre(objet, "type");
+  const signe = element("span", "signe-lanceur " + type);
+  signe.setAttribute("aria-hidden", "true");
+  const carte = element("article", "object objet-lanceur objet-" + type, signe);
+  carte.setAttribute("aria-label", prendre(objet, "nom"));
+  return carte;
 }
+
+const rendusExternes = new Map([
+  ["dossier_donnees", rendreDonneeExterne],
+  ["archives_locales", rendreDonneeExterne],
+  ["fichiers", rendreDonneeExterne],
+  ["editeur", rendreEditeur],
+  ["serveur", rendreServeur],
+  ["raccourci_windows", rendreLanceur],
+  ["explorateur", rendreLanceur]
+]);
 
 function unitesExternes(modele) {
   const objets = new Map(Object.entries(modele).filter(([, objet]) =>
-    (typesDonneesExternes.has(objet?.type) || objet?.type === "editeur" || objet?.type === "serveur") && texte(objet.nom)));
+    rendusExternes.has(objet?.type) && texte(objet.nom)));
   const inclus = new Set();
   const contextes = new Map();
   for (const [id, contexte] of Object.entries(modele)) {
@@ -374,7 +386,8 @@ function ajouterObjetsExternes(diagramme, modele, relations, nomAppli) {
       }
       const ligne = element("div", "ligne-externe");
       if (flux.childElementCount) ligne.append(element("span", "origine-mobile", nomAppli), flux);
-      const carte = rendreObjetExterne(id, objet);
+      const rendre = rendusExternes.get(objet.type);
+      const carte = rendre(objet, id);
       if (nom && id === membres[0]) carte.prepend(element("span", "nom-contexte", idContexte === "chrome" ? null : nom));
       ligne.append(carte);
       unite.append(ligne);

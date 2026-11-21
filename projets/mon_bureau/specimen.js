@@ -1,12 +1,12 @@
 export default {
-  schema_version: "0.1.12",
+  schema_version: "0.1.13",
 
   projet: {
     presentation: [
       "Cockpit Windows pour lancer et administrer des projets, applications, dossiers et outils techniques.",
       "Il s’appuie sur une configuration JSON locale pour organiser les lanceurs et les catégories.",
       "Depuis son interface, il pilote les outils installés et mobilise les services système Windows.",
-      "Il ouvre les projets dans un éditeur et permet de démarrer, surveiller ou arrêter des serveurs locaux."
+      "Il lance des applications via leurs raccourcis, ouvre les dossiers dans l’Explorateur et gère des serveurs locaux."
     ]
   },
 
@@ -60,6 +60,16 @@ export default {
     ]
   },
 
+  raccourcis_windows: {
+    nom: "Raccourcis .lnk",
+    type: "raccourci_windows"
+  },
+
+  explorateur_windows: {
+    nom: "Explorateur Windows",
+    type: "explorateur"
+  },
+
   git: {
     nom: "Git",
     type: "outil_pilote"
@@ -95,6 +105,9 @@ export default {
 
   relations: [
     { source: "appli", destination: "vscode" },
+
+    { source: "appli", destination: "raccourcis_windows" },
+    { source: "appli", destination: "explorateur_windows" },
 
     { source: "appli", destination: "serveur_local" },
     { source: "serveur_local", destination: "appli" }

@@ -12,7 +12,7 @@ const presentation = document.querySelector("#texte-presentation");
 const legende = document.querySelector("#signes-legende");
 let commandeActive = null;
 const fermer = document.querySelector("#fermer");
-const versionSchema = "0.1.12";
+const versionSchema = "0.1.13";
 function ouvrirMenu(ouvert) {
   menu.hidden = !ouvert;
   declencheur.setAttribute("aria-expanded", String(ouvert));
@@ -83,6 +83,8 @@ const familles = [
   [".companion", "compagnon", "Application compagnon"],
   [".objet-serveur", "serveur", "Serveur"],
   [".fenetre-editeur", "editeur", "Éditeur"],
+  [".objet-raccourci_windows", "raccourci_windows", "Raccourci Windows"],
+  [".objet-explorateur", "explorateur", "Explorateur de fichiers"],
   [".browser", "navigateur", "Navigateur / surface externe"],
   [".connector", "flux", "Relation / flux"],
   [".property, .mini-property, .propriete-externe, .qualifications span, .proprietes-serveur span, .chip", "propriete", "Propriété"]

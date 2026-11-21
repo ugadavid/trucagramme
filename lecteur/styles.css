@@ -247,7 +247,7 @@ body{min-height:100vh;background:
 .flux-externes{display:flex;flex-direction:column;align-items:center;justify-content:center}
 .flux-externe{translate:none;height:23px;width:100%;font:700 2.8rem/1 Arial,sans-serif;color:var(--app)}
 .origine-mobile{display:none}
-.diagram.is-filtering :is(.donnee-externe,.fenetre-editeur,.objet-serveur){opacity:.22;filter:saturate(.45)}
+.diagram.is-filtering :is(.donnee-externe,.fenetre-editeur,.objet-serveur,.objet-lanceur){opacity:.22;filter:saturate(.45)}
 .diagram.highlight-data .donnee-externe{opacity:1;filter:none}
 @media(min-width:1101px){
   .diagram.avec-objets-externes{grid-template-columns:minmax(0,295px) minmax(480px,640px) minmax(0,295px)}
@@ -365,3 +365,14 @@ body{min-height:100vh;background:
 .proprietes-serveur{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 8px;font-size:.9rem;font-weight:650;overflow-wrap:anywhere}
 .proprietes-serveur span{max-width:100%}
 .proprietes-serveur .hote-serveur{flex-basis:100%;text-align:center;color:#5c5248;font:500 .88rem/1.3 ui-monospace,monospace}
+
+.objet-lanceur{display:grid;place-items:center;box-shadow:none;width:100%;padding:7px}
+.signe-lanceur{position:relative;display:block;box-sizing:border-box;font-size:20px}
+.miniature.raccourci_windows,.miniature.explorateur{font-size:5px}
+.raccourci_windows{width:2.8em;height:3.4em;border:1px solid #61758d;border-radius:.16em;background:linear-gradient(45deg,#bacadd 49%,white 51%) top right/.67em .67em no-repeat,#f9fcff}
+.raccourci_windows::before{content:".lnk";position:absolute;right:.38em;bottom:1.68em;color:#32475e;font:bold .77em/1 ui-monospace,monospace}
+.raccourci_windows::after{content:"↗";position:absolute;bottom:-.12em;left:-.23em;width:1em;text-align:center;border:1px solid #647d99;border-radius:.14em;background:white;color:#245f9b;font:bold 1.15em/1 sans-serif}
+.explorateur{width:6.9em;height:4.1em;border:1px solid #7c8793;border-radius:.3em;
+  background:linear-gradient(#dce2e8 0 18%,transparent 18%),linear-gradient(90deg,#edf0f4 0 22%,#fbfcfd 22%)}
+.explorateur::before{content:"";position:absolute;left:32%;top:43%;width:45%;height:34%;border:1px solid #ad8335;border-radius:.12em .18em .18em .18em;background:#f2ca74}
+.explorateur::after{content:"";position:absolute;left:32%;bottom:56%;width:19%;height:8%;border:1px solid #ad8335;border-bottom:0;border-radius:.14em .22em 0 0;background:#ead09a}

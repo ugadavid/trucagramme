@@ -10,9 +10,9 @@ La racine ouvre l’[accueil Trucagramme](https://ugadavid.github.io/trucagramme
 
 Sur une fiche partiellement représentée, le signal **⚠** attaché à la version ouvre un inventaire au survol, au focus ou au clic.
 
-Dans Mon Bureau, les groupes Outils pilotés et Services système réunissent les capacités utilisées depuis son interface. Processus et Ports TCP figurent dans ce second groupe. Une flèche relie Mon Bureau à la fenêtre de Visual Studio Code, qui contient les projets Mon GPT<3 et Trucagramme. Deux flèches relient l’application à son serveur HTTP sur 127.0.0.1. Python en qualifie le moteur. La fiche est entièrement représentée en vue 1, y compris lorsque `specimen.debug` est activé.
+Dans Mon Bureau, les groupes Outils pilotés et Services système réunissent les capacités utilisées depuis son interface. Processus et Ports TCP figurent dans ce second groupe. Une flèche relie Mon Bureau à la fenêtre de Visual Studio Code, qui contient les projets Mon GPT<3 et Trucagramme. Deux autres flèches sortantes représentent le lancement par raccourci Windows (.lnk) et l’ouverture de dossiers dans l’Explorateur. Deux flèches relient l’application à son serveur HTTP sur 127.0.0.1. Python en qualifie le moteur. La fiche est entièrement représentée en vue 1, y compris lorsque `specimen.debug` est activé.
 
-Le contrat courant est `0.1.12`. Les spécimens système `projets/accueil/specimen.js` et `projets/404/specimen.js` fournissent le contenu de l’accueil et de la vue « Projet introuvable ». L’index `projets/index.json` reste réservé aux projets du menu.
+Le contrat courant est `0.1.13`. Les spécimens système `projets/accueil/specimen.js` et `projets/404/specimen.js` fournissent le contenu de l’accueil et de la vue « Projet introuvable ». L’index `projets/index.json` reste réservé aux projets du menu.
 
 Dans Chrome Organizer, Chrome déclare le dossier User Data dans sa liste `contient`. Le lecteur alterne les unités externes entre gauche et droite dans leur ordre de déclaration (de deux à six unités). Les relations orientent les flèches, y compris les deux flèches opposées des sauvegardes à gauche. Les formes de dossier, d’archive et de fichier traduisent la nature des données externes.
 
