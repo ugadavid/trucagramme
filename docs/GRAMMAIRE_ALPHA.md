@@ -1412,3 +1412,89 @@ Une vue plus détaillée pourra expliquer plus tard :
 - quelles API ou commandes Windows sont utilisées.
 
 Ces évolutions ouvrent le contrat expérimental **schema_version 0.1.12**.
+
+
+## TG-016 — Raccourci Windows et Explorateur comme objets externes de niveau 1 (0.1.13)
+
+TG-015 a correctement intériorisé les outils pilotés et les services système lorsque l'utilisateur reste dans Mon Bureau. Cette simplification a toutefois supprimé une partie essentielle de l'identité fonctionnelle du produit : **Mon Bureau sert aussi à lancer ou ouvrir des surfaces externes**.
+
+La vue 1 doit donc distinguer clairement :
+
+- ce qui reste dans l'expérience fonctionnelle de Mon Bureau ;
+- ce que Mon Bureau déclenche et qui s'ouvre comme entité indépendante.
+
+Principe :
+
+> **Une capacité externe structurelle de l'application doit rester visible en vue 1, même si son mécanisme technique intermédiaire est masqué.**
+
+### Raccourci Windows
+
+Mon Bureau peut lancer des raccourcis Windows `.lnk`.
+
+La vue 1 ne détaille pas chaque application cible. Elle représente la capacité par un objet générique :
+
+```js
+raccourcis_windows: {
+  nom: "Raccourcis .lnk",
+  type: "raccourci_windows"
+}
+```
+
+`raccourci_windows` désigne ici le mécanisme fonctionnel visible de lancement par raccourci, pas le Shell Windows utilisé en dessous.
+
+La représentation doit évoquer immédiatement un raccourci Windows, idéalement par la convention visuelle du fichier / de la flèche de raccourci, sans dépendre d'un texte explicatif long.
+
+### Explorateur Windows
+
+L'ouverture d'un dossier fait apparaître une surface indépendante de Mon Bureau.
+
+Elle devient donc un objet externe :
+
+```js
+explorateur_windows: {
+  nom: "Explorateur Windows",
+  type: "explorateur"
+}
+```
+
+`explorateur` désigne une surface de gestion de fichiers externe à l'application principale.
+
+La représentation doit évoquer une fenêtre / un dossier de gestionnaire de fichiers.
+
+### Relations
+
+Les deux objets sont déclenchés depuis Mon Bureau :
+
+```js
+{ source: "appli", destination: "raccourcis_windows" },
+{ source: "appli", destination: "explorateur_windows" }
+```
+
+Aucune relation inverse n'est ajoutée en vue 1.
+
+Ces relations racontent uniquement le lancement / l'ouverture. Les détails `UseShellExecute`, résolution de `.lnk`, association Windows et création de processus appartiennent à une vue plus fine.
+
+### Frontière fonctionnelle affinée
+
+La règle de TG-015 reste valable :
+
+> **La frontière graphique de la vue 1 suit l'expérience fonctionnelle, pas la frontière des processus.**
+
+Elle est complétée par :
+
+> **Ce qui ouvre une surface indépendante ou représente une capacité externe structurante reste visible hors de l'application.**
+
+Ainsi :
+
+- PowerShell piloté avec résultat dans Mon Bureau reste interne ;
+- Processus / TCP restent internes ;
+- VS Code reste externe ;
+- serveur local reste externe ;
+- raccourcis `.lnk` restent externes ;
+- Explorateur Windows reste externe.
+
+### Question différée
+
+L'ouverture du navigateur par Mon Bureau est une autre surface externe réelle. Son statut exact en vue 1 n'est pas tranché dans TG-016 afin de ne pas élargir artificiellement la mission. Il devra être réévalué sur un cas concret ultérieur.
+
+Ces évolutions ouvrent le contrat expérimental **schema_version 0.1.13**.
