@@ -1,6 +1,6 @@
 # Direction d’architecture — séparer le sens du rendu
 
-**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.3`.**
+**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.4`.**
 
 Trucagramme sépare deux responsabilités.
 
@@ -182,3 +182,23 @@ Ces métadonnées ne deviennent pas automatiquement des objets graphiques du niv
 Le lecteur peut également connaître plusieurs spécimens pour permettre la navigation entre projets. Cette navigation relève de l'interface du lecteur, pas des relations sémantiques du diagramme.
 
 L'interface doit rester presque absente lorsqu'elle n'est pas utilisée et ne doit jamais provoquer de reflow du Trucagramme courant.
+
+
+## Vues système du lecteur — 0.1.4
+
+Le lecteur possède désormais deux spécimens système distincts des projets utilisateur :
+
+- `projets/accueil/specimen.js` ;
+- `projets/404/specimen.js`.
+
+Ils fournissent le contenu des états spéciaux du lecteur mais ne sont pas listés dans `projets/index.json`.
+
+Le lecteur choisit explicitement entre :
+
+- `rendreAccueil()` ;
+- `rendreSpecimen()` ;
+- `rendreProjetIntrouvable()`.
+
+Les vues système peuvent employer la grammaire graphique Trucagramme comme langage visuel sans créer de faux objet applicatif ni passer par le renderer technique d'un projet.
+
+La racine sans paramètre devient donc un véritable accueil du lecteur. Un alias inconnu devient un véritable état « projet introuvable » au lieu de retomber silencieusement sur le premier projet.
