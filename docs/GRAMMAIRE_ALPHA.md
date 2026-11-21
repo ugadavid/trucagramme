@@ -1252,3 +1252,72 @@ Principe :
 Cette règle est cohérente avec l'idée déjà présente du navigateur contenant un service, sans imposer encore une refonte de tous les conteneurs existants vers une syntaxe commune.
 
 Le contrat expérimental devient **schema_version 0.1.10**.
+
+
+## TG-014 — Serveur comme objet de niveau 1 (0.1.11)
+
+Mon Bureau montre qu'un détail techniquement exact peut être trop fin pour la vue 1.
+
+La relation :
+
+```text
+python -> serveur_local
+```
+
+décrit une mécanique d'implémentation réelle, mais elle n'est pas nécessaire à la compréhension générale.
+
+La vue 1 raconte plutôt :
+
+> Mon Bureau lance et pilote un serveur local, réalisé avec Python, exposé en HTTP sur la boucle locale.
+
+Le modèle devient :
+
+```js
+serveur_local: {
+  nom: "Serveur local",
+  type: "serveur",
+  moteur: "python",
+  protocole: "http",
+  hote: "127.0.0.1"
+}
+```
+
+### Serveur
+
+`serveur` devient une nature intrinsèque reconnue au niveau 1.
+
+La propriété `hote` raconte sa portée réseau. Le mot `local` n'appartient donc pas au type.
+
+Principe :
+
+> **Le type raconte ce que c'est ; les propriétés racontent comment il est réalisé et exposé.**
+
+### Moteur
+
+`moteur` qualifie la technologie qui réalise le serveur au niveau 1.
+
+Ici :
+
+```text
+moteur = python
+```
+
+ne crée pas de relation graphique vers l'objet Python du groupe Outils pilotés.
+
+Python reste un outil piloté connu de Mon Bureau, mais le lien d'implémentation détaillé appartient à une vue plus fine.
+
+### Rendu
+
+Un serveur doit être reconnaissable principalement par sa forme / son pictogramme.
+
+Les propriétés utiles peuvent être affichées de façon compacte :
+
+- Python ;
+- HTTP ;
+- 127.0.0.1.
+
+Le nom « Serveur local » peut rester uniquement accessible si la forme et les propriétés suffisent visuellement.
+
+Aucun asset serveur n'existe actuellement dans le dépôt. Une forme CSS simple est donc acceptable pour cette première représentation.
+
+Ces évolutions ouvrent le contrat expérimental **schema_version 0.1.11**.
