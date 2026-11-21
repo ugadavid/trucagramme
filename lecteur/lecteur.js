@@ -4,7 +4,12 @@ import { ajouterCommandes } from "./interactions.js";
 const menu = document.querySelector("#menu-lecteur");
 const declencheur = document.querySelector("#declencheur");
 const commande = document.querySelector("#commande-presentation");
-const panneau = document.querySelector("#presentation");
+const commandeLegende = document.querySelector("#commande-legende");
+const panneau = document.querySelector("#panneau-lecteur");
+const titrePanneau = document.querySelector("#titre-panneau");
+const presentation = document.querySelector("#texte-presentation");
+const legende = document.querySelector("#signes-legende");
+let commandeActive = null;
 const fermer = document.querySelector("#fermer");
 const versionSchema = "0.1.7";
 function ouvrirMenu(ouvert) {
@@ -12,26 +17,43 @@ function ouvrirMenu(ouvert) {
   declencheur.setAttribute("aria-expanded", String(ouvert));
 }
 
-function ouvrirPresentation(ouvert) {
-  panneau.hidden = !ouvert;
-  commande.setAttribute("aria-expanded", String(ouvert));
-  if (ouvert) fermer.focus({ preventScroll: true });
-  else commande.focus({ preventScroll: true });
+function fermerPanneau() {
+  if (!commandeActive) return;
+  panneau.hidden = true;
+  commandeActive.setAttribute("aria-expanded", "false");
+  commandeActive.focus({ preventScroll: true });
+  commandeActive = null;
+}
+
+function basculerPanneau(bouton) {
+  if (commandeActive === bouton) return fermerPanneau();
+  commandeActive?.setAttribute("aria-expanded", "false");
+  commandeActive = bouton;
+  const montreLegende = bouton === commandeLegende;
+  presentation.hidden = montreLegende;
+  legende.hidden = !montreLegende;
+  titrePanneau.textContent = montreLegende ? "Légende" : document.querySelector(".page-title h1").textContent;
+  panneau.hidden = false;
+  panneau.scrollTop = 0;
+  bouton.setAttribute("aria-expanded", "true");
+  fermer.focus({ preventScroll: true });
 }
 
 declencheur.onclick = () => {
-  if (!panneau.hidden) ouvrirPresentation(false);
+  fermerPanneau();
   ouvrirMenu(menu.hidden);
   declencheur.focus({ preventScroll: true });
 };
-commande.onclick = () => ouvrirPresentation(panneau.hidden);
-fermer.onclick = () => ouvrirPresentation(false);
+commande.onclick = () => basculerPanneau(commande);
+commandeLegende.onclick = () => basculerPanneau(commandeLegende);
+fermer.onclick = fermerPanneau;
 document.addEventListener("click", event => {
-  if (event.target.closest(".lecteur, #presentation")) return;
-  if (!panneau.hidden) {
-    ouvrirPresentation(false);
+  if (event.target.closest(".lecteur, #panneau-lecteur")) return;
+  if (commandeActive) {
+    fermerPanneau();
     event.preventDefault();
     event.stopPropagation();
+    return;
   }
   if (!menu.hidden) {
     ouvrirMenu(false);
@@ -40,12 +62,35 @@ document.addEventListener("click", event => {
 }, true);
 document.addEventListener("keydown", event => {
   if (event.key !== "Escape") return;
-  if (!panneau.hidden) ouvrirPresentation(false);
+  if (commandeActive) fermerPanneau();
   else if (!menu.hidden) {
     ouvrirMenu(false);
     declencheur.focus({ preventScroll: true });
   }
 });
+
+const familles = [
+  [".application", "appli", "Application principale"],
+  [".tech-group", "technique", "Socle technique"],
+  [".data-group", "donnees", "Données"],
+  [".avec-contexte", "contexte", "Contexte"],
+  [".forme-dossier", "dossier", "Dossier / espace de données"],
+  [".forme-archive", "archive", "Archive"],
+  [".feuille-format", "fichier", "Fichier"],
+  [".companion", "compagnon", "Application compagnon"],
+  [".browser", "navigateur", "Navigateur / surface externe"],
+  [".connector", "flux", "Relation / flux"],
+  [".property, .mini-property, .propriete-externe, .qualifications span, .chip", "propriete", "Propriété"]
+];
+
+function remplirLegende(diagramme) {
+  legende.replaceChildren();
+  for (const [selecteur, forme, libelle] of familles) {
+    if (diagramme.querySelector(selecteur)) {
+      legende.append(element("li", "", ornement("miniature " + forme), libelle));
+    }
+  }
+}
 
 function rendreSpecimen(source) {
   const page = document.querySelector(".page");
@@ -71,11 +116,12 @@ function rendreSpecimen(source) {
   const lignes = modele.projet?.presentation;
   if (Array.isArray(lignes) && lignes.length && lignes.every(texte)) {
     prendre(modele.projet, "presentation");
-    document.querySelector("#nom-presentation").textContent = nom;
-    document.querySelector("#texte-presentation").replaceChildren(...lignes.map(ligne => element("p", "", ligne)));
+    presentation.replaceChildren(...lignes.map(ligne => element("p", "", ligne)));
     commande.hidden = false;
   }
   const diagramme = rendreDiagramme(modele);
+  remplirLegende(diagramme);
+  commandeLegende.hidden = false;
   if (resteDuSens(modele)) {
     const signal = element("span", "lecture-partielle", "⚠");
     signal.setAttribute("role", "img");

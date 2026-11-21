@@ -6,7 +6,7 @@ Le projet est né le 20 novembre 2026 à partir d’un premier cas réel : **Mon
 
 ## État actuel
 
-La racine ouvre l’[accueil Trucagramme](https://ugadavid.github.io/trucagramme/). Le menu **trucagramme™** donne accès aux fiches [Mon Aise](https://ugadavid.github.io/trucagramme/?projet=mon_aise), [Mon GPT<3](https://ugadavid.github.io/trucagramme/?projet=mon_gpt) et [Chrome Organizer](https://ugadavid.github.io/trucagramme/?projet=chrome_organizer), ainsi qu’à leur présentation.
+La racine ouvre l’[accueil Trucagramme](https://ugadavid.github.io/trucagramme/). Le menu **trucagramme™** donne accès aux fiches [Mon Aise](https://ugadavid.github.io/trucagramme/?projet=mon_aise), [Mon GPT<3](https://ugadavid.github.io/trucagramme/?projet=mon_gpt) et [Chrome Organizer](https://ugadavid.github.io/trucagramme/?projet=chrome_organizer), ainsi qu’à leur présentation. Sur chaque fiche, **Légende** montre une miniature et un libellé pour chaque famille de signes présente dans le diagramme.
 
 Le contrat courant est `0.1.7`. Les spécimens système `projets/accueil/specimen.js` et `projets/404/specimen.js` fournissent le contenu de l’accueil et de la vue « Projet introuvable ». L’index `projets/index.json` reste réservé aux projets du menu.
 

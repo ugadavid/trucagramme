@@ -307,7 +307,7 @@ function ajouterDonneesExternes(diagramme, modele, relations, nomAppli) {
       const ligne = element("div", "ligne-externe");
       if (flux.childElementCount) ligne.append(element("span", "origine-mobile", nomAppli), flux);
       const carte = rendreDonneeExterne(objet);
-      if (nom && id === membres[0]) carte.prepend(element("span", "nom-contexte", nom));
+      if (nom && id === membres[0]) carte.prepend(element("span", "nom-contexte", idContexte === "chrome" ? null : nom));
       ligne.append(carte);
       unite.append(ligne);
     }
