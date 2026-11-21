@@ -1321,3 +1321,94 @@ Le nom « Serveur local » peut rester uniquement accessible si la forme et les 
 Aucun asset serveur n'existe actuellement dans le dépôt. Une forme CSS simple est donc acceptable pour cette première représentation.
 
 Ces évolutions ouvrent le contrat expérimental **schema_version 0.1.11**.
+
+
+## TG-015 — Services système intériorisés et frontière fonctionnelle de la vue 1 (0.1.12)
+
+Mon Bureau confirme que la frontière graphique de l'application ne doit pas suivre mécaniquement la frontière des processus Windows.
+
+Un composant ou service techniquement externe peut être représenté **à l'intérieur de l'application** lorsque :
+
+- l'utilisateur reste dans l'interface de l'application ;
+- l'application pilote l'interaction ;
+- le résultat revient dans cette même interface ;
+- le détail du mécanisme n'est pas nécessaire à la compréhension de niveau 1.
+
+Principe :
+
+> **La frontière graphique de la vue 1 suit l'expérience fonctionnelle, pas la frontière des processus.**
+
+### Services système
+
+Mon Bureau utilise des capacités Windows liées aux processus et aux écoutes TCP, notamment dans Used ports et dans la gestion de ses serveurs.
+
+Ces notions deviennent des objets de type :
+
+```text
+service_systeme
+```
+
+référencés par un nouveau groupe interne :
+
+```js
+appli: {
+  ...
+  services_systeme: [
+    "processus_windows",
+    "tcp_windows"
+  ]
+}
+```
+
+Les objets restent déclarés au premier niveau afin de garder leur identité sémantique :
+
+```js
+processus_windows: {
+  nom: "Processus",
+  type: "service_systeme"
+},
+
+tcp_windows: {
+  nom: "Ports TCP",
+  type: "service_systeme"
+}
+```
+
+Le renderer les présente dans un groupe interne **Services système**, au même niveau que Socle technique, Outils pilotés et Données.
+
+L'inclusion dans ce groupe suffit à raconter que Mon Bureau s'appuie sur ces services. Les relations répétitives entre l'application et ces services ne sont pas nécessaires en vue 1.
+
+### Shell Windows
+
+Le `shell_windows` actuel décrit un mécanisme intermédiaire utilisé pour ouvrir un raccourci, un dossier, une URL ou une autre application.
+
+Ce mécanisme est trop fin pour la vue 1 et n'est pas conservé dans le spécimen de niveau 1.
+
+La vue 1 montre les surfaces réellement pertinentes lorsqu'elles constituent elles-mêmes des objets importants, par exemple VS Code. Les détails tels que `UseShellExecute` appartiennent à une vue plus fine.
+
+### Contexte Windows
+
+Le contexte structurel `windows` utilisé jusqu'ici uniquement pour contenir Shell, Processus et TCP n'est plus nécessaire dans la vue 1 de Mon Bureau.
+
+Windows reste déjà exprimé comme environnement d'exécution de l'application via :
+
+```js
+tourne_sous: { os: "windows" }
+```
+
+La présentation textuelle de niveau 1 peut préciser que Mon Bureau s'appuie sur des services système Windows sans nécessiter un second grand objet Windows dans le diagramme.
+
+### Vue 1 et vue 2
+
+Le groupe interne dit seulement **quels services système sont mobilisés**.
+
+Une vue plus détaillée pourra expliquer plus tard :
+
+- comment les processus sont interrogés ;
+- comment les PID sont vérifiés ;
+- comment les ports TCP sont inspectés ;
+- comment les propriétaires d'écoute sont rapprochés ;
+- comment un processus est arrêté ;
+- quelles API ou commandes Windows sont utilisées.
+
+Ces évolutions ouvrent le contrat expérimental **schema_version 0.1.12**.
