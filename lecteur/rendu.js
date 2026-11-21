@@ -198,15 +198,9 @@ function rendreDonneeExterne(objet) {
   carte.setAttribute("aria-label", nom);
   const corps = element("div", "forme-externe");
   carte.append(corps);
-  if (texte(objet.contexte?.nom)) {
-    const contexte = prendre(objet.contexte, "nom");
-    carte.classList.add("avec-contexte");
-    carte.prepend(element("span", "nom-contexte", contexte));
-    carte.setAttribute("aria-label", contexte + " — " + nom);
-  }
   if (type === "dossier_donnees") {
     corps.classList.add("forme-dossier");
-    if (objet.role === "destination") corps.classList.add("dossier-cible");
+    if (objet.statut === "experimental") corps.classList.add("dossier-experimental");
     corps.append(element("h2", "", nom));
   } else if (type === "archives_locales") {
     corps.classList.add("forme-archive");
@@ -246,40 +240,77 @@ function rendreDonneeExterne(objet) {
   return carte;
 }
 
+function unitesExternes(modele) {
+  const objets = new Map(Object.entries(modele).filter(([, objet]) =>
+    typesDonneesExternes.has(objet?.type) && texte(objet.nom)));
+  const inclus = new Set();
+  const contextes = new Map();
+  for (const [id, contexte] of Object.entries(modele)) {
+    if (contexte?.type !== "contexte" || !texte(contexte.nom) || !Array.isArray(contexte.contient)) continue;
+    const membres = [];
+    const restants = [];
+    for (const cle of contexte.contient) {
+      if (objets.has(cle) && !inclus.has(cle)) {
+        membres.push(cle);
+        inclus.add(cle);
+      } else {
+        restants.push(cle);
+      }
+    }
+    if (!membres.length) continue;
+    contexte.contient = restants;
+    prendre(contexte, "type");
+    contextes.set(id, { nom: prendre(contexte, "nom"), membres });
+  }
+
+  const unites = [];
+  for (const id of Object.keys(modele)) {
+    if (contextes.has(id)) unites.push(contextes.get(id));
+    else if (objets.has(id) && !inclus.has(id)) unites.push({ membres: [id] });
+  }
+  return unites;
+}
+
 function ajouterDonneesExternes(diagramme, modele, relations, nomAppli) {
-  const sources = element("div", "objets-sources");
-  const destinations = element("div", "objets-destinations");
-  for (const [id, objet] of Object.entries(modele)) {
-    if (!typesDonneesExternes.has(objet?.type) || !texte(objet.nom)) continue;
-    const nom = objet.nom;
-    const source = objet.role === "source";
-    const carte = rendreDonneeExterne(objet);
-    if (source || objet.role === "destination") prendre(objet, "role");
-    const flux = element("div", "flux-externes");
-    for (const relation of relations) {
-      const versAppli = relation?.source === id && relation.destination === "appli";
-      const depuisAppli = relation?.source === "appli" && relation.destination === id;
-      if (!versAppli && !depuisAppli) continue;
-      const description = versAppli ? nom + " vers " + nomAppli : nomAppli + " vers " + nom;
-      const sens = source === versAppli ? "aller" : "retour";
-      flux.append(fleche("flux-externe " + sens, description));
-      prendre(relation, "source");
-      prendre(relation, "destination");
+  const unites = unitesExternes(modele);
+  if (!unites.length) return;
+  diagramme.classList.add("avec-donnees-externes");
+  const colonnes = [element("div", "colonne gauche"), element("div", "colonne droite")];
+  unites.forEach(({ nom, membres }, index) => {
+    const liens = relations.filter(r => r && (
+      (r.source === "appli" && membres.includes(r.destination)) ||
+      (r.destination === "appli" && membres.includes(r.source))
+    ));
+    const gauche = unites.length === 1
+      ? liens.length > 0 && liens.every(r => r.destination === "appli")
+      : index % 2 === 0;
+    const unite = element("div", "unite-externe");
+    unite.style.setProperty("--ordre", index + 1);
+    if (nom) {
+      unite.classList.add("avec-contexte");
+      unite.setAttribute("role", "group");
+      unite.setAttribute("aria-label", nom);
     }
-    const ligne = element("div", "ligne-externe");
-    if (source) ligne.append(carte);
-    if (flux.childElementCount) {
-      if (!source) ligne.append(element("span", "origine-mobile", nomAppli));
-      ligne.append(flux);
+    for (const id of membres) {
+      const objet = modele[id];
+      const flux = element("div", "flux-externes");
+      for (const relation of liens.filter(r => r.source === id || r.destination === id)) {
+        const versAppli = relation.destination === "appli";
+        const description = versAppli ? objet.nom + " vers " + nomAppli : nomAppli + " vers " + objet.nom;
+        flux.append(fleche("flux-externe " + (versAppli ? "vers-appli" : "depuis-appli"), description));
+        prendre(relation, "source");
+        prendre(relation, "destination");
+      }
+      const ligne = element("div", "ligne-externe");
+      if (flux.childElementCount) ligne.append(element("span", "origine-mobile", nomAppli), flux);
+      const carte = rendreDonneeExterne(objet);
+      if (nom && id === membres[0]) carte.prepend(element("span", "nom-contexte", nom));
+      ligne.append(carte);
+      unite.append(ligne);
     }
-    if (!source) ligne.append(carte);
-    (source ? sources : destinations).append(ligne);
-  }
-  if (sources.childElementCount || destinations.childElementCount) {
-    diagramme.classList.add("avec-donnees-externes");
-    if (sources.childElementCount) diagramme.prepend(sources);
-    if (destinations.childElementCount) diagramme.append(destinations);
-  }
+    colonnes[gauche ? 0 : 1].append(unite);
+  });
+  diagramme.append(...colonnes.filter(colonne => colonne.childElementCount));
 }
 
 function rendreDiagramme(modele) {

@@ -1,5 +1,5 @@
 export default {
-  schema_version: "0.1.6",
+  schema_version: "0.1.7",
 
   projet: {
     presentation: [
@@ -26,11 +26,15 @@ export default {
     }
   },
 
+  chrome: {
+    nom: "Chrome",
+    type: "contexte",
+    contient: ["chrome_user_data"]
+  },
+
   chrome_user_data: {
     nom: "User Data",
     type: "dossier_donnees",
-    contexte: { nom: "Chrome" },
-    role: "source",
     lecture_seule: true
   },
 
@@ -50,7 +54,6 @@ export default {
   restauration: {
     nom: "Copie de restauration",
     type: "dossier_donnees",
-    role: "destination",
     statut: "experimental"
   },
 

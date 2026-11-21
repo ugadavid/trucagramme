@@ -6,7 +6,7 @@ const declencheur = document.querySelector("#declencheur");
 const commande = document.querySelector("#commande-presentation");
 const panneau = document.querySelector("#presentation");
 const fermer = document.querySelector("#fermer");
-const versionSchema = "0.1.6";
+const versionSchema = "0.1.7";
 function ouvrirMenu(ouvert) {
   menu.hidden = !ouvert;
   declencheur.setAttribute("aria-expanded", String(ouvert));
