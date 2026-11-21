@@ -508,3 +508,75 @@ Le signal de lecture partielle reste minimal, mais son rendu doit appartenir au 
 Il doit être représenté comme une **petite languette / bulle attachée à la pastille de version**, comparable dans son principe à `AUTONOME` ou `SÉPARÉ DES BINAIRES`, plutôt que comme un caractère isolé posé à côté.
 
 Le contenu reste aussi sobre que possible : un pictogramme court suffit. Aucun texte explicatif visible n'est ajouté.
+
+## 21. Lecteur Trucagramme — interface discrète et présentation contextuelle
+
+Le protocole graphique reste la surface principale. Le lecteur peut ajouter une interface autour de cette surface, mais celle-ci doit rester **discrète et secondaire**.
+
+### Interface du lecteur
+
+Le lecteur peut proposer un petit déclencheur `trucagramme™` (ou équivalent proche) presque caché au repos.
+
+Au survol ou au clic, il révèle une interface légère contenant au minimum :
+
+- navigation entre les projets connus du lecteur ;
+- commande `Présentation` pour le projet courant.
+
+Cette interface appartient au **lecteur**, pas au diagramme de niveau 1.
+
+Elle ne doit pas déplacer, réduire ni restructurer le Trucagramme affiché.
+
+### Présentation fonctionnelle
+
+Un projet peut fournir une courte présentation fonctionnelle destinée à répondre rapidement à « qu'est-ce que fait ce machin ? ».
+
+Cette présentation :
+
+- est contextuelle ;
+- reste très courte, idéalement 4 à 6 lignes ;
+- décrit ce que fait l'outil du point de vue fonctionnel ;
+- n'est ni un README, ni une documentation utilisateur complète, ni une explication technique.
+
+Elle s'ouvre dans un panneau superposé arrivant depuis la droite.
+
+Le panneau :
+
+- ne remplace jamais la vue technique ;
+- ne provoque aucun reflow du diagramme ;
+- peut temporairement masquer une partie du Trucagramme ;
+- se ferme par un nouveau clic sur `Présentation`, par sa croix, par clic hors panneau et naturellement par `Échap` ;
+- utilise une animation courte et discrète.
+
+### Titre du spécimen
+
+Le titre actuel de type :
+
+```text
+Mon Aise — schéma technique
+```
+
+est trop dominant.
+
+Le lecteur connaît déjà le contexte Trucagramme ; le titre principal peut donc être réduit au nom du projet :
+
+```text
+Mon Aise
+```
+
+La typographie et la taille doivent être nettement plus discrètes, tout en restant clairement identifiables.
+
+Le numéro de version et son éventuel signal de lecture partielle restent associés au titre.
+
+### Séparation des responsabilités
+
+Le diagramme de niveau 1 reste permanent.
+
+Le lecteur ajoute temporairement :
+
+- navigation ;
+- contexte ;
+- présentation fonctionnelle.
+
+La présentation ne devient pas un nouvel objet du diagramme et ne doit pas être reliée par une flèche.
+
+Ces évolutions ouvrent le contrat expérimental **schema_version 0.1.3** pour les métadonnées de projet consommées par le lecteur.
