@@ -1,6 +1,6 @@
 # Direction d’architecture — séparer le sens du rendu
 
-**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.7`.**
+**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.8`.**
 
 Trucagramme sépare deux responsabilités.
 
@@ -237,3 +237,18 @@ Un contexte devient un objet structurel déclaré, de `type = contexte`, avec un
 Le placement ne dérive plus du sens des flux, sauf dans le cas particulier d'une seule unité externe. De 2 à 6 unités, le renderer alterne gauche/droite selon l'ordre de déclaration, indépendamment des directions. À partir de 7 unités, la stratégie devra aussi employer haut/bas, mais son algorithme n'est pas anticipé avant un cas réel.
 
 Le renderer conserve les relations telles quelles : deux relations opposées entre les mêmes objets restent deux flèches distinctes, quel que soit le côté où l'objet est placé.
+
+
+## TG-012 — outils pilotés et debug non consommant (0.1.8)
+
+Le modèle distingue désormais :
+
+- un **outil piloté**, techniquement externe mais représenté à l'intérieur de l'application au niveau 1 ;
+- une **application externe**, visible comme participant séparé ;
+- une couche **DEBUG** appartenant au spécimen / lecteur.
+
+Les outils pilotés restent déclarés comme objets de premier niveau afin de pouvoir participer à des relations, mais `appli.outils_pilotes` contient leurs clés et guide leur regroupement graphique interne.
+
+Le renderer consomme la déclaration de ce groupe et les objets qu'il sait représenter comme outils pilotés. Les relations répétitives entre l'application et ces outils peuvent être retirées du spécimen lorsque l'inclusion suffit à exprimer leur usage.
+
+La couche DEBUG est construite depuis le reste non rendu après le rendu normal. Elle ne supprime, ne modifie et ne consomme rien dans ce reste. La lecture partielle `⚠` doit donc rester strictement identique avec `debug=true` et `debug=false`, à modèle sémantique égal.
