@@ -770,3 +770,112 @@ Ces évolutions ouvrent le contrat expérimental **schema_version 0.1.5**.
 Le vert identifie la famille des données. À l’intérieur de cette famille, le type choisit la silhouette : un dossier pour un espace de données, une boîte à couvercle pour une archive locale, une feuille par format pour les fichiers produits. Le rôle destination donne un contour discontinu au dossier préparé. La languette de statut et les qualifications restent attachées à l’objet qu’elles décrivent.
 
 Un cadre léger portant le nom du contexte peut entourer la forme. Ainsi « Chrome » situe le dossier User Data. L’unique flèche entrante part du dossier. L’archive garde ses deux relations opposées et le groupe de feuilles reçoit une seule relation.
+
+
+## TG-009b — Objets intrinsèques, contexte structurel et placement équilibré (0.1.7)
+
+TG-009a a confirmé l'intérêt de donner une forme propre aux objets externes, mais a aussi révélé deux confusions à corriger.
+
+### Le sens directionnel appartient à la relation
+
+Un objet n'est pas intrinsèquement une source ou une destination.
+
+Les propriétés telles que :
+
+```text
+role = source
+role = destination
+```
+
+ne doivent pas être utilisées pour décrire la direction d'un échange.
+
+La direction est déjà entièrement portée par :
+
+```text
+relation.source
+relation.destination
+```
+
+Les sauvegardes de Chrome Organizer le démontrent : le même objet est destination dans une relation et source dans une autre.
+
+Principe :
+
+> **L'objet dit ce qu'il est. La relation dit dans quel sens quelque chose circule.**
+
+Le renderer ne doit donc pas utiliser un rôle directionnel de l'objet pour choisir sa position ou orienter ses flèches.
+
+### Le contexte est une structure, pas une propriété répétée
+
+Un contexte qui contient un ou plusieurs objets devient un véritable élément structurel.
+
+Préférer une structure de ce type :
+
+```js
+chrome: {
+  nom: "Chrome",
+  type: "contexte",
+  contient: ["chrome_user_data"]
+},
+
+chrome_user_data: {
+  nom: "User Data",
+  type: "dossier_donnees",
+  lecture_seule: true
+}
+```
+
+à :
+
+```js
+chrome_user_data: {
+  ...,
+  contexte: { nom: "Chrome" }
+}
+```
+
+Le contexte peut ainsi contenir plusieurs objets sans répéter son identité.
+
+`contient` référence des objets effectivement déclarés dans le modèle. Il exprime une appartenance / inclusion et ne crée aucun flux.
+
+### La position n'encode pas la direction
+
+Trucagramme ne réserve pas la gauche aux entrées ni la droite aux sorties.
+
+La position sert à équilibrer et structurer la vue.
+
+La flèche porte seule le sens de la relation.
+
+Ainsi un objet placé à gauche peut parfaitement recevoir une flèche venant de l'application, et un objet placé à droite peut envoyer une flèche vers elle.
+
+Principe :
+
+> **Position = composition. Flèche = direction.**
+
+### Règle de placement des objets externes
+
+L'ordre de référence est l'ordre de déclaration des unités externes dans le spécimen. Un contexte avec ses objets contenus constitue une seule unité de placement autour de l'application.
+
+- **1 unité externe** : si une seule relation directe existe avec l'application, placer à gauche pour `objet -> appli` et à droite pour `appli -> objet`. Un cas à deux sens doit utiliser un choix de rendu déterministe sans ajouter de sémantique au modèle.
+- **2 à 6 unités externes** : la direction des relations n'intervient plus dans le placement. Alterner simplement selon l'index : 0 gauche, 1 droite, 2 gauche, 3 droite, etc.
+- **7 unités ou plus** : la grammaire prévoit d'ouvrir également des positions en haut et en bas. Aucun algorithme quatre côtés n'est figé tant qu'un cas réel à 7+ objets ne l'exige.
+
+La règle 2–6 est donc volontairement simple :
+
+```js
+cote = index % 2 === 0 ? "gauche" : "droite"
+```
+
+Elle vise un diagramme équilibré et reproductible sans moteur de placement complexe.
+
+### Conséquence pour Chrome Organizer
+
+Dans l'ordre actuel des quatre unités :
+
+1. contexte Chrome / User Data → gauche ;
+2. Sauvegardes → droite ;
+3. Exports JSON / HTML → gauche ;
+4. Copie de restauration → droite.
+
+Les cinq relations conservent leurs directions propres, indépendamment de ces positions.
+
+Ces corrections ouvrent le contrat expérimental **schema_version 0.1.7**.
