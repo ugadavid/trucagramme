@@ -1,4 +1,6 @@
-function ajouterCommandes(page, diagramme) {
+import { element } from "./rendu.js";
+
+export function ajouterCommandes(page, diagramme) {
   const nav = element("nav", "visual-key");
   nav.setAttribute("aria-label", "Clés visuelles interactives");
   function bouton(cible, symbole, titre) {

@@ -1,22 +1,11 @@
-const projets = new Map([
-  ["mon_aise", { nom: "Mon Aise", fichier: "specimen-mon-aise.js" }],
-  ["mon_gpt", { nom: "Mon GPT<3", fichier: "specimen.js" }]
-]);
-const demande = new URLSearchParams(location.search).get("projet");
-const courant = projets.has(demande) ? demande : "mon_aise";
+import { element, prendre, rendreDiagramme, resteDuSens, texte } from "./rendu.js";
+import { ajouterCommandes } from "./interactions.js";
 
 const menu = document.querySelector("#menu-lecteur");
 const declencheur = document.querySelector("#declencheur");
 const commande = document.querySelector("#commande-presentation");
 const panneau = document.querySelector("#presentation");
 const fermer = document.querySelector("#fermer");
-for (const [alias, projet] of projets) {
-  const lien = element("a", "", projet.nom);
-  lien.href = "?projet=" + alias;
-  if (alias === courant) lien.setAttribute("aria-current", "page");
-  menu.insertBefore(lien, commande);
-}
-
 function ouvrirMenu(ouvert) {
   menu.hidden = !ouvert;
   declencheur.setAttribute("aria-expanded", String(ouvert));
@@ -96,8 +85,26 @@ function rendreSpecimen(source) {
   ajouterCommandes(page, diagramme);
 }
 
-const scriptSpecimen = document.createElement("script");
-scriptSpecimen.src = projets.get(courant).fichier;
-scriptSpecimen.onload = () => rendreSpecimen(specimen);
-scriptSpecimen.onerror = () => document.querySelector(".page").textContent = "Impossible de charger le projet.";
-document.head.append(scriptSpecimen);
+async function chargerProjets() {
+  const index = await fetch("projets/index.json");
+  if (!index.ok) throw new Error("Index des projets indisponible");
+  const alias = await index.json();
+  const demande = new URLSearchParams(location.search).get("projet");
+  const courant = alias.includes(demande) ? demande : alias[0];
+  const projets = await Promise.all(alias.map(async id => {
+    if (!/^[a-z0-9_]+$/.test(id)) throw new Error("Alias invalide");
+    const { default: specimen } = await import(`../projets/${id}/specimen.js`);
+    return specimen;
+  }));
+  for (const [i, projet] of projets.entries()) {
+    const lien = element("a", "", projet.appli.nom);
+    lien.href = "?projet=" + alias[i];
+    if (alias[i] === courant) lien.setAttribute("aria-current", "page");
+    menu.insertBefore(lien, commande);
+  }
+  rendreSpecimen(projets[alias.indexOf(courant)]);
+}
+
+chargerProjets().catch(() => {
+  document.querySelector(".page").textContent = "Impossible de charger le projet.";
+});

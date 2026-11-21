@@ -4,7 +4,7 @@ Mon Aise reste le spécimen ouvert par l’index, avec `alias: "mon_aise"`. Les 
 
 ## Recette par HTTP local
 
-Depuis la racine du dépôt, la commande suivante sert le prototype sur la boucle locale. [Ouvrir Mon Aise sur le port 8000](http://127.0.0.1:8000/protocole_mon_gpt_alpha/index.html).
+Depuis la racine du dépôt, la commande suivante sert le prototype sur la boucle locale. [Ouvrir Mon Aise sur le port 8000](http://127.0.0.1:8000/).
 
 ```powershell
 python -m http.server 8000 --bind 127.0.0.1

@@ -19,7 +19,7 @@ function element(tag, classe, ...contenu) {
 function image(cle, classe, alt = "") {
   if (!Object.hasOwn(icones, cle)) return null;
   const img = element("img", classe);
-  img.src = "../assets/" + icones[cle];
+  img.src = "assets/communs/" + icones[cle];
   img.alt = alt;
   return img;
 }
@@ -53,22 +53,28 @@ async function chargerIdentite(appli, entete) {
   if (!texte(appli.alias) || !/^[a-z0-9_]+$/.test(appli.alias)) return;
   const alias = prendre(appli, "alias");
   const fichier = alias + ".png";
-  if (location.protocol !== "file:") {
-    // Un HEAD sur un PNG absent journalise un 404 dans Edge.
-    // http.server expose les fichiers présents sous forme de liens.
-    try {
-      const reponse = await fetch("../assets/");
-      if (!reponse.ok) return;
-      const dossier = new DOMParser().parseFromString(await reponse.text(), "text/html");
-      if (!dossier.querySelector(`a[href="${fichier}"]`)) return;
-    } catch {
-      return;
+  const chemin = alias + "/" + fichier;
+  const racine = "assets/projets/";
+  async function liens(dossier) {
+    const reponse = await fetch(racine + dossier);
+    if (!reponse.ok) return null;
+    return new DOMParser().parseFromString(await reponse.text(), "text/html");
+  }
+  try {
+    const index = await liens("");
+    // Pages fournit les liens vers les PNG ; http.server liste les sous-dossiers.
+    if (!index?.querySelector(`a[href="${chemin}"]`)) {
+      if (!index?.querySelector(`a[href="${alias}/"]`)) return;
+      const dossier = await liens(alias + "/");
+      if (!dossier?.querySelector(`a[href="${fichier}"]`)) return;
     }
+  } catch {
+    return;
   }
   const img = element("img", "robot");
   img.alt = "";
   img.addEventListener("load", () => entete.prepend(img), { once: true });
-  img.src = "../assets/" + fichier;
+  img.src = racine + chemin;
 }
 
 const rolesTechniques = new Set(["runtime", "langage", "bibliotheque_graphique"]);
@@ -205,3 +211,5 @@ function rendreDiagramme(modele) {
   diagramme.setAttribute("aria-label", "Schéma technique de " + nom);
   return diagramme;
 }
+
+export { element, prendre, rendreDiagramme, resteDuSens, texte };

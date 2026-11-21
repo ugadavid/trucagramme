@@ -1,12 +1,12 @@
 # TG-005a — Correction du rendu sémantique et des identités
 
-Le contrat reste en **0.1.2** pour les deux spécimens. [L’index](../../protocole_mon_gpt_alpha/index.html) ouvre Mon Aise.
+Le contrat reste en **0.1.2** pour les deux spécimens. [L’index](../../index.html) ouvre Mon Aise.
 
 ## Pourquoi la quatrième carte apparaissait
 
 TG-005 parcourait les entrées du socle et créait une carte dès que la valeur était un texte non vide. Le rendu consommait alors la clé, y compris `canexistepas`. Cela créait une carte sans rôle défini et empêchait le signal de lecture partielle.
 
-Le [renderer corrigé](../../protocole_mon_gpt_alpha/rendu.js) interprète un texte sous trois rôles précis : `runtime`, `langage` et `bibliotheque_graphique`. Le rôle permet de représenter une valeur nouvelle. Une autre clé reste dans la copie de travail et déclenche le signal discret.
+Le [renderer corrigé](../../lecteur/rendu.js) interprète un texte sous trois rôles précis : `runtime`, `langage` et `bibliotheque_graphique`. Le rôle permet de représenter une valeur nouvelle. Une autre clé reste dans la copie de travail et déclenche le signal discret.
 
 Pour les données, le nom de la famille peut être nouveau. Une ligne est créée si au moins une propriété est interprétable : un rôle, un type ou un format textuel, ou la mention `optionnel: true`. Les propriétés supplémentaires restent disponibles pour le calcul du signal. La portée des deux propriétés collectives est conservée.
 

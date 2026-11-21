@@ -168,11 +168,11 @@ Cette conclusion reste une direction de conception ; elle n’autorise pas encor
 
 La référence visuelle actuelle est :
 
-`protocole_mon_gpt_alpha/trucagramme-mon-gpt.png`
+`docs/references/trucagramme-mon-gpt.png`
 
 Le prototype exécutable correspondant est :
 
-`protocole_mon_gpt_alpha/index.html`
+`index.html`
 
 ### Ce qu’il raconte actuellement
 
@@ -387,7 +387,7 @@ appli.alias = mon_aise
 `alias` sert aux usages techniques légers du renderer, notamment la recherche d'un asset d'identité sous la forme :
 
 ```text
-assets/<alias>.<extension>
+assets/projets/<alias>/<alias>.<extension>
 ```
 
 L'alias doit rester simple, sans espace ni accent, avec des caractères de type `a-z`, `0-9` et `_`.
@@ -484,7 +484,7 @@ appli.alias = mon_aise
 Le renderer utilise l'alias pour rechercher une identité graphique conventionnelle, actuellement :
 
 ```text
-assets/<alias>.png
+assets/projets/<alias>/<alias>.png
 ```
 
 La présence d'un alias n'impose pas la présence de l'asset.

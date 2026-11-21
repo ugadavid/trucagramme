@@ -1,6 +1,6 @@
 # TG-003 — Première séparation du sens et du rendu
 
-Le spécimen se consulte toujours en ouvrant directement [index.html](../../protocole_mon_gpt_alpha/index.html). Sa description est désormais dans [specimen.js](../../protocole_mon_gpt_alpha/specimen.js). Sur les captures de recette, la comparaison des pixels RGB avec TG-001 donne zéro différence, sur bureau comme sur mobile.
+Le spécimen se consulte toujours en ouvrant directement [index.html](../../index.html). Sa description est désormais dans [specimen.js](../../projets/mon_gpt/specimen.js). Sur les captures de recette, la comparaison des pixels RGB avec TG-001 donne zéro différence, sur bureau comme sur mobile.
 
 ## Du modèle à la fiche
 

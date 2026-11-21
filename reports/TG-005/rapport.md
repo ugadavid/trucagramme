@@ -1,6 +1,6 @@
 # TG-005 — Mon Aise et contrat 0.1.2
 
-[Ouvrir le prototype](../../protocole_mon_gpt_alpha/index.html) affiche Mon Aise. Les trois membres de son socle et ses quatre familles de données sont visibles. Les deux spécimens publiés sont lus intégralement.
+[Ouvrir le prototype](../../index.html) affiche Mon Aise. Les trois membres de son socle et ses quatre familles de données sont visibles. Les deux spécimens publiés sont lus intégralement.
 
 ## Ce que le deuxième spécimen a révélé
 

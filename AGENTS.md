@@ -28,10 +28,10 @@ La séparation future entre **modèle sémantique** et **rendu** est une directi
 
 Pour le spécimen Mon GPT<3 :
 
-- prototype : `protocole_mon_gpt_alpha/index.html`
-- styles : `protocole_mon_gpt_alpha/styles.css`
-- interaction : `protocole_mon_gpt_alpha/app.js`
-- référence validée : `protocole_mon_gpt_alpha/trucagramme-mon-gpt.png`
+- prototype : `index.html`
+- styles : `lecteur/styles.css`
+- interaction : `lecteur/interactions.js`
+- référence validée : `docs/references/trucagramme-mon-gpt.png`
 - assets disponibles : `assets/`
 
 Ne pas remplacer la grammaire visuelle validée par une autre esthétique sans demande explicite.

@@ -1,8 +1,8 @@
 # TG-004 — Relations minimales en 0.1.1
 
-Le [spécimen](../../protocole_mon_gpt_alpha/specimen.js) déclare le rôle du Collector dans `collector.role` et décrit ChatGPT comme le service web contenu dans l’objet `navigateur`. Ses deux relations, `collector → appli` et `appli → navigateur`, portent chacune uniquement `source` et `destination`. Ces quatre références correspondent aux clés des objets déclarés. La version de la fiche reste `alpha-0.0.0.1`.
+Le [spécimen](../../projets/mon_gpt/specimen.js) déclare le rôle du Collector dans `collector.role` et décrit ChatGPT comme le service web contenu dans l’objet `navigateur`. Ses deux relations, `collector → appli` et `appli → navigateur`, portent chacune uniquement `source` et `destination`. Ces quatre références correspondent aux clés des objets déclarés. La version de la fiche reste `alpha-0.0.0.1`.
 
-Le [rendu](../../protocole_mon_gpt_alpha/rendu.js) construit le Collector et le navigateur à partir de leurs déclarations. Il lit le nom du contenu dans le navigateur. Chaque flèche dépend à la fois de la présence de ses deux objets dans la vue et de la relation correspondante dans le modèle. Son libellé accessible donne les extrémités dans l’ordre du flux.
+Le [rendu](../../lecteur/rendu.js) construit le Collector et le navigateur à partir de leurs déclarations. Il lit le nom du contenu dans le navigateur. Chaque flèche dépend à la fois de la présence de ses deux objets dans la vue et de la relation correspondante dans le modèle. Son libellé accessible donne les extrémités dans l’ordre du flux.
 
 Le contrat courant accepte exclusivement `schema_version: "0.1.1"`. Le passage est direct, sans migration ni couche de compatibilité. La recherche dans les scripts du prototype confirme la suppression des champs `role_pour_mon_gpt`, `direction`, `action` et `via`, ainsi que des anciennes références implicites.
 

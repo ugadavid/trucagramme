@@ -1,4 +1,4 @@
-const specimen = {
+export default {
   schema_version: "0.1.3",
   projet: {
     presentation: [

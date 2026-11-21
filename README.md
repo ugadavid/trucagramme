@@ -6,15 +6,15 @@ Le projet est né le 20 novembre 2026 à partir d’un premier cas réel : **Mon
 
 ## État actuel
 
-Trucagramme est en **alpha exploratoire**. Nous ne cherchons pas encore à construire un éditeur ni un générateur complet.
+Le [lecteur Trucagramme](https://ugadavid.github.io/trucagramme/) présente deux spécimens réels en `schema_version: "0.1.3"`. Mon Aise s’ouvre par défaut. Le menu **trucagramme™** permet de rejoindre [Mon GPT<3](https://ugadavid.github.io/trucagramme/?projet=mon_gpt) et de consulter la présentation du projet courant.
 
-Le premier spécimen se trouve dans :
+Pour ouvrir le lecteur en local, lancer depuis la racine du dépôt :
 
-- `protocole_mon_gpt_alpha/index.html` — prototype HTML/CSS/JS ;
-- `protocole_mon_gpt_alpha/trucagramme-mon-gpt.png` — référence visuelle validée ;
-- `assets/` — premiers logos et pictogrammes destinés au protocole.
+```powershell
+py -3 -m http.server 8000 --bind 127.0.0.1
+```
 
-La référence actuelle représente, à un niveau technique général, Mon GPT<3, son environnement Windows, son socle Python/Tkinter-Tk, ses données locales, son compagnon Mon GPT Collector et l’ouverture de ChatGPT dans un navigateur.
+Puis ouvrir [le lecteur local](http://127.0.0.1:8000/).
 
 ## Idée directrice
 
@@ -23,7 +23,7 @@ Trucagramme distingue deux choses :
 1. **ce qui est dit** : application, langage, bibliothèque, données, propriétés, compagnons, flux, etc. ;
 2. **le disant** : cadre, couleur, icône, emboîtement, regroupement, badge, flèche, position.
 
-À terme, une description sémantique devrait pouvoir être rendue sans contenir elle-même de choix CSS ou de coordonnées. Cette séparation est une **direction d’architecture**, pas encore une fonctionnalité à implémenter.
+Chaque spécimen décrit les faits techniques. Le renderer choisit leur représentation graphique.
 
 ## Principes déjà retenus
 
@@ -42,11 +42,16 @@ Voir [la grammaire alpha](docs/GRAMMAIRE_ALPHA.md).
 
 ## Organisation du dépôt
 
-- `assets/` — logos, icônes et pictogrammes ;
+- `index.html` — point d’entrée du lecteur ;
+- `lecteur/` — navigation, rendu technique, interactions et styles ;
+- `projets/index.json` — alias disponibles, dans l’ordre du menu ;
+- `projets/<alias>/specimen.js` — nom, présentation et description technique du projet ;
+- `assets/communs/` — pictogrammes du protocole ;
+- `assets/projets/<alias>/` — identité graphique facultative du projet ;
 - `docs/` — principes et décisions de conception ;
 - `missions/` — briefs canoniques confiés à Codex ;
 - `reports/` — rapports et preuves produits après mission ;
-- `protocole_mon_gpt_alpha/` — premier spécimen de travail.
+- `docs/references/` — [référence graphique historique de Mon GPT<3](docs/references/trucagramme-mon-gpt.png).
 
 ## Méthode de travail
 

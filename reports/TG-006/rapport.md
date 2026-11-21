@@ -1,14 +1,14 @@
 # TG-006 — Premier lecteur Trucagramme
 
-Le lecteur démarre sur [Mon Aise](http://127.0.0.1:8000/protocole_mon_gpt_alpha/index.html). Un clic sur **trucagramme™**, en bas à gauche, révèle deux liens de projet et la commande **Présentation**. Le titre externe reprend uniquement le nom du projet, en caractères à empattements plus petits. La version et son éventuelle languette restent associées au titre.
+Le lecteur démarre sur [Mon Aise](http://127.0.0.1:8000/). Un clic sur **trucagramme™**, en bas à gauche, révèle deux liens de projet et la commande **Présentation**. Le titre externe reprend uniquement le nom du projet, en caractères à empattements plus petits. La version et son éventuelle languette restent associées au titre.
 
 ## Navigation et responsabilités
 
-Le [lecteur](../../protocole_mon_gpt_alpha/lecteur.js) associe deux valeurs du paramètre `projet` à leurs fichiers de spécimen. Chaque lien recharge la page avec un seul fichier. L’URL de [Mon GPT<3](http://127.0.0.1:8000/protocole_mon_gpt_alpha/index.html?projet=mon_gpt) ouvre directement sa fiche. Une URL sans choix reconnu ouvre Mon Aise.
+Le [lecteur](../../lecteur/lecteur.js) associe deux valeurs du paramètre `projet` à leurs fichiers de spécimen. Chaque lien recharge la page avec un seul fichier. L’URL de [Mon GPT<3](http://127.0.0.1:8000/?projet=mon_gpt) ouvre directement sa fiche. Une URL sans choix reconnu ouvre Mon Aise.
 
 Le contrat **0.1.3** ajoute `projet.presentation`, une liste de quatre courts paragraphes dans chaque spécimen. Le lecteur vérifie la version du contrat et le nom, prépare le titre, puis prélève la présentation reconnue sur une copie du modèle. La commande est disponible lorsqu’elle a un contenu à montrer.
 
-Le [renderer](../../protocole_mon_gpt_alpha/rendu.js) construit le diagramme et consomme les informations techniques comme auparavant. La lecture des valeurs restantes détermine la présence du ⚠. Une autre propriété sous `projet` reste ainsi disponible pour ce calcul. Les commandes de mise en évidence restent attachées au diagramme.
+Le [renderer](../../lecteur/rendu.js) construit le diagramme et consomme les informations techniques comme auparavant. La lecture des valeurs restantes détermine la présence du ⚠. Une autre propriété sous `projet` reste ainsi disponible pour ce calcul. Les commandes de mise en évidence restent attachées au diagramme.
 
 ## Présentation
 

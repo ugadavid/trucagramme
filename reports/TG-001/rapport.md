@@ -4,16 +4,16 @@
 
 ## Comparaison visuelle
 
-- [Référence validée](../../protocole_mon_gpt_alpha/trucagramme-mon-gpt.png)
+- [Référence validée](../../docs/references/trucagramme-mon-gpt.png)
 - [Avant sur bureau](avant-bureau.png)
 - [Après sur bureau](apres-bureau.png)
 - [Après à 390 px de large, page entière](apres-mobile.png)
 
 ## Modifications
 
-Dans [index.html](../../protocole_mon_gpt_alpha/index.html), neuf images du dossier `assets/` remplacent les emoji, les caractères et les logos dessinés en CSS. Les pictogrammes qui portent une information à eux seuls ont un texte alternatif (« Extension Chrome », « Python », « Windows »). Les autres accompagnent un libellé visible.
+Dans [index.html](../../index.html), neuf images du dossier `assets/` remplacent les emoji, les caractères et les logos dessinés en CSS. Les pictogrammes qui portent une information à eux seuls ont un texte alternatif (« Extension Chrome », « Python », « Windows »). Les autres accompagnent un libellé visible.
 
-Dans [styles.css](../../protocole_mon_gpt_alpha/styles.css), la largeur relative des trois objets, la position des flèches et la finesse des cadres intérieurs reprennent les proportions du PNG. Les trois lignes de données sont plus rapprochées. La pièce d’extension et les pictogrammes de données disposent de boîtes d’image adaptées aux marges intégrées à leurs fichiers.
+Dans [styles.css](../../lecteur/styles.css), la largeur relative des trois objets, la position des flèches et la finesse des cadres intérieurs reprennent les proportions du PNG. Les trois lignes de données sont plus rapprochées. La pièce d’extension et les pictogrammes de données disposent de boîtes d’image adaptées aux marges intégrées à leurs fichiers.
 
 Sur écran étroit, Windows occupe sa propre colonne et la pastille « optionnel » passe sous le libellé des images personnelles. Le filtrage atténue les groupes voisins individuellement pour garder le groupe sélectionné à pleine opacité. Le filtre des flux conserve la rotation des flèches verticales. Le script existant pilote toujours les quatre boutons.
 

@@ -145,11 +145,11 @@ Aucun champ `action = ouvrir` n’est nécessaire dans le cas actuel : l’objet
 Le rendu peut référencer les visuels par identifiant sémantique :
 
 ```text
-windows          -> assets/windows.png
-python           -> assets/python.png
-tkinter-tk       -> assets/Tk.png
-chrome-extension -> assets/ExtensionChrome.png
-json             -> assets/json.png
+windows          -> assets/communs/windows.png
+python           -> assets/communs/python.png
+tkinter-tk       -> assets/communs/Tk.png
+chrome-extension -> assets/communs/ExtensionChrome.png
+json             -> assets/communs/json.png
 ```
 
 Le modèle sémantique ne connaît pas les chemins de fichiers.
