@@ -527,3 +527,351 @@ Le rapport doit préciser :
 10. non-régression.
 
 Commit et push sur `main`, vérifier le SHA distant, puis arrêt pour validation humaine.
+
+
+---
+
+# Correctif de recette TG-013 — Éditeur conteneur et couleur Outils pilotés
+
+## Statut
+
+Ce correctif **fait partie de TG-013**.
+
+Il remplace la première interprétation graphique de VS Code livrée dans le rapport initial TG-013.
+
+Ne pas créer :
+
+- TG-013a ;
+- TG-014 ;
+- une nouvelle mission.
+
+Mettre à jour le même rapport :
+
+```text
+reports/TG-013/rapport.md
+```
+
+en ajoutant une section de correctif de recette et de nouvelles captures.
+
+Le contrat passe à :
+
+```js
+schema_version: "0.1.10"
+```
+
+## 1. Problème observé en recette
+
+La première passe représente VS Code comme une fenêtre presque vide dont le logo occupe le centre.
+
+Visuellement, cela raconte essentiellement :
+
+> « cliquer / aller vers VS Code ».
+
+Ce n'est pas suffisant.
+
+Dans Mon Bureau, VS Code est intéressant parce qu'il permet d'ouvrir plusieurs projets. Le diagramme doit raconter **ce que contient / accueille l'éditeur**, pas seulement son identité.
+
+## 2. Nouveau modèle VS Code
+
+Remplacer :
+
+```js
+vscode: {
+  nom: "Visual Studio Code",
+  type: "editeur"
+}
+```
+
+par :
+
+```js
+vscode: {
+  nom: "Visual Studio Code",
+  type: "editeur",
+  contenu: [
+    { nom: "Mon GPT<3", type: "projet_info" },
+    { nom: "Trucagramme", type: "projet_info" }
+  ]
+}
+```
+
+Conserver :
+
+```js
+{ source: "appli", destination: "vscode" }
+```
+
+Ne pas créer de relation propre pour les deux `projet_info`.
+
+## 3. projet_info
+
+Reconnaître :
+
+```text
+type = projet_info
+```
+
+uniquement comme élément interne d'un conteneur qui sait le rendre.
+
+Pour ce correctif :
+
+- afficher son `nom` ;
+- ne pas lui donner de forme lourde ;
+- ne pas lui donner de flèche ;
+- ne pas en faire un objet de premier niveau ;
+- ne pas l'ajouter aux unités externes ;
+- ne pas l'ajouter individuellement à la légende.
+
+Une représentation courte de type ligne / onglet / carte de projet est acceptable.
+
+## 4. Nouvelle représentation graphique de type editeur
+
+Conserver une forme générique d'éditeur, mais abandonner l'idée de « grande boîte avec logo central ».
+
+L'éditeur doit désormais raconter :
+
+- une surface / fenêtre d'édition ;
+- plusieurs projets ou contenus accessibles à l'intérieur ;
+- l'identité concrète de VS Code comme détail secondaire.
+
+### Pour VS Code
+
+Utiliser toujours :
+
+```text
+assets/communs/vscode.png
+```
+
+mais :
+
+- réduire nettement le logo ;
+- le placer discrètement, par exemple en haut à droite ;
+- ne pas en faire le contenu principal.
+
+Le contenu principal doit montrer :
+
+```text
+Mon GPT<3
+Trucagramme
+```
+
+dans une disposition simple évoquant plusieurs projets accessibles.
+
+### Intention
+
+Quelque chose de l'ordre de :
+
+```text
+┌──────────────────────────┐
+│                    [VSC] │
+│                          │
+│  ┌────────────────────┐  │
+│  │ Mon GPT<3          │  │
+│  └────────────────────┘  │
+│  ┌────────────────────┐  │
+│  │ Trucagramme        │  │
+│  └────────────────────┘  │
+│                          │
+└──────────────────────────┘
+```
+
+Cette esquisse fixe le **sens**, pas les pixels.
+
+Ne pas reproduire l'interface réelle de VS Code.
+
+## 5. Le type editeur reste générique
+
+Le renderer doit raisonner à partir de :
+
+```text
+type = editeur
+contenu[]
+```
+
+et non :
+
+```text
+id === vscode
+```
+
+pour construire la surface et les éléments internes.
+
+L'asset VS Code peut naturellement dépendre de l'identité concrète `vscode`.
+
+Tester si possible un éditeur temporaire sans asset avec deux `projet_info` afin de vérifier que la structure fonctionne sans le logo VS Code.
+
+## 6. Légende
+
+Conserver une seule entrée :
+
+```text
+Éditeur
+```
+
+Ne pas ajouter :
+
+```text
+Projet info
+```
+
+à la légende pour ce correctif.
+
+`projet_info` est ici un élément de contenu, pas une nouvelle famille graphique autonome de niveau 1.
+
+## 7. Lecture partielle
+
+Après rendu correct :
+
+- `vscode` reste absent de `⚠` ;
+- `vscode.contenu` doit être entièrement consommé ;
+- les deux `projet_info` ne doivent pas déclencher `⚠`.
+
+Une entrée de contenu d'un type inconnu doit en revanche laisser du sens non consommé.
+
+Tester temporairement :
+
+```js
+contenu: [
+  { nom: "Mon GPT<3", type: "projet_info" },
+  { nom: "Mystère", type: "canexistepas" }
+]
+```
+
+Le contenu connu reste rendu et `⚠` signale le reste sans afficher de valeur arbitraire.
+
+## 8. Couleur Outils pilotés — correction réelle
+
+La recette utilisateur considère encore la famille actuelle trop proche du compagnon Mon GPT Collector.
+
+Ne pas conserver la famille framboise / rose de la première passe TG-013.
+
+Passer franchement à une famille **cyan / turquoise / bleu-vert**, distincte de :
+
+- bleu profond de l'application principale ;
+- violet du socle ;
+- vert des données ;
+- orange / brun du compagnon ;
+- bleu clair du navigateur / surfaces externes ;
+- gris DEBUG.
+
+Le choix exact doit être clairement perceptible à l'œil.
+
+### Conserver
+
+- absence du titre visible « Outils pilotés » ;
+- identité accessible du groupe ;
+- légende « Outils pilotés » ;
+- cinq tuiles dans le même ordre.
+
+## 9. DEBUG
+
+Conserver la suppression du titre visible DEBUG obtenue dans la première passe.
+
+Ne changer ni :
+
+- ses cartes ;
+- son contenu ;
+- son caractère non consommant ;
+- sa disposition, sauf adaptation mécanique nécessaire à la nouvelle taille de l'éditeur.
+
+VS Code reste absent de DEBUG puisqu'il est compris.
+
+## 10. Relation et placement
+
+Conserver :
+
+```text
+Mon Bureau -> VS Code
+```
+
+et le placement à droite issu de la règle d'une seule unité externe sortante.
+
+La nouvelle taille de l'éditeur ne doit pas entraîner une nouvelle règle de placement.
+
+Adapter seulement les dimensions nécessaires pour garder une composition équilibrée.
+
+## 11. Responsive
+
+Vérifier :
+
+- 1448 px ;
+- 390 px ;
+- 320 px.
+
+Sur mobile :
+
+- les deux projets internes restent lisibles ;
+- le logo VS Code reste secondaire ;
+- la flèche garde son vrai sens ;
+- aucun débordement horizontal ;
+- DEBUG reste lisible.
+
+## 12. Passage en 0.1.10
+
+Passer les six spécimens système / projet à :
+
+```js
+schema_version: "0.1.10"
+```
+
+Le lecteur attend `0.1.10`.
+
+Les cinq spécimens autres que Mon Bureau ne changent pas sémantiquement.
+
+## 13. Recette ciblée du correctif
+
+Vérifier sur Mon Bureau :
+
+- VS Code contient bien deux `projet_info` ;
+- Mon GPT<3 visible dans l'éditeur ;
+- Trucagramme visible dans l'éditeur ;
+- logo VS Code petit et secondaire ;
+- aucune impression de simple bouton de lancement ;
+- une seule flèche `appli -> vscode` ;
+- VS Code absent de DEBUG ;
+- VS Code absent de `⚠` ;
+- contenu entièrement consommé ;
+- légende contient Éditeur mais pas Projet info ;
+- Outils pilotés clairement cyan / turquoise ;
+- aucune confusion visuelle avec Mon GPT Collector ;
+- titres visibles Outils pilotés et DEBUG toujours absents.
+
+Vérifier rapidement les autres projets pour non-régression.
+
+## 14. Tests proportionnés
+
+Correctif visuel + petite extension sémantique : L1/L2 ciblé.
+
+Pas de campagne historique complète.
+
+## À ne pas faire
+
+Ne pas :
+
+- créer une nouvelle mission ;
+- créer TG-013a ou TG-014 ;
+- refondre le navigateur ChatGPT ;
+- généraliser immédiatement tous les conteneurs vers `contenu[]` ;
+- créer deux nouveaux objets de premier niveau Mon GPT<3 / Trucagramme ;
+- créer des relations vers les `projet_info` ;
+- ajouter Projet info à la légende ;
+- remettre un grand logo VS Code au centre ;
+- conserver la couleur framboise des outils pilotés ;
+- toucher aux services système ou au serveur local ;
+- résoudre le placement 7+ ;
+- commencer la vue 2.
+
+## Livrables du correctif
+
+- même mission TG-013 ;
+- contrat `schema_version 0.1.10` ;
+- `vscode.contenu[]` ;
+- support de `projet_info` interne ;
+- nouvelle représentation d'éditeur conteneur ;
+- logo VS Code discret ;
+- couleur cyan / turquoise Outils pilotés ;
+- même `reports/TG-013/rapport.md` complété par une section Correctif ;
+- nouvelles captures bureau/mobile ;
+- SHA distant vérifié.
+
+Publier sur `main`, vérifier le SHA distant, puis arrêt pour validation humaine du correctif TG-013.
