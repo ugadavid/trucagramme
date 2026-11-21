@@ -1,6 +1,6 @@
 # Direction d’architecture — séparer le sens du rendu
 
-**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.9`.**
+**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.10`.**
 
 Trucagramme sépare deux responsabilités.
 
@@ -265,3 +265,16 @@ Le type `editeur` devient une famille graphique reconnue, comme `navigateur`.
 Le groupe interne des outils pilotés conserve sa sémantique et son accessibilité même si son titre visible est supprimé. La légende reste le lieu où le nom de cette famille est explicitement expliqué.
 
 La couche DEBUG reste non consommatrice ; retirer son titre visible n'affecte ni son contenu ni l'inventaire `⚠`.
+
+
+## Correctif TG-013 — éditeur conteneur (0.1.10)
+
+`type = editeur` reste une nature intrinsèque. Le correctif ajoute `contenu` comme collection d'éléments internes représentables.
+
+Pour le premier cas réel, chaque élément de `contenu` possède `nom` et `type = projet_info`.
+
+Le renderer consomme le conteneur et ses éléments lorsqu'il sait les représenter. Les éléments `projet_info` ne deviennent ni des objets de premier niveau, ni des unités de placement, ni des extrémités de relation.
+
+Le logo d'une implémentation concrète, tel VS Code, est une identité secondaire du conteneur et ne doit pas remplacer son contenu.
+
+Le navigateur existant n'est pas migré dans ce correctif ; une éventuelle généralisation de la syntaxe de contenu sera décidée sur davantage de cas réels.
