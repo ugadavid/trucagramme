@@ -5,7 +5,7 @@ function identifiant(cle) {
   return /^[\p{L}_][\p{L}\p{N}_-]{0,63}$/u.test(cle) ? cle : "…";
 }
 
-function inventorier(reste) {
+export function inventorier(reste) {
   const objets = [];
   const chemins = new Set();
   let nombreRelations = 0;
@@ -24,20 +24,19 @@ function inventorier(reste) {
     if (cle === "relations" && Array.isArray(valeur)) {
       nombreRelations = valeur.filter(resteDuSens).length;
     } else if (cle !== "appli" && texte(valeur?.type)) {
-      objets.push(identifiant(cle) + " · " + identifiant(valeur.type));
+      objets.push({ cle: identifiant(cle), type: identifiant(valeur.type) });
     } else {
       parcourir(identifiant(cle), valeur);
     }
   }
-  const lignes = [...objets, ...chemins];
+  const lignes = [...objets.map(({ cle, type }) => cle + " · " + type), ...chemins];
   if (nombreRelations) {
     lignes.push("relations · " + nombreRelations + (nombreRelations === 1 ? " non représentée" : " non représentées"));
   }
-  return lignes;
+  return { objets, lignes };
 }
 
-export function ajouterLecturePartielle(titre, reste) {
-  const lignes = inventorier(reste);
+export function ajouterLecturePartielle(titre, lignes) {
   if (!lignes.length) return;
 
   const signal = element("button", "lecture-partielle", "⚠");

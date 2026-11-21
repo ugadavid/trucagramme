@@ -1,5 +1,5 @@
 export default {
-  schema_version: "0.1.7",
+  schema_version: "0.1.8",
 
   projet: {
     presentation: [
@@ -20,13 +20,13 @@ export default {
       os: "windows"
     },
 
-    livraison: "autonome",
-
     socle_technique: {
       runtime: ".net 10",
       langage: "c#",
       bibliotheque_graphique: "windows forms"
     },
+
+    outils_pilotes: ["git", "curl", "python", "powershell", "tree"],
 
     donnees: {
       locales: true,
@@ -66,32 +66,32 @@ export default {
 
   vscode: {
     nom: "Visual Studio Code",
-    type: "outil_externe"
+    type: "application_externe"
   },
 
   git: {
     nom: "Git",
-    type: "outil_externe"
+    type: "outil_pilote"
   },
 
   curl: {
     nom: "curl",
-    type: "outil_externe"
+    type: "outil_pilote"
   },
 
   python: {
     nom: "Python",
-    type: "outil_externe"
+    type: "outil_pilote"
   },
 
   powershell: {
     nom: "PowerShell",
-    type: "outil_externe"
+    type: "outil_pilote"
   },
 
   tree: {
     nom: "tree",
-    type: "outil_externe"
+    type: "outil_pilote"
   },
 
   serveur_local: {
@@ -112,26 +112,13 @@ export default {
 
     { source: "appli", destination: "vscode" },
 
-    { source: "appli", destination: "git" },
-    { source: "git", destination: "appli" },
-
-    { source: "appli", destination: "curl" },
-    { source: "curl", destination: "appli" },
-
-    { source: "appli", destination: "python" },
-
     { source: "python", destination: "serveur_local" },
     { source: "appli", destination: "serveur_local" },
-    { source: "serveur_local", destination: "appli" },
-
-    { source: "appli", destination: "powershell" },
-    { source: "powershell", destination: "appli" },
-
-    { source: "appli", destination: "tree" },
-    { source: "tree", destination: "appli" }
+    { source: "serveur_local", destination: "appli" }
   ],
 
   specimen: {
-    version: "alpha-0.0.0.1"
+    version: "alpha-0.0.0.1",
+    debug: true
   }
 };

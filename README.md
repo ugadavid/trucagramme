@@ -10,7 +10,9 @@ La racine ouvre l’[accueil Trucagramme](https://ugadavid.github.io/trucagramme
 
 Sur une fiche partiellement représentée, le signal **⚠** attaché à la version ouvre un inventaire au survol, au focus ou au clic.
 
-Le contrat courant est `0.1.7`. Les spécimens système `projets/accueil/specimen.js` et `projets/404/specimen.js` fournissent le contenu de l’accueil et de la vue « Projet introuvable ». L’index `projets/index.json` reste réservé aux projets du menu.
+Mon Bureau regroupe les outils qu’il pilote dans son cadre applicatif. Sur cette fiche, `specimen.debug: true` affiche aussi les objets encore inconnus sous forme de cartes DEBUG. Le même inventaire alimente le signal **⚠**.
+
+Le contrat courant est `0.1.8`. Les spécimens système `projets/accueil/specimen.js` et `projets/404/specimen.js` fournissent le contenu de l’accueil et de la vue « Projet introuvable ». L’index `projets/index.json` reste réservé aux projets du menu.
 
 Dans Chrome Organizer, Chrome déclare le dossier User Data dans sa liste `contient`. Le lecteur alterne les unités externes entre gauche et droite dans leur ordre de déclaration (de deux à six unités). Les relations orientent les flèches, y compris les deux flèches opposées des sauvegardes à gauche. Les formes de dossier, d’archive et de fichier traduisent la nature des données externes.
 

@@ -306,3 +306,21 @@ body{min-height:100vh;background:
 .miniature.flux{border:0;height:auto;color:var(--app);font:700 26px/1 Arial,sans-serif}
 .miniature.flux::before{content:"→"}
 .miniature.propriete{width:24px;height:10px;border:1px solid var(--app);border-radius:999px;background:#eef7ff}
+
+.groupe-outils{display:flex;flex-wrap:wrap;gap:7px;border:2px solid #b17b32;background:#fff9ed}
+.groupe-outils h3{flex-basis:100%;margin:0 0 3px;color:#63441e;font-size:.94rem}
+.outil-pilote{padding:4px 10px;border:1px solid #c79a60;border-radius:7px;background:#fffcf6;color:#553a18;font-weight:600}
+.miniature.outils{border-color:#b17b32;background:repeating-linear-gradient(90deg,#fff9ed 0 4px,#e5cba5 4px 6px)}
+.construction{display:grid;gap:16px;align-items:center}
+.cartouche-debug{min-width:0;padding:12px;border:1px dashed #9599a2;border-radius:8px;background:#f7f7f8;color:#525762;font:400 .8rem/1.35 ui-monospace,monospace}
+.cartouche-debug h2{margin:0 0 8px;font:600 .78rem/1.4 ui-monospace,monospace}
+.cartouche-debug ul{display:grid;gap:7px;margin:0;padding:0;list-style:none}
+.cartouche-debug li{display:grid;padding:7px 10px;border:1px dashed #b2b5bb;border-radius:4px;background:#fdfdfd;overflow-wrap:anywhere}
+.construction > .diagram{width:100%}
+@media(min-width:1101px){
+  .construction:has(.application:only-child){grid-template-columns:minmax(0,210px) minmax(510px,672px) minmax(0,210px);justify-content:center;gap:24px}
+  .construction:has(.application:only-child) > *{grid-row:1}
+  .construction:has(.application:only-child) .diagram{grid-column:2}
+  .construction:has(.application:only-child) .cartouche-debug:first-of-type{grid-column:1}
+  .construction:has(.application:only-child) .cartouche-debug:nth-of-type(2){grid-column:3}
+}

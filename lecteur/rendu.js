@@ -79,6 +79,7 @@ async function chargerIdentite(appli, entete) {
 
 const rolesTechniques = new Set(["runtime", "langage", "bibliotheque_graphique"]);
 const nomsTechnos = new Map([
+  [".net 10", ".NET 10"], ["c#", "C#"], ["windows forms", "Windows Forms"],
   ["electron", "Electron"], ["javascript / typescript", "JavaScript / TypeScript"],
   ["react", "React"], ["python", "Python"], ["tkinter / Tk", "Tkinter / Tk"]
 ]);
@@ -134,7 +135,27 @@ function donnees(data) {
   return section;
 }
 
-function application(appli) {
+function outilsPilotes(modele) {
+  const refs = modele.appli.outils_pilotes;
+  if (!Array.isArray(refs)) return null;
+  const tuiles = [];
+  const restantes = [];
+  for (const cle of refs) {
+    const outil = typeof cle === "string" && Object.hasOwn(modele, cle) ? modele[cle] : null;
+    if (outil?.type !== "outil_pilote" || !texte(outil.nom)) {
+      restantes.push(cle);
+      continue;
+    }
+    prendre(outil, "type");
+    tuiles.push(element("span", "outil-pilote", prendre(outil, "nom")));
+  }
+  modele.appli.outils_pilotes = restantes;
+  const section = groupe("groupe-outils", "Outils pilotés", tuiles);
+  if (section) section.prepend(element("h3", "", "Outils pilotés"));
+  return section;
+}
+
+function application(appli, outils) {
   const titre = element("div", "app-heading", element("h2", "", prendre(appli, "nom")));
   const puces = [];
   if (appli.mode_execution === "local") puces.push(element("span", "chip chip-local", "● local"));
@@ -152,7 +173,7 @@ function application(appli) {
     prendre(appli, "livraison");
     bloc.prepend(element("div", "property property-main", "AUTONOME"));
   }
-  const groupes = [socle(appli.socle_technique), donnees(appli.donnees)].filter(Boolean);
+  const groupes = [socle(appli.socle_technique), outils, donnees(appli.donnees)].filter(Boolean);
   if (groupes.length) bloc.append(element("div", "app-body", ...groupes));
   return bloc;
 }
@@ -333,7 +354,7 @@ function rendreDiagramme(modele) {
   }
   const diagramme = element("section", "diagram", voisin,
     entree ? fleche("connector-in", nomCollector + " vers " + nom) : null,
-    application(modele.appli),
+    application(modele.appli, outilsPilotes(modele)),
     sortie ? fleche("connector-out", nom + " vers le navigateur") : null, fenetre);
   diagramme.setAttribute("aria-label", "Schéma technique de " + nom);
   ajouterDonneesExternes(diagramme, modele, relations, nom);

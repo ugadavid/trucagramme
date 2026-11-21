@@ -1,5 +1,5 @@
 import { element, prendre, rendreDiagramme, texte } from "./rendu.js";
-import { ajouterLecturePartielle } from "./lecture-partielle.js";
+import { ajouterLecturePartielle, inventorier } from "./lecture-partielle.js";
 import { ajouterCommandes } from "./interactions.js";
 
 const menu = document.querySelector("#menu-lecteur");
@@ -12,7 +12,7 @@ const presentation = document.querySelector("#texte-presentation");
 const legende = document.querySelector("#signes-legende");
 let commandeActive = null;
 const fermer = document.querySelector("#fermer");
-const versionSchema = "0.1.7";
+const versionSchema = "0.1.8";
 function ouvrirMenu(ouvert) {
   menu.hidden = !ouvert;
   declencheur.setAttribute("aria-expanded", String(ouvert));
@@ -73,6 +73,7 @@ document.addEventListener("keydown", event => {
 const familles = [
   [".application", "appli", "Application principale"],
   [".tech-group", "technique", "Socle technique"],
+  [".groupe-outils", "outils", "Outils pilotés"],
   [".data-group", "donnees", "Données"],
   [".avec-contexte", "contexte", "Contexte"],
   [".forme-dossier", "dossier", "Dossier / espace de données"],
@@ -120,12 +121,27 @@ function rendreSpecimen(source) {
     presentation.replaceChildren(...lignes.map(ligne => element("p", "", ligne)));
     commande.hidden = false;
   }
+  const debug = typeof modele.specimen?.debug === "boolean" && prendre(modele.specimen, "debug");
   const diagramme = rendreDiagramme(modele);
   remplirLegende(diagramme);
   commandeLegende.hidden = false;
-  ajouterLecturePartielle(titre, modele);
-  page.append(titre, diagramme);
+  const { objets, lignes: inventaire } = inventorier(modele);
+  ajouterLecturePartielle(titre, inventaire);
+  page.append(titre, debug && objets.length ? entourerDebug(diagramme, objets) : diagramme);
   ajouterCommandes(page, diagramme);
+}
+
+function entourerDebug(diagramme, objets) {
+  const milieu = Math.ceil(objets.length / 2);
+  const cadre = element("div", "construction", diagramme);
+  for (const colonne of [objets.slice(0, milieu), objets.slice(milieu)]) {
+    if (!colonne.length) continue;
+    const cartes = colonne.map(({ cle, type }) =>
+      element("li", "", element("strong", "", cle), element("span", "", type)));
+    cadre.append(element("aside", "cartouche-debug", element("h2", "", "DEBUG · non représenté"),
+      element("ul", "", ...cartes)));
+  }
+  return cadre;
 }
 
 function ornement(classe, ...contenu) {
