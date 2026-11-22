@@ -1537,3 +1537,11 @@ Les données de TRAME distinguent enfin deux espaces de persistance :
 Cette séparation raconte notamment que le Recovery n’est pas la sauvegarde durable du Projet, sans détailler les mécanismes internes.
 
 Le contrat expérimental devient **schema_version 0.1.14**. Les spécimens précédents sont directement portés à cette version sans migration.
+
+## TG-018 — Profondeur de la vue 1 et socle d’une brique (0.1.15)
+
+Une application, une implémentation, un composant interne ou un module produit peut porter son propre `socle_technique`. Le cadre de la brique détermine la portée du socle violet qu’il contient. Le principe reste facultatif. La fiche canonique de TRAME utilise sa profondeur pour comparer trois réalisations. Les trois projections expérimentales utilisent la même place pour décrire les briques d’une seule réalisation.
+
+Les six rôles reconnus sont `runtime`, `langage`, `bibliotheque_graphique`, `interface`, `moteur` et `integration_hote`. Les valeurs textuelles sont ouvertes. Un rôle inconnu reste disponible pour la lecture partielle. Sur le Correcteur, `dictionnaire` est une propriété du module. Son inscription hors du socle le distingue du moteur lexical.
+
+Chaque projection montre Super une fois. Son cœur JavaScript et HTML / CSS est commun. Son raccord au host varie. Personnages et Lieux possèdent chacun leur socle. L’inclusion suffit à exprimer cette appartenance. La lisibilité du cas détermine jusqu’où descendre dans la vue 1. Les trois projections ont le même statut expérimental.

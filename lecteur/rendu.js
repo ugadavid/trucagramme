@@ -93,25 +93,33 @@ async function chargerIdentite(appli, entete) {
   img.src = racine + chemin;
 }
 
-const rolesTechniques = new Set(["runtime", "langage", "bibliotheque_graphique"]);
-const logosComposes = new Map([
+const rolesTechniques = new Set([
+  "runtime", "langage", "bibliotheque_graphique", "interface", "moteur", "integration_hote"
+]);
+const signesTechniques = new Map([
   ["javascript / typescript", ["javascript", "typescript"]],
-  ["pyside6 / qt", ["pyside6", "qt"]]
+  ["pyside6 / qt", ["pyside6", "qt"]],
+  [".net 10", [".net", "10"]],
+  ["technologies web", ["Technologies Web"]],
+  ["html / css", ["HTML / CSS"]],
+  ["python / qt webengine / webchannel", ["python", "Qt WebEngine / WebChannel"]],
+  ["javascript / iframe chromium", ["javascript", "iframe Chromium"]],
+  ["c# / nativewebview", ["c#", "NativeWebView"]],
+  ["module esm / renderer electron", ["module ESM / renderer Electron"]],
+  ["wecantspell.hunspell", ["WeCantSpell.Hunspell"]],
+  ["node", ["Node"]]
 ]);
 
 function socle(tech) {
   const membres = [];
   for (const [role, valeur] of Object.entries(tech ?? {})) {
     if (!rolesTechniques.has(role) || !texte(valeur)) continue;
-    const version = valeur === ".net 10" ? "10" : "";
-    const cles = logosComposes.get(valeur) ?? [version ? ".net" : valeur];
-    const logos = cles.map(cle => image(cle, "tech-logo")).filter(Boolean);
-    const libelle = valeur === "technologies web" ? "Technologies Web" : valeur;
-    const complement = logos.length ? version : libelle;
-    const item = element("div", "tech-item", ...logos,
-      complement ? element("strong", "", complement) : null);
+    const signes = (signesTechniques.get(valeur) ?? [valeur]).map(signe =>
+      image(signe, "tech-logo") ?? element("strong", "", signe));
+    const raccord = role === "integration_hote" ? element("small", "role-raccord", "Raccord") : null;
+    const item = element("div", "tech-item", raccord, ...signes);
     item.title = role.replaceAll("_", " ") + " · " +
-      [...logos.map(logo => logo.alt), complement].filter(Boolean).join(" ");
+      signes.map(signe => signe.alt || signe.textContent).join(" ");
     membres.push(item);
     prendre(tech, role);
   }
@@ -232,7 +240,8 @@ function composantsInternes(modele) {
     const role = texte(objet.role) ? prendre(objet, "role") : "";
     cartes.push(element("div", "component-card",
       element("strong", "", prendre(objet, "nom")),
-      role ? element("span", "", role.replaceAll("_", " ")) : null));
+      role ? element("span", "", role.replaceAll("_", " ")) : null,
+      socle(objet.socle_technique)));
   }
   modele.appli.composants_internes = restantes;
   if (!cartes.length) return null;
@@ -258,9 +267,12 @@ function modulesProduit(modele) {
     prendre(objet, "type");
     const activable = objet.activable === true;
     if (activable) prendre(objet, "activable");
+    const dictionnaire = texte(objet.dictionnaire)
+      ? element("span", "mini-property", "Dictionnaire · " + prendre(objet, "dictionnaire")) : null;
     cartes.push(element("div", "module-card",
       element("strong", "", prendre(objet, "nom")),
-      activable ? element("span", "mini-property", "activable") : null));
+      activable ? element("span", "mini-property", "activable") : null,
+      socle(objet.socle_technique), dictionnaire));
   }
   groupeModules.membres = restantes;
   if (!cartes.length) return null;

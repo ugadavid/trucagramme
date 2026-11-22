@@ -3,5 +3,8 @@
   "mon_gpt",
   "chrome_organizer",
   "mon_bureau",
-  "trame"
+  "trame",
+  "trame_qt",
+  "trame_electron",
+  "trame_avalonia"
 ]

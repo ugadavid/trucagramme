@@ -395,8 +395,8 @@ body{min-height:100vh;background:
 .alternative-property{background:#d8e9ff;color:#183e70}
 .component-group{display:grid;align-content:start;gap:8px;border:2px solid #d89a25;background:#fff7df}
 .component-card{min-height:86px;border:2px solid #e8bd5f;border-radius:20px;background:#fffdf5;display:grid;place-items:center;padding:12px;text-align:center}
-.component-card strong{font-size:1.8rem;font-family:Georgia,serif}
-.component-card span{color:#725b2f;font-size:.9rem}
+.component-card > strong{font-size:1.8rem;font-family:Georgia,serif}
+.component-card > span{color:#725b2f;font-size:.9rem}
 .module-group{display:grid;align-content:start;border:2px solid #5cad59;background:#effbea}
 .module-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
 .module-card{min-height:86px;border:2px solid #82c77d;border-radius:18px;background:#fbfff8;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:10px;text-align:center}
@@ -419,3 +419,24 @@ body{min-height:100vh;background:
 
 .logo-table{width:30px;height:27px;object-fit:contain}
 #liste-logos .marque-chrome{justify-self:center}
+
+/* Un socle garde sa couleur à l'intérieur de la brique qui le porte. */
+.diagram:has(.application:only-child :is(.component-card,.module-card) > .tech-group){max-width:920px}
+:is(.component-card,.module-card):has(> .tech-group){min-width:0;gap:8px;align-content:start}
+:is(.component-card,.module-card) > .tech-group{
+  width:100%;min-width:0;display:flex;flex-wrap:wrap;align-items:stretch;
+  gap:6px;padding:8px;border-radius:15px
+}
+:is(.component-card,.module-card) > .tech-group .tech-item{
+  flex:1 1 auto;min-width:0;min-height:42px;max-width:100%;padding:5px 8px;
+  flex-wrap:wrap;gap:4px 7px;border-radius:10px;font-size:.9rem;overflow-wrap:anywhere
+}
+:is(.component-card,.module-card) .tech-logo{width:32px;height:30px}
+.role-raccord{color:#584173;font-size:.8rem}
+.application:has(:is(.component-card,.module-card) > .tech-group) .data-group{
+  grid-template-columns:repeat(2,minmax(0,1fr))
+}
+.diagram.highlight-technology :is(.module-group,.component-group):has(.tech-group){opacity:1;filter:none}
+@media(max-width:800px){
+  .application:has(:is(.component-card,.module-card) > .tech-group) .data-group{grid-template-columns:1fr}
+}

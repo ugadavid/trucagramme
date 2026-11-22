@@ -1,6 +1,6 @@
 # Direction d’architecture — séparer le sens du rendu
 
-**Statut : direction validée ; première implémentation réalisée en TG-003 ; contrat courant : `schema_version 0.1.13`.**
+**Direction validée, première implémentation en TG-003. Contrat courant des fiches projet `0.1.15`.**
 
 Trucagramme sépare deux responsabilités.
 
@@ -328,3 +328,9 @@ Les qualifications communes d’un groupe de modules appartiennent au groupe. Le
 Les types `projet_durable` et `recovery_local` décrivent des espaces de persistance distincts. Leur représentation côte à côte ne crée pas de flux implicite.
 
 Le contrat courant devient **0.1.14**.
+
+## TG-018 — Socles imbriqués dans trois projections expérimentales (0.1.15)
+
+La présence de `socle_technique` sur l’application, une `implementation`, un `composant_interne` ou un `module_produit` décrit les technologies de ce porteur. La résolution d’une référence interne vérifie d’abord son type. Les six rôles reconnus sont `runtime`, `langage`, `bibliotheque_graphique`, `interface`, `moteur` et `integration_hote`. Une nouvelle valeur textuelle sous un rôle reconnu est lisible telle quelle. Une clé de rôle inconnue reste dans l’inventaire.
+
+Le renderer réemploie le même groupe de socle aux quatre portées. Il choisit les logos, le texte résiduel et la disposition compacte des membres. Le dictionnaire du Correcteur reste sur la carte du module. La description peut s’arrêter au nom et au rôle d’une brique, comme dans TRAME canonique. Les trois projections Qt, Electron et Avalonia éprouvent une profondeur supplémentaire à poids égal. Le choix du niveau de détail reste éditorial.
