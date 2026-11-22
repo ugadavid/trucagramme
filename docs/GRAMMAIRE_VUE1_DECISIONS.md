@@ -228,6 +228,6 @@ Trucagramme doit continuer à apprendre de cas réels plutôt qu’à construire
 
 - [Grammaire alpha](GRAMMAIRE_ALPHA.md)
 - [Séparation sémantique / rendu](SEPARATION_SEMANTIQUE_RENDU.md)
-- [Rapport d’analyse Work du 22 novembre 2026](../reports/analyse-grammaire-trucagramme.md) si présent dans le dépôt
+- Analyse Work du 22 novembre 2026 — rapport local transmis à David ; non présent dans le dépôt au moment de cette rédaction
 - [TG-018 — mission](../missions/TG-018_projections_monostack_trame.md)
 - [TG-018 — rapport](../reports/TG-018/rapport.md)
