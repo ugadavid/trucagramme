@@ -50,7 +50,7 @@ Chaque spécimen décrit les faits techniques. Le renderer choisit leur représe
 - Un service web peut être représenté à l’intérieur de son navigateur lorsque cela raconte mieux l’usage réel.
 - Le vocabulaire graphique doit rester petit, cohérent et réutilisable.
 
-Voir [la grammaire alpha](docs/GRAMMAIRE_ALPHA.md).
+Voir [la grammaire courte de la vue 1](docs/GRAMMAIRE_VUE1_DECISIONS.md) pour les décisions actuelles et [la grammaire alpha](docs/GRAMMAIRE_ALPHA.md) pour leur historique détaillé.
 
 ## Organisation du dépôt
 
