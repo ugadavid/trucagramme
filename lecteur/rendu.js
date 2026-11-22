@@ -11,7 +11,7 @@ const icones = {
   "powershell": ["powershell.png", "PowerShell"],
   "webp": ["webp.png", "WebP"],
   "zip": ["zip.png", "ZIP"],
-  ".net": [".net.png", ".NET"],
+  ".net": ["dot_net.png", ".NET"],
   "c#": ["c_sharp.png", "C#"],
   "windows forms": ["win_forms.png", "Windows Forms"],
   "electron": ["electron.png", "Electron"],
