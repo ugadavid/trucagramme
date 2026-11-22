@@ -6,7 +6,7 @@ Le projet est né le 20 novembre 2026 à partir d’un premier cas réel : **Mon
 
 ## État actuel
 
-La racine ouvre l’[accueil Trucagramme](https://ugadavid.github.io/trucagramme/). Le menu **trucagramme™** donne accès aux fiches [Mon Aise](https://ugadavid.github.io/trucagramme/?projet=mon_aise), [Mon GPT<3](https://ugadavid.github.io/trucagramme/?projet=mon_gpt), [Chrome Organizer](https://ugadavid.github.io/trucagramme/?projet=chrome_organizer), [Mon Bureau](https://ugadavid.github.io/trucagramme/?projet=mon_bureau) et [TRAME](https://ugadavid.github.io/trucagramme/?projet=trame), ainsi qu’à leur présentation. Sur chaque fiche, **Légende** montre une miniature et un libellé pour chaque famille de signes présente dans le diagramme.
+La racine ouvre l’[accueil Trucagramme](https://ugadavid.github.io/trucagramme/). Le menu **trucagramme™** donne accès aux fiches [Mon Aise](https://ugadavid.github.io/trucagramme/?projet=mon_aise), [Mon GPT<3](https://ugadavid.github.io/trucagramme/?projet=mon_gpt), [Chrome Organizer](https://ugadavid.github.io/trucagramme/?projet=chrome_organizer), [Mon Bureau](https://ugadavid.github.io/trucagramme/?projet=mon_bureau) et [TRAME](https://ugadavid.github.io/trucagramme/?projet=trame), ainsi qu’à leur présentation. Sur chaque fiche, **Légende** montre une miniature et un libellé pour chaque famille de signes présente dans le diagramme. **Logos** donne le nom des identités visuelles utilisées sur la fiche. Dans le diagramme, un logo peut ainsi porter le nom d’une technologie, d’un service ou d’un format, tandis que les versions et les qualificatifs restent lisibles.
 
 Sur une fiche partiellement représentée, le signal **⚠** attaché à la version ouvre un inventaire au survol, au focus ou au clic.
 

@@ -12,8 +12,10 @@
   <div class="lecteur">
     <button id="declencheur" aria-expanded="false" aria-controls="menu-lecteur">trucagramme™</button>
     <nav id="menu-lecteur" aria-label="Lecteur Trucagramme" hidden>
+      <div id="projets-menu"></div>
       <button id="commande-presentation" aria-expanded="false" aria-controls="panneau-lecteur" hidden>Présentation</button>
       <button id="commande-legende" aria-expanded="false" aria-controls="panneau-lecteur" hidden>Légende</button>
+      <button id="commande-logos" aria-expanded="false" aria-controls="panneau-lecteur" hidden>Logos</button>
     </nav>
   </div>
   <aside id="panneau-lecteur" aria-labelledby="titre-panneau" hidden>
@@ -21,6 +23,7 @@
     <h2 id="titre-panneau"></h2>
     <div id="texte-presentation"></div>
     <ul id="signes-legende" hidden></ul>
+    <ul id="liste-logos" hidden></ul>
   </aside>
   <main class="page"></main>
 </body>

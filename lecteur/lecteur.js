@@ -6,6 +6,9 @@ const menu = document.querySelector("#menu-lecteur");
 const declencheur = document.querySelector("#declencheur");
 const commande = document.querySelector("#commande-presentation");
 const commandeLegende = document.querySelector("#commande-legende");
+const commandeLogos = document.querySelector("#commande-logos");
+const logos = document.querySelector("#liste-logos");
+const projetsMenu = document.querySelector("#projets-menu");
 const panneau = document.querySelector("#panneau-lecteur");
 const titrePanneau = document.querySelector("#titre-panneau");
 const presentation = document.querySelector("#texte-presentation");
@@ -30,10 +33,10 @@ function basculerPanneau(bouton) {
   if (commandeActive === bouton) return fermerPanneau();
   commandeActive?.setAttribute("aria-expanded", "false");
   commandeActive = bouton;
-  const montreLegende = bouton === commandeLegende;
-  presentation.hidden = montreLegende;
-  legende.hidden = !montreLegende;
-  titrePanneau.textContent = montreLegende ? "Légende" : document.querySelector(".page-title h1").textContent;
+  presentation.hidden = bouton !== commande;
+  legende.hidden = bouton !== commandeLegende;
+  logos.hidden = bouton !== commandeLogos;
+  titrePanneau.textContent = bouton === commande ? document.querySelector(".page-title h1").textContent : bouton.textContent;
   panneau.hidden = false;
   panneau.scrollTop = 0;
   bouton.setAttribute("aria-expanded", "true");
@@ -47,6 +50,7 @@ declencheur.onclick = () => {
 };
 commande.onclick = () => basculerPanneau(commande);
 commandeLegende.onclick = () => basculerPanneau(commandeLegende);
+commandeLogos.onclick = () => basculerPanneau(commandeLogos);
 fermer.onclick = fermerPanneau;
 document.addEventListener("click", event => {
   if (event.target.closest(".lecteur, #panneau-lecteur")) return;
@@ -102,6 +106,19 @@ function remplirLegende(diagramme) {
   }
 }
 
+function remplirLogos(diagramme) {
+  logos.replaceChildren();
+  const vus = new Set();
+  for (const signe of diagramme.querySelectorAll("[data-logo]")) {
+    if (vus.has(signe.dataset.logo)) continue;
+    vus.add(signe.dataset.logo);
+    const copie = signe.cloneNode(false);
+    if (copie.tagName === "IMG") copie.className = "logo-table";
+    logos.append(element("li", "", copie, signe.alt ?? signe.getAttribute("aria-label")));
+  }
+  commandeLogos.hidden = !vus.size;
+}
+
 function rendreSpecimen(source) {
   const page = document.querySelector(".page");
   page.replaceChildren();
@@ -132,6 +149,7 @@ function rendreSpecimen(source) {
   const debug = typeof modele.specimen?.debug === "boolean" && prendre(modele.specimen, "debug");
   const diagramme = rendreDiagramme(modele);
   remplirLegende(diagramme);
+  remplirLogos(diagramme);
   commandeLegende.hidden = false;
   const { objets, lignes: inventaire } = inventorier(modele);
   ajouterLecturePartielle(titre, inventaire);
@@ -199,7 +217,7 @@ async function chargerProjets() {
     const lien = element("a", "", projet.appli.nom);
     lien.href = "?projet=" + alias[i];
     if (alias[i] === demande) lien.setAttribute("aria-current", "page");
-    menu.insertBefore(lien, commande);
+    projetsMenu.append(lien);
   }
   if (!demande) {
     const { default: accueil } = await import("../projets/accueil/specimen.js");

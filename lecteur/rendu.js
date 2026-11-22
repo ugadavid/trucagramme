@@ -1,13 +1,26 @@
 const icones = {
-  vscode: "vscode.png",
-  windows: "windows.png",
-  python: "python.png",
-  "tkinter / Tk": "Tk.png",
-  "extension-chrome": "ExtensionChrome.png",
-  json: "json.png",
-  fichiers_interface: "fichiers.png",
-  images_personnelles: "images.png",
-  ChatGPT: "ChatGPT.png"
+  "vscode": ["vscode.png", "Visual Studio Code"],
+  "windows": ["windows.png", "Windows"],
+  "python": ["python.png", "Python"],
+  "tkinter / Tk": ["Tk.png", "Tkinter / Tk"],
+  "extension-chrome": ["ExtensionChrome.png", "Extension Chrome"],
+  "json": ["json.png", "JSON"],
+  "ChatGPT": ["ChatGPT.png", "ChatGPT"],
+  "git": ["git.png", "Git"],
+  "curl": ["curl.png", "curl"],
+  "powershell": ["powershell.png", "PowerShell"],
+  "webp": ["webp.png", "WebP"],
+  "zip": ["zip.png", "ZIP"],
+  ".net": [".net.png", ".NET"],
+  "c#": ["c_sharp.png", "C#"],
+  "windows forms": ["win_forms.png", "Windows Forms"],
+  "electron": ["electron.png", "Electron"],
+  "javascript": ["js.png", "JavaScript"],
+  "typescript": ["ts.png", "TypeScript"],
+  "react": ["react.png", "React"],
+  "pyside6": ["pyside6.png", "PySide6"],
+  "qt": ["qt.png", "Qt"],
+  "avalonia": ["avalonia.png", "Avalonia"]
 };
 
 function element(tag, classe, ...contenu) {
@@ -17,11 +30,13 @@ function element(tag, classe, ...contenu) {
   return noeud;
 }
 
-function image(cle, classe, alt = "") {
+function image(cle, classe) {
   if (!Object.hasOwn(icones, cle)) return null;
   const img = element("img", classe);
-  img.src = "assets/communs/" + icones[cle];
-  img.alt = alt;
+  const [fichier, nom] = icones[cle];
+  img.src = "assets/communs/" + fichier;
+  img.alt = nom;
+  img.dataset.logo = cle;
   return img;
 }
 
@@ -79,24 +94,24 @@ async function chargerIdentite(appli, entete) {
 }
 
 const rolesTechniques = new Set(["runtime", "langage", "bibliotheque_graphique"]);
-const nomsTechnos = new Map([
-  [".net 10", ".NET 10"], [".net", ".NET"], ["c#", "C#"], ["windows forms", "Windows Forms"],
-  ["electron", "Electron"], ["javascript / typescript", "JavaScript / TypeScript"],
-  ["technologies web", "Technologies Web"], ["react", "React"], ["python", "Python"],
-  ["tkinter / Tk", "Tkinter / Tk"], ["pyside6 / qt", "PySide6 / Qt"], ["avalonia", "Avalonia"]
+const logosComposes = new Map([
+  ["javascript / typescript", ["javascript", "typescript"]],
+  ["pyside6 / qt", ["pyside6", "qt"]]
 ]);
 
 function socle(tech) {
   const membres = [];
   for (const [role, valeur] of Object.entries(tech ?? {})) {
     if (!rolesTechniques.has(role) || !texte(valeur)) continue;
-    const nom = nomsTechnos.get(valeur) ?? valeur;
-    const python = valeur === "python";
-    const tk = valeur === "tkinter / Tk";
-    const logo = python || tk ? image(valeur, python ? "python-mark" : "tk-mark", python ? nom : "") : null;
-    const item = element("div", tk ? "tech-item tk" : "tech-item", logo,
-      python ? null : element("strong", "", nom));
-    item.title = role.replaceAll("_", " ") + " · " + nom;
+    const version = valeur === ".net 10" ? "10" : "";
+    const cles = logosComposes.get(valeur) ?? [version ? ".net" : valeur];
+    const logos = cles.map(cle => image(cle, "tech-logo")).filter(Boolean);
+    const libelle = valeur === "technologies web" ? "Technologies Web" : valeur;
+    const complement = logos.length ? version : libelle;
+    const item = element("div", "tech-item", ...logos,
+      complement ? element("strong", "", complement) : null);
+    item.title = role.replaceAll("_", " ") + " · " +
+      [...logos.map(logo => logo.alt), complement].filter(Boolean).join(" ");
     membres.push(item);
     prendre(tech, role);
   }
@@ -109,14 +124,12 @@ const nomsDonnees = new Map([
 
 function donnees(data) {
   const lignes = [];
-  let persistanceStructuree = false;
   for (const [cle, famille] of Object.entries(data ?? {})) {
     if (cle === "locales" || cle === "separees_des_binaires") continue;
     if (!famille || typeof famille !== "object" || Array.isArray(famille)) continue;
     const type = texte(famille.type) ? prendre(famille, "type") : "";
 
     if (type === "projet_durable" || type === "recovery_local") {
-      persistanceStructuree = true;
       const nom = type === "projet_durable" ? "Projet durable" : "Recovery local";
       const details = Array.isArray(famille.contenu) && famille.contenu.every(texte)
         ? prendre(famille, "contenu") : [];
@@ -132,11 +145,18 @@ function donnees(data) {
     if (!type && !role && !format && famille.optionnel !== true) continue;
     const nom = nomsDonnees.get(type) ?? nomsDonnees.get(cle) ??
       (cle.charAt(0).toUpperCase() + cle.slice(1)).replaceAll("_", " ");
-    const libelle = format ? nom + " " + (format === "webp" ? "WebP" : format.toUpperCase()) : nom;
-    const icone = [cle, type, format].find(id => ["images_personnelles", "fichiers_interface", "json"].includes(id));
+    const formatImage = image(format, "data-icon");
+    const illustration = [type, cle].find(id => ["images_personnelles", "fichiers_interface"].includes(id));
+    let visuel = formatImage;
+    if (!visuel && illustration) {
+      visuel = element("img", "data-icon");
+      visuel.src = "assets/communs/" + (illustration === "images_personnelles" ? "images.png" : "fichiers.png");
+      visuel.alt = "";
+    }
+    const libelle = format && !formatImage ? nom + " " + format.toUpperCase() : nom;
     const option = famille.optionnel === true ? element("span", "mini-property", "optionnel") : null;
     if (option) prendre(famille, "optionnel");
-    const ligne = element("div", "data-item", icone ? image(icone, "data-icon") : null,
+    const ligne = element("div", "data-item", visuel,
       element("strong", "", libelle), option);
     if (role || type) ligne.title = [role, type].filter(Boolean).join(" · ");
     lignes.push(ligne);
@@ -144,9 +164,6 @@ function donnees(data) {
   const local = lignes.length && data.locales === true;
   if (local) prendre(data, "locales");
   const section = groupe("data-group", local ? "Données locales" : "Données", lignes);
-  if (section && persistanceStructuree) {
-    section.prepend(element("div", "group-title", element("strong", "", "Données")));
-  }
   if (section && data.separees_des_binaires === true) {
     prendre(data, "separees_des_binaires");
     section.prepend(element("div", "property property-data", "SÉPARÉ DES BINAIRES"));
@@ -166,7 +183,9 @@ function tuilesReferencees(modele, champ, type, classe) {
       continue;
     }
     prendre(objet, "type");
-    tuiles.push(element("span", classe, prendre(objet, "nom")));
+    const nom = prendre(objet, "nom");
+    const logo = type === "outil_pilote" ? image(nom.toLowerCase(), "petit-logo") : null;
+    tuiles.push(element("span", classe, logo ?? nom));
   }
   modele.appli[champ] = restantes;
   return tuiles;
@@ -192,7 +211,6 @@ function implementations(modele) {
   if (!cartes.length) return null;
   const section = element("section", "group implementation-group",
     element("div", "group-title",
-      element("strong", "", "Implémentations"),
       element("span", "mini-property alternative-property", "1 parmi " + cartes.length)),
     element("div", "implementation-grid", ...cartes));
   section.setAttribute("aria-label", "Implémentations alternatives, une parmi " + cartes.length);
@@ -219,7 +237,6 @@ function composantsInternes(modele) {
   modele.appli.composants_internes = restantes;
   if (!cartes.length) return null;
   const section = element("section", "group component-group",
-    element("div", "group-title", element("strong", "", "Composant interne")),
     ...cartes);
   section.setAttribute("aria-label", "Composants internes");
   return section;
@@ -257,9 +274,7 @@ function modulesProduit(modele) {
     qualifications.push(element("span", "mini-property", "packagés"));
   }
   const section = element("section", "group module-group",
-    element("div", "group-title",
-      element("strong", "", "Modules produit"),
-      qualifications.length ? element("div", "group-properties", ...qualifications) : null),
+    qualifications.length ? element("div", "group-title group-properties", ...qualifications) : null,
     element("div", "module-grid", ...cartes));
   section.setAttribute("aria-label", "Modules produit");
   return section;
@@ -277,7 +292,7 @@ function application(modele) {
   if (appli.mode_execution === "local") prendre(appli, "mode_execution");
   if (appli.type === "bureau") prendre(appli, "type");
   if (appli.statut === "experimental") prendre(appli, "statut");
-  const windows = appli.tourne_sous?.os === "windows" ? image("windows", "windows-mark", "Windows") : null;
+  const windows = appli.tourne_sous?.os === "windows" ? image("windows", "windows-mark") : null;
   if (windows) prendre(appli.tourne_sous, "os");
   const entete = element("header", "app-header", titre, windows);
   chargerIdentite(appli, entete);
@@ -304,7 +319,7 @@ function application(modele) {
 function compagnon(collector) {
   if (collector?.role !== "compagnon" || !texte(collector.nom)) return null;
   const extension = collector.type === "extension" && collector.hote === "chrome"
-    ? image("extension-chrome", "extension-mark", "Extension Chrome") : null;
+    ? image("extension-chrome", "extension-mark") : null;
   prendre(collector, "role");
   if (extension) {
     prendre(collector, "type");
@@ -320,7 +335,7 @@ function navigateur(objet) {
   prendre(objet.contenu, "nom");
   if (objet.contenu.type === "service_web") prendre(objet.contenu, "type");
   const logo = nom === "ChatGPT" ? image(nom, "openai-mark") : null;
-  const contenu = element("div", "browser-content", logo, element("h2", "", nom));
+  const contenu = element("div", "browser-content", logo ?? element("h2", "", nom));
   const barre = element("div", "browser-bar", element("i"), element("i"), element("i"), element("b"));
   barre.setAttribute("aria-hidden", "true");
   return element("article", "object browser", barre, contenu);
@@ -370,7 +385,7 @@ function rendreDonneeExterne(objet) {
   if (Array.isArray(objet.formats) && objet.formats.length && objet.formats.every(texte)) {
     const formats = prendre(objet, "formats").map(format => format.toUpperCase());
     if (type === "fichiers") {
-      corps.append(...formats.map(format => element("span", "feuille-format", format)));
+      corps.append(...formats.map(format => element("span", "feuille-format", image(format.toLowerCase(), "petit-logo") ?? format)));
     } else {
       pastilles.push(formats.join(" · "));
     }
@@ -413,7 +428,7 @@ function rendreServeur(objet) {
   const proprietes = [];
   if (texte(objet.moteur)) {
     const moteur = prendre(objet, "moteur");
-    proprietes.push(element("span", "", nomsTechnos.get(moteur) ?? moteur));
+    proprietes.push(element("span", "", image(moteur, "petit-logo") ?? moteur));
   }
   if (texte(objet.protocole)) proprietes.push(element("span", "", prendre(objet, "protocole").toUpperCase()));
   if (texte(objet.hote)) proprietes.push(element("span", "hote-serveur", prendre(objet, "hote")));
@@ -506,7 +521,17 @@ function ajouterObjetsExternes(diagramme, modele, relations, nomAppli) {
       if (flux.childElementCount) ligne.append(element("span", "origine-mobile", nomAppli), flux);
       const rendre = rendusExternes.get(objet.type);
       const carte = rendre(objet, id);
-      if (nom && id === membres[0]) carte.prepend(element("span", "nom-contexte", idContexte === "chrome" ? null : nom));
+      if (nom && id === membres[0]) {
+        const marque = element("span", "nom-contexte", idContexte === "chrome" ? null : nom);
+        if (idContexte === "chrome") {
+          const chrome = element("span", "marque-chrome");
+          chrome.dataset.logo = "chrome";
+          chrome.setAttribute("role", "img");
+          chrome.setAttribute("aria-label", nom);
+          marque.append(chrome);
+        }
+        carte.prepend(marque);
+      }
       ligne.append(carte);
       unite.append(ligne);
     }
