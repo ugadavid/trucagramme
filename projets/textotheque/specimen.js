@@ -3,10 +3,8 @@ export default {
 
   projet: {
     presentation: [
-      "Application desktop locale DB-first pour écrire, classer, rechercher et exporter des textes.",
-      "Le renderer React ne touche ni Node.js, ni SQLite : il passe par un pont Electron isolé.",
-      "Le processus principal porte la gestion des bibliothèques et la couche DB ; better-sqlite3 dialogue avec SQLite.",
-      "La bibliothèque SQLite reste la source de vérité. L’export en texte brut est volontaire et reste extérieur à la bibliothèque."
+      "Application desktop locale pour écrire, conserver, organiser et retrouver des textes.",
+      "La bibliothèque SQLite est la source de vérité."
     ]
   },
 
@@ -23,14 +21,12 @@ export default {
     livraison: "autonome",
 
     socle_technique: {
-      runtime: "electron"
+      interface: "Renderer React",
+      bibliotheque_graphique: "react",
+      langage: "typescript",
+      runtime: "Pont Electron",
+      moteur: "Couche DB · better-sqlite3"
     },
-
-    composants_internes: [
-      "renderer_react",
-      "pont_electron",
-      "couche_db"
-    ],
 
     donnees: {
       locales: true,
@@ -42,53 +38,6 @@ export default {
       }
     }
   },
-
-  renderer_react: {
-    nom: "Renderer React",
-    type: "composant_interne",
-    role: "interface, édition et état de session",
-
-    socle_technique: {
-      langage: "typescript",
-      bibliotheque_graphique: "react"
-    }
-  },
-
-  pont_electron: {
-    nom: "Pont Electron",
-    type: "composant_interne",
-    role: "frontière renderer / main",
-
-    socle_technique: {
-      runtime: "electron",
-      langage: "typescript",
-      interface: "preload / contextBridge / IPC"
-    }
-  },
-
-  couche_db: {
-    nom: "Couche DB",
-    type: "composant_interne",
-    role: "bibliothèques, recherches et persistance",
-
-    socle_technique: {
-      langage: "typescript",
-      moteur: "better-sqlite3",
-      integration_hote: "main process electron"
-    }
-  },
-
-  exports_txt: {
-    nom: "Export .txt",
-    type: "fichiers",
-    formats: ["txt"]
-  },
-
-  relations: [
-    { source: "renderer_react", destination: "pont_electron" },
-    { source: "pont_electron", destination: "couche_db" },
-    { source: "appli", destination: "exports_txt" }
-  ],
 
   specimen: {
     version: "alpha-0.0.0.1"
